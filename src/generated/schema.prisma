@@ -1,0 +1,137 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             String        @id @default(cuid())
+  clerkId        String?       @unique
+  name           String?
+  email          String        @unique
+  emailVerified  DateTime?
+  password       String?
+  image          String?       @default("/images/default-profile.png")
+  municipality   Municipality? @relation(fields: [municipalityId], references: [id])
+  municipalityId String?
+  posts          Post[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Municipality {
+  id          String              @id @default(cuid())
+  name        String
+  description String?
+  coatOfArms  String?
+  latitude    Float?
+  longitude   Float?
+  about       String?             @db.Text
+  slug        String?             @unique
+  ibgeCode    String?             @unique
+  users       User[]
+  highlights  Highlight[]
+  attractions Attraction[]
+  events      Event[]
+  guides      Guide[]
+  images      MunicipalityImage[]
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+model MunicipalityImage {
+  id             String       @id @default(cuid())
+  url            String
+  municipalityId String
+  municipality   Municipality @relation(fields: [municipalityId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Highlight {
+  id             String           @id @default(cuid())
+  title          String
+  description    String?
+  latitude       Float?
+  longitude      Float?
+  municipalityId String
+  galleryImages  HighlightImage[]
+  municipality   Municipality     @relation(fields: [municipalityId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model HighlightImage {
+  id          String    @id @default(cuid())
+  url         String
+  highlightId String
+  highlight   Highlight @relation(fields: [highlightId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Attraction {
+  id             String       @id @default(cuid())
+  name           String
+  description    String
+  image          String?
+  municipality   Municipality @relation(fields: [municipalityId], references: [id])
+  municipalityId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Event {
+  id             String       @id @default(cuid())
+  title          String
+  description    String
+  date           DateTime
+  image          String?
+  galleryImages  EventImage[]
+  municipality   Municipality @relation(fields: [municipalityId], references: [id])
+  municipalityId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model EventImage {
+  id        String   @id @default(cuid())
+  url       String
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Guide {
+  id             String       @id @default(cuid())
+  name           String
+  phone          String
+  languages      String[]
+  description    String?
+  image          String?
+  email          String?
+  municipality   Municipality @relation(fields: [municipalityId], references: [id])
+  municipalityId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Post {
+  id         String   @id @default(cuid())
+  title      String
+  content    String
+  coverImage String?
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   String
+  published  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
