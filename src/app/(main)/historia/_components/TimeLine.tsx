@@ -1,4 +1,5 @@
-// components/Timeline.tsx
+import Image from "next/image";
+
 type TimelineEvent = {
   year: string;
   title: string;
@@ -71,18 +72,38 @@ const events: TimelineEvent[] = [
 export function Timeline() {
   return (
     <section className="py-12 mb-16 bg-gray-50">
-      <div className="space-y-8">
+      <div className="max-w-7xl mx-auto space-y-8 px-4">
         <h2 className="text-3xl font-bold mb-8">Linha do Tempo</h2>
-        <div className="space-y-6">
-          {events.map((event, idx) => (
-            <div key={idx} className="relative pl-8 border-l-2 border-accent">
-              <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-blue-900"></div>
-              <h3 className="text-xl font-semibold text-blue-900 ">
-                {event.year} - {event.title}
-              </h3>
-              <p className="text-neutral-900">{event.description}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+          {/* Timeline */}
+          <div className="space-y-6">
+            {events.map((event, idx) => (
+              <div key={idx} className="relative pl-8 border-l-2 border-accent">
+                <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-blue-900"></div>
+                <h3 className="text-xl font-semibold text-blue-900">
+                  {event.year} - {event.title}
+                </h3>
+                <p className="text-neutral-900">{event.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Imagem ocupando toda a altura */}
+          <div className="flex flex-col h-full">
+            <div className="relative w-full flex-1 min-h-[400px]">
+              <Image
+                src="/cmf/sede.jpeg"
+                alt="O Palácio da Mogiana, na cidade de Campinas"
+                fill
+                className="object-cover rounded-lg"
+                priority
+              />
             </div>
-          ))}
+            <p className="mt-4 text-neutral-800">
+              O Palácio da Mogiana, na cidade de Campinas, sediou a CMEF de 1910
+              até 1926 e teve atividades da empresa até 1972.
+            </p>
+          </div>
         </div>
       </div>
     </section>

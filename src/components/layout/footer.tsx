@@ -92,10 +92,18 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/historia"
+                  className="text-neutral-400 hover:text-foreground transition-colors"
+                >
+                  História
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/contato"
                   className="text-neutral-400 hover:text-foreground transition-colors"
                 >
-                  Contato
+                  Faça parte
                 </Link>
               </li>
             </ul>
