@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { MapPin, Landmark } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
@@ -26,8 +25,9 @@ export default async function MunicipioPage({
 }: {
   params: { slug: string };
 }) {
+  const slug = (await params).slug;
   const municipality = await prisma.municipality.findUnique({
-    where: { slug: (await params).slug },
+    where: { slug },
     include: {
       highlights: {
         orderBy: { title: "asc" },
