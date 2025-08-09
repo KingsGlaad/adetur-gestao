@@ -100,7 +100,7 @@ export function Notification() {
                     {item.title}
                   </strong>
 
-                  <span className="truncate text-sm font-medium text-dark-5 dark:text-dark-6">
+                  <span className="truncate text-sm font-medium text-dark-500 dark:text-dark-6">
                     {item.subTitle}
                   </span>
                 </div>
