@@ -5,11 +5,11 @@ import MunicipioMap from "./_components/MunicipioMap";
 import { PublicImageGallery } from "./_components/PublicImageGallery";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-type PageProps = {
+interface PageProps {
   params: {
     slug: string;
   };
-};
+}
 
 // Função para buscar o contorno geográfico do município no IBGE
 async function getMunicipalityGeoJson(ibgeCode: string | null | undefined) {
@@ -27,9 +27,8 @@ async function getMunicipalityGeoJson(ibgeCode: string | null | undefined) {
 }
 
 export default async function MunicipioPage({ params }: PageProps) {
-  const slug = (await params).slug;
   const municipality = await prisma.municipality.findUnique({
-    where: { slug },
+    where: { slug: params.slug },
     include: {
       highlights: {
         orderBy: { title: "asc" },
