@@ -9,6 +9,10 @@ export type Highlight = {
   longitude?: number | null;
   municipalityId?: string | null;
   images?: string | null;
+  createdAt?: Date | null;
+  municipality?: {
+    name?: string | null;
+  };
 };
 
 // Estados de loading

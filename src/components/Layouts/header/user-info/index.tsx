@@ -35,7 +35,7 @@ export function UserInfo() {
             width={200}
             height={200}
           />
-          <figcaption className="flex items-center gap-1 font-medium text-dark dark:text-dark-6 max-[1024px]:sr-only">
+          <figcaption className="flex items-center gap-1 font-medium text-black dark:text-black-6 max-[1024px]:sr-only">
             <span>{session?.user?.fullName || "User"}</span>
 
             <ChevronUpIcon
@@ -67,7 +67,7 @@ export function UserInfo() {
           />
 
           <figcaption className="space-y-1 text-base font-medium">
-            <div className="mb-2 leading-none text-dark dark:text-white">
+            <div className="mb-2 leading-none text-black dark:text-white">
               {session?.user?.fullName || "User"}
             </div>
 
@@ -79,11 +79,11 @@ export function UserInfo() {
 
         <hr className="border-[#E8E8E8] dark:border-dark-3" />
 
-        <div className="p-2 text-base text-[#4B5563] dark:text-dark-6 [&>*]:cursor-pointer">
+        <div className="p-2 text-base text-[#4B5563] dark:text-black-6 [&>*]:cursor-pointer">
           <Link
             href={"/profile"}
             onClick={() => setIsOpen(false)}
-            className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-200 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white"
+            className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-200 hover:text-black dark:hover:bg-dark-3 dark:hover:text-white"
           >
             <UserIcon />
 
@@ -93,7 +93,7 @@ export function UserInfo() {
           <Link
             href={"/pages/settings"}
             onClick={() => setIsOpen(false)}
-            className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-200 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white"
+            className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-200 hover:text-black dark:hover:bg-dark-3 dark:hover:text-white"
           >
             <SettingsIcon />
 
@@ -105,11 +105,11 @@ export function UserInfo() {
 
         <hr className="border-[#E8E8E8] dark:border-dark-3" />
 
-        <div className="p-2 text-base text-[#4B5563] dark:text-dark-6">
+        <div className="p-2 text-base text-[#4B5563] dark:text-black-6">
           <SignOutButton>
             <Button
               variant="default"
-              className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-200 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white cursor-pointer"
+              className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-200 hover:text-black dark:hover:bg-dark-3 dark:hover:text-white cursor-pointer"
             >
               <LogOutIcon />
 

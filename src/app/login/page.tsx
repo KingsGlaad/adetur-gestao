@@ -36,15 +36,15 @@ export default function SignIn() {
                   height={32}
                 />
               </Link>
-              <p className="mb-3 text-xl font-medium text-dark dark:text-white">
+              <p className="mb-3 text-xl font-medium text-black dark:text-white">
                 Entrar na sua conta
               </p>
 
-              <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
+              <h1 className="mb-4 text-2xl font-bold text-black dark:text-white sm:text-heading-3">
                 Bem-vindo de volta!
               </h1>
 
-              <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
+              <p className="w-full max-w-[375px] font-medium text-black-4 dark:text-black-6">
                 Para acessar o sistema, por favor, insira suas credenciais de
                 login. Se você ainda não possui uma conta, pode se registrar
                 aqui.

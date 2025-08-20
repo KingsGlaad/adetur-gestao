@@ -12,14 +12,6 @@ export const NAV_DATA = [
             title: "Página Inicial",
             url: "/admin",
           },
-          {
-            title: "Página Teste1",
-            url: "/admin",
-          },
-          {
-            title: "Página Teste2",
-            url: "/admin",
-          },
         ],
       },
       {

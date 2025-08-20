@@ -140,7 +140,7 @@ export default function Signin() {
 
       <div className="relative mb-4">
         <span className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 h-px bg-stroke dark:bg-dark-3"></span>
-        <span className="relative z-10 mx-auto block w-fit bg-white px-4 text-sm text-gray-500 dark:bg-gray-dark dark:text-dark-6">
+        <span className="relative z-10 mx-auto block w-fit bg-white px-4 text-sm text-gray-500 dark:bg-gray-dark dark:text-black-6">
           ou continue com
         </span>
       </div>

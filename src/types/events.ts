@@ -5,4 +5,7 @@ export type Event = {
   date: Date | null;
   image: string | null;
   municipalityId?: string | null;
+  municipality?: {
+    name: string | null;
+  };
 };

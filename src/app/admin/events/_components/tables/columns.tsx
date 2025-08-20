@@ -27,10 +27,10 @@ export const columns: ColumnDef<Event>[] = [
     accessorKey: "municipalityId",
     header: "Município",
     cell: ({ row }) => {
-      const municipalityId = row.getValue("munipalityId") as string;
+      const municipality = row.original.municipality?.name as string;
       return (
         <div className="flex items-center">
-          <span>{municipalityId}</span>
+          <span>{municipality}</span>
         </div>
       );
     },

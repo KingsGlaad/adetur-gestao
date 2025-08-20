@@ -1,82 +1,130 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import path from "path";
-import { supabase } from "@/lib/supabase";
+import { uploadHightlightImages } from "@/lib/uploadHightlightImages";
+import { Highlight, HighlightType } from "@/types/highligth";
+import { z } from "zod";
 
-// GET: Lista todos os eventos de um município
-export async function GET(req: NextRequest) {
+const highlightSchema = z.object({
+  title: z.string().min(1, "O título é obrigatório."),
+  description: z.string().min(1, "A descrição é obrigatória."),
+  link: z
+    .string()
+    .url("O link deve ser uma URL válida.")
+    .optional()
+    .or(z.literal("")),
+  municipalityId: z.string().optional().or(z.literal("")),
+  publishedAt: z
+    .string()
+    .refine((val) => !isNaN(new Date(val).getTime()), "Data inválida."),
+});
+
+// GET: Buscar todos os destaques
+export async function GET() {
   try {
     const highlights = await prisma.highlight.findMany({
-      orderBy: { title: "asc" }, // Ordena por data do evento
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        municipality: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
+
     return NextResponse.json(highlights);
   } catch (error) {
+    console.error("Erro ao buscar destaques:", error);
     return NextResponse.json(
-      { error: "Erro ao buscar eventos." },
+      { message: "Erro ao buscar destaques." },
       { status: 500 }
     );
   }
 }
 
-const BUCKET_NAME = "adetur-bucket";
-
-export async function POST(req: NextRequest) {
+// POST: Criar um novo destaque
+export async function POST(request: Request) {
   try {
-    const formData = await req.formData();
-
+    const formData = await request.formData();
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    const date = formData.get("date") as string;
-    const municipalityId = formData.get("municipalitie") as string;
-    const file = formData.get("file") as File | null;
+    const link = formData.get("link") as string;
+    const municipalityId = formData.get("municipality") as string;
+    const publishedAtStr = formData.get("publishedAt") as string;
+    const imageFile = formData.get("image") as File;
 
-    // Cria o evento no banco
-    const newEvent = await prisma.event.create({
+    const publishedAt = new Date(publishedAtStr);
+
+    // Validação
+    const parsedData = highlightSchema.safeParse({
+      title,
+      description,
+      link,
+      municipalityId,
+      publishedAt: publishedAtStr,
+    });
+
+    if (!parsedData.success) {
+      return NextResponse.json(
+        {
+          message: "Dados de entrada inválidos.",
+          errors: parsedData.error.flatten(),
+        },
+        { status: 400 }
+      );
+    }
+
+    if (!imageFile) {
+      return NextResponse.json(
+        { message: "A imagem é obrigatória." },
+        { status: 400 }
+      );
+    }
+
+    // Cria o destaque no banco de dados primeiro
+    const newHighlight = await prisma.highlight.create({
       data: {
         title,
         description,
-        date: new Date(date),
-        municipalityId,
+        link,
+        publishedAt,
+        municipalityId: municipalityId || null,
+        type: HighlightType.EVENT, // Exemplo, ajuste conforme a necessidade
+        image: "", // Placeholder, será atualizado após o upload
       },
     });
 
-    let imageUrl: string | null = null;
+    // Faz o upload da imagem para o Supabase
+    const imageUrl = await uploadHightlightImages(
+      imageFile,
+      newHighlight.id,
+      title
+    );
 
-    // Se houver arquivo, faz upload
-    if (file) {
-      const sanitizedTitle = title.toLowerCase().replace(/\s+/g, "-");
-      const filePath = `cities/${municipalityId}/events/${
-        newEvent.id
-      }/${sanitizedTitle}${path.extname(file.name)}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from(BUCKET_NAME)
-        .upload(filePath, file, { upsert: true });
-
-      if (uploadError) {
-        return NextResponse.json(
-          { error: "Erro no upload para Supabase." },
-          { status: 500 }
-        );
-      }
-
-      const { data: publicUrlData } = supabase.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(filePath);
-
-      imageUrl = publicUrlData.publicUrl;
-
-      // Atualiza o evento com a URL da imagem
-      await prisma.event.update({
-        where: { id: newEvent.id },
-        data: { image: imageUrl },
-      });
+    if (!imageUrl) {
+      await prisma.highlight.delete({ where: { id: newHighlight.id } });
+      return NextResponse.json(
+        { message: "Erro ao fazer upload da imagem." },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ ...newEvent, image: imageUrl }, { status: 201 });
-  } catch (error) {
+    // Atualiza o destaque com a URL da imagem
+    await prisma.highlight.update({
+      where: { id: newHighlight.id },
+      data: { image: imageUrl },
+    });
+
     return NextResponse.json(
-      { error: "Erro ao criar evento." },
+      { message: "Destaque criado com sucesso!" },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Erro ao criar destaque:", error);
+    return NextResponse.json(
+      { message: "Erro ao criar destaque." },
       { status: 500 }
     );
   }
