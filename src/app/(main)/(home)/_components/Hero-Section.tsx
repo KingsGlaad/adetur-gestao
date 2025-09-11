@@ -55,7 +55,6 @@ export function HeroSectionCarousel() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                   <Button
                     size="lg"
-                    variant="explore"
                     className="text-lg px-8 py-4 bg-amber-300 hover:shadow-accent-foreground transform hover:scale-105 text-white"
                   >
                     <Search className="mr-2 h-5 w-5" />
