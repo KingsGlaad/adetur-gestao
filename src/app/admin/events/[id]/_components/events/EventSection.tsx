@@ -10,10 +10,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useEvents } from "../../_hooks/useEvents";
-import { EventForm, EventFormValues } from "../EventForm";
 import { EventCard } from "./EventCard";
 import { DeleteEventDialog } from "./DeleteEventDialog";
+import { EventFormValues, useEvents } from "../../_hooks/useEvents"; // Adjust the path if necessary
+import { EventForm } from "../EventForm";
 
 interface EventSectionProps {
   municipalityId: string;
@@ -100,11 +100,13 @@ export function EventsSection({ municipalityId }: EventSectionProps) {
               {selectedEvent ? "Editar Evento" : "Adicionar Novo Evento"}
             </DialogTitle>
           </DialogHeader>
-          <EventForm
-            event={selectedEvent!}
-            onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-          />
+          {isFormOpen && (
+            <EventForm
+              event={selectedEvent}
+              onSubmit={handleSubmit}
+              isSubmitting={isSubmitting}
+            />
+          )}
         </DialogContent>
       </Dialog>
 

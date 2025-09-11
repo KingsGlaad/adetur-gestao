@@ -1,125 +1,121 @@
-import { useState, useEffect } from "react";
-import { z } from "zod";
-import axios from "axios";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useEffect, useCallback } from "react";
+import { Event } from "@/generated";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler } from "react-hook-form";
-import { Event } from "@/types/events";
-import { EventImage } from "@/generated";
+export type EventFormValues = {
+  title: string;
+  description: string;
+  date: Date;
+};
+/**
+ * Hook customizado para gerenciar a lógica de eventos de um município.
+ * @param municipalityId O ID do município.
+ */
+export function useEvents(municipalityId: string) {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-export const eventSchema = z.object({
-  title: z.string().min(1, "O título é obrigatório."),
-  description: z.string().min(1, "A descrição é obrigatória."),
-  date: z.date({
-    message: "A data do evento é obrigatória.",
-  }),
-  municipalitie: z.string({}),
-});
-
-export type EventFormValues = z.infer<typeof eventSchema>;
-
-export function useEventForm(event: Event) {
-  const router = useRouter();
-
-  // Estados para as imagens
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(() => {
-    return event?.image || null;
-  });
-  const [galleryImages, setGalleryImages] = useState<EventImage[]>([]);
-  const [isGalleryLoading, setIsGalleryLoading] = useState(true);
-
-  // Instância do React Hook Form
-  const form = useForm<EventFormValues>({
-    resolver: zodResolver(eventSchema),
-    defaultValues: {
-      title: event?.title || "",
-      description: event?.description || "",
-      date: event?.date || new Date(),
-      municipalitie: event?.municipalityId || "",
-    },
-  });
-
-  // Lógica para a Galeria de Imagens
-  const fetchGallery = async () => {
-    setIsGalleryLoading(true);
+  const fetchEvents = useCallback(async () => {
+    setIsLoading(true);
     try {
-      const res = await axios.get(`/api/events/${event.id}/gallery`);
-      setGalleryImages(res.data);
-    } catch {
-      toast.error("Erro ao carregar a galeria de imagens.");
+      const response = await fetch(
+        `/api/municipalities/${municipalityId}/events`
+      );
+      if (!response.ok) {
+        throw new Error("Falha ao buscar eventos.");
+      }
+      const data = await response.json();
+      setEvents(data);
+    } catch (error) {
+      toast.error("Erro ao carregar os eventos.");
+      console.error(error);
     } finally {
-      setIsGalleryLoading(false);
+      setIsLoading(false);
     }
-  };
+  }, [municipalityId]);
 
   useEffect(() => {
-    fetchGallery();
-  }, [event?.id]);
-
-  const handleAddGalleryImages = async (files: FileList) => {
-    const formData = new FormData();
-    Array.from(files).forEach((file) => formData.append("files", file));
-    try {
-      await axios.post(`/api/events/${event.id}/gallery`, formData);
-      toast.success("Imagens adicionadas à galeria!");
-      await fetchGallery();
-    } catch {
-      toast.error("Erro ao adicionar imagens.");
+    if (municipalityId) {
+      fetchEvents();
     }
-  };
+  }, [municipalityId, fetchEvents]);
 
-  const handleRemoveGalleryImage = async (imageId: string) => {
+  const processEventData = async (
+    data: EventFormValues,
+    imageFile: File | null,
+    existingEvent: Event | null
+  ) => {
+    setIsSubmitting(true);
     try {
-      await axios.delete(`/api/events/${event.id}/gallery`, {
-        data: { imageId },
+      const formData = new FormData();
+
+      // Adiciona os dados do formulário ao FormData
+      Object.entries(data).forEach(([key, value]) => {
+        if (value instanceof Date) {
+          formData.append(key, value.toISOString());
+        } else if (value !== null && value !== undefined) {
+          formData.append(key, String(value));
+        }
       });
-      toast.success("Imagem removida da galeria!");
-      setGalleryImages((prev) => prev.filter((img) => img.id !== imageId));
-    } catch {
-      toast.error("Erro ao remover imagem.");
-    }
-  };
 
-  // Lógica de Submissão Principal
-  const onSubmit: SubmitHandler<EventFormValues> = async (data) => {
-    try {
-      // 1. Atualiza os dados de texto
-      await axios.put(`/api/events/${event.id}`, data);
-
-      // 2. Se houver um novo ficheiro de brasão, faz o upload
       if (imageFile) {
-        const formData = new FormData();
-        formData.append("file", imageFile);
-        formData.append("name", data.title);
-        await axios.post(`/api/events/${event.id}/image`, formData);
+        formData.append("image", imageFile);
       }
 
-      toast.success("Evento atualizado com sucesso!");
-      router.refresh();
-    } catch (error) {
-      toast.error("Erro ao atualizar o evento.");
+      if (!existingEvent) {
+        formData.append("municipalityId", municipalityId);
+      }
+
+      const url = existingEvent
+        ? `/api/events/${existingEvent.id}`
+        : "/api/events";
+      const method = existingEvent ? "PUT" : "POST";
+
+      const response = await fetch(url, { method, body: formData });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Ocorreu um erro.");
+      }
+
+      toast.success(
+        `Evento ${existingEvent ? "atualizado" : "criado"} com sucesso!`
+      );
+      await fetchEvents(); // Atualiza a lista de eventos
+    } catch (error: any) {
+      toast.error(
+        error.message ||
+          `Falha ao ${existingEvent ? "atualizar" : "criar"} o evento.`
+      );
+      throw error; // Propaga o erro para o componente
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  return {
-    form,
-    isSubmitting: form.formState.isSubmitting,
-    imageFile: {
-      file: imageFile,
-      preview: imagePreview,
-      setFile: setImageFile,
-      setPreview: setImagePreview,
-    },
-    gallery: {
-      images: galleryImages,
-      isLoading: isGalleryLoading,
-      addImages: handleAddGalleryImages,
-      removeImage: handleRemoveGalleryImage,
-    },
-    onSubmit,
+  const deleteEvent = async (eventId: string) => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`/api/events/${eventId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Ocorreu um erro ao excluir.");
+      }
+
+      toast.success("Evento excluído com sucesso!");
+      setEvents((prev) => prev.filter((event) => event.id !== eventId)); // Remove o evento da lista localmente
+    } catch (error: any) {
+      toast.error(error.message || "Falha ao excluir o evento.");
+      throw error;
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  return { events, isLoading, isSubmitting, processEventData, deleteEvent };
 }

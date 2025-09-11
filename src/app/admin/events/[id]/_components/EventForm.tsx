@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { CalendarIcon, Loader2 } from "lucide-react";
-import { Event } from "@/types/events";
-import { Controller } from "react-hook-form";
+import { CalendarIcon, Loader2, Trash2 } from "lucide-react";
+import { Event } from "@/generated";
+import { Controller, useForm } from "react-hook-form";
 import {
   Select,
   SelectContent,
@@ -16,12 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Municipality } from "@/types/municipality";
-import { toast } from "sonner";
-import { useEventForm } from "@/app/admin/events/[id]/_hooks/useEvents";
-import { EventImageGallery } from "@/app/admin/events/[id]/_components/events/EventImageGallery";
+import { useEffect, useState, useRef } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -31,28 +26,48 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { useEventForm, EventFormValues } from "./useEventForm";
+import { toast } from "sonner";
+import { Municipality } from "@/types/municipality";
 
 interface EventFormProps {
-  event: Event;
+  event: Event | null;
+  onSubmit: (data: EventFormValues, imageFile: File | null) => Promise<void>;
+  isSubmitting: boolean;
 }
 
-export function EventForm({ event }: EventFormProps) {
+export function EventForm({ event, onSubmit, isSubmitting }: EventFormProps) {
   const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
-  const { form, isSubmitting, imageFile, gallery, onSubmit } =
-    useEventForm(event);
+  const { form, imageFile } = useEventForm(event, onSubmit);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = form;
+
+  useEffect(() => {
+    // Reseta o formulário quando o evento selecionado muda
+    reset({
+      title: event?.title || "",
+      description: event?.description || "",
+      date: event?.date ? new Date(event.date) : undefined,
+      municipalityId: event?.municipalityId || "",
+    });
+    imageFile.setPreview(event?.image || null);
+    imageFile.setFile(null);
+  }, [event, reset, imageFile]);
 
   useEffect(() => {
     const fetchMunicipalities = async () => {
       try {
-        const res = await axios.get("/api/cities");
-        setMunicipalities(res.data); // Espera [{ id, name }]
+        const response = await fetch("/api/municipalities");
+        if (!response.ok) throw new Error("Failed to fetch");
+        const data = await response.json();
+        setMunicipalities(data);
       } catch {
         toast.error("Erro ao carregar municípios.");
       }
@@ -60,57 +75,80 @@ export function EventForm({ event }: EventFormProps) {
     fetchMunicipalities();
   }, []);
 
+  const handleFormSubmit = async (data: EventFormValues) => {
+    await onSubmit(data, imageFile.file);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {/* SEÇÃO DA IMAGEM DE CAPA */}
       <div>
-        <Label>Imagem de Capa (Brasão)</Label>
-        <div className="mt-2 flex items-center gap-4 p-4 border rounded-lg">
+        <Label>Imagem de Capa</Label>
+        <div className="mt-2 flex items-center gap-x-4">
           <Image
             src={imageFile.preview || "/images/no-image.jpeg"}
-            alt="Pré-visualização do Brasão"
-            width={100}
-            height={100}
-            className="object-contain rounded-md bg-slate-100"
+            alt="Pré-visualização da imagem do evento"
+            width={128}
+            height={128}
+            className="h-32 w-32 object-cover rounded-md bg-slate-100"
           />
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              if (e.target.files?.[0]) {
-                const file = e.target.files[0];
-                imageFile.setFile(file);
-                imageFile.setPreview(URL.createObjectURL(file));
-              }
-            }}
-          />
+          <div className="flex flex-col gap-y-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              Alterar Imagem
+            </Button>
+            {imageFile.preview && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="text-red-500 hover:text-red-600"
+                onClick={() => {
+                  imageFile.setFile(null);
+                  imageFile.setPreview(null);
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                  }
+                }}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Remover
+              </Button>
+            )}
+            <Input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                if (e.target.files?.[0]) {
+                  const file = e.target.files[0];
+                  imageFile.setFile(file);
+                  imageFile.setPreview(URL.createObjectURL(file));
+                }
+              }}
+            />
+          </div>
         </div>
       </div>
-
-      {/* SEÇÃO DA GALERIA */}
-      <EventImageGallery
-        images={gallery.images}
-        onAddImages={gallery.addImages}
-        onRemoveImage={gallery.removeImage}
-        isUploading={gallery.isLoading}
-      />
-
-      <hr />
 
       {/* DADOS DO EVENTO */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label>Nome</Label>
+          <Label htmlFor="title">Nome do Evento</Label>
           <Input {...register("title")} />
           {errors.title && (
             <p className="text-sm text-red-500 mt-1">{errors.title.message}</p>
           )}
         </div>
         <div>
-          <Label>Municipio</Label>
+          <Label htmlFor="municipalityId">Município</Label>
           <Controller
             control={control}
-            name="municipalitie"
+            name="municipalityId"
             render={({ field }) => (
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger className="w-full">
@@ -126,10 +164,15 @@ export function EventForm({ event }: EventFormProps) {
               </Select>
             )}
           />
+          {errors.municipalityId && (
+            <p className="text-sm text-red-500 mt-1">
+              {errors.municipalityId.message}
+            </p>
+          )}
         </div>
       </div>
       <div>
-        <Label>Descrição Curta (para cartões e listas)</Label>
+        <Label htmlFor="description">Descrição</Label>
         <Textarea {...register("description")} />
         {errors.description && (
           <p className="text-sm text-red-500 mt-1">
@@ -140,7 +183,7 @@ export function EventForm({ event }: EventFormProps) {
 
       {/* Seletor de Data com Shadcn Calendar */}
       <div>
-        <Label>Data do Evento</Label>
+        <Label htmlFor="date">Data do Evento</Label>
         <Controller
           control={control}
           name="date"
@@ -183,7 +226,7 @@ export function EventForm({ event }: EventFormProps) {
         {isSubmitting ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          "Salvar Todas as Alterações"
+          "Salvar Evento"
         )}
       </Button>
     </form>
