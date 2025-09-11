@@ -26,7 +26,7 @@ async function fetchIbgeCode(municipalityName: string): Promise<string | null> {
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   const data = await req.json();
   const slug = (await params).slug;
