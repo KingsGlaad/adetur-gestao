@@ -47,6 +47,24 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "www.abagrp.org.br",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "ecrie.com.br",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "dwpt1kkww6vki.cloudfront.net",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   experimental: {

@@ -1,6 +1,6 @@
 export const heroImages = [
   {
-    src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop",
+    src: "https://www.abagrp.org.br/uploads/pagina/elemento/campo/2019/01/LwWsN4YV03Nd9KPE/aerea-11-1_1920x540.jpg",
     alt: "Praia paradisíaca",
     title: "Descubra Novos Destinos",
     description: "Explore as belezas naturais da nossa região",
@@ -8,7 +8,7 @@ export const heroImages = [
     height: 1382,
   },
   {
-    src: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop",
+    src: "https://ecrie.com.br/sistema/conteudos/imagem/g_104_3_9_19012024112111.jpg",
     alt: "Paisagem montanhosa",
     title: "Experiências Únicas",
     description: "Viva momentos inesquecíveis em cada viagem",
@@ -16,7 +16,7 @@ export const heroImages = [
     height: 1380,
   },
   {
-    src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop",
+    src: "https://dwpt1kkww6vki.cloudfront.net/img/logo/CB/municipio-santo-antonio-da-alegria.jpg",
     alt: "Cidade histórica",
     title: "Cultura Local",
     description: "Conheça a rica cultura e tradições locais",

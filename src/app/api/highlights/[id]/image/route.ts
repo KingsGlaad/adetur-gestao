@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import {
-  uploadHightlightImages,
-  deleteHighlightImage,
-} from "@/lib/uploadHightlightImages";
+import { uploadHightlightImages } from "@/lib/uploadHightlightImages";
 
 // POST: Atualizar a imagem de um destaque
 export async function POST(
@@ -31,11 +28,6 @@ export async function POST(
       );
     }
 
-    // Remove a imagem antiga se existir
-    if (highlight.image) {
-      await deleteHighlightImage(highlight.image);
-    }
-
     // Faz o upload da nova imagem
     const imageUrl = await uploadHightlightImages(
       imageFile,
@@ -49,12 +41,6 @@ export async function POST(
         { status: 500 }
       );
     }
-
-    // Atualiza o destaque com a nova URL da imagem
-    await prisma.highlight.update({
-      where: { id: params.id },
-      data: { image: imageUrl },
-    });
 
     return NextResponse.json({
       message: "Imagem do destaque atualizada com sucesso!",

@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { uploadHightlightImages } from "@/lib/uploadHightlightImages";
-import { Highlight, HighlightType } from "@/types/highligth";
 import { z } from "zod";
 
 const highlightSchema = z.object({
@@ -45,6 +45,8 @@ export async function GET() {
 }
 
 // POST: Criar um novo destaque
+{
+  /** 
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -88,11 +90,9 @@ export async function POST(request: Request) {
       data: {
         title,
         description,
-        link,
-        publishedAt,
-        municipalityId: municipalityId || null,
-        type: HighlightType.EVENT, // Exemplo, ajuste conforme a necessidade
-        image: "", // Placeholder, será atualizado após o upload
+        municipality: municipalityId
+          ? { connect: { id: municipalityId } }
+          : undefined,
       },
     });
 
@@ -111,12 +111,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Atualiza o destaque com a URL da imagem
-    await prisma.highlight.update({
-      where: { id: newHighlight.id },
-      data: { image: imageUrl },
-    });
-
     return NextResponse.json(
       { message: "Destaque criado com sucesso!" },
       { status: 201 }
@@ -128,4 +122,6 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+}
+  */
 }

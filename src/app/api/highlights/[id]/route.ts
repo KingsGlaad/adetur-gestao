@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
-import { deleteHighlightImage } from "@/lib/uploadHightlightImages";
 
 const highlightUpdateSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
@@ -72,15 +72,17 @@ export async function PUT(
     }
 
     const { municipalityId, publishedAt, ...data } = parsedData.data;
-    const finalData = {
+    const finalData: any = {
       ...data,
       publishedAt: new Date(publishedAt),
-      municipalityId: municipalityId || null,
     };
+    if (municipalityId) {
+      finalData.municipalityId = municipalityId;
+    }
 
     const updatedHighlight = await prisma.highlight.update({
       where: { id: params.id },
-      data: finalData,
+      data: { ...finalData },
     });
 
     return NextResponse.json(updatedHighlight);
@@ -109,9 +111,6 @@ export async function DELETE(
         { status: 404 }
       );
     }
-
-    // Remove a imagem do Supabase
-    await deleteHighlightImage(highlight.image);
 
     // Deleta o destaque do banco de dados
     await prisma.highlight.delete({

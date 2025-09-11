@@ -25,6 +25,7 @@ export function Footer() {
             <div className="flex gap-4">
               <a
                 href="https://www.facebook.com/circuitoturisticoaltamogiana"
+                target="_blank"
                 className="text-neutral-400 hover:text-foreground transition-colors"
                 aria-label="Facebook"
               >
@@ -43,6 +44,7 @@ export function Footer() {
               </a>
               <a
                 href="https://www.instagram.com/adeturturismoaltamogiana/"
+                target="_blank"
                 className="text-neutral-400 hover:text-foreground transition-colors"
                 aria-label="Instagram"
               >
