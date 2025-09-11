@@ -7,17 +7,19 @@ import { PublicImageGallery } from "./_components/PublicImageGallery";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+
   const municipality = await prisma.municipality.findUnique({
     where: {
-      slug: params.slug,
+      slug: slug,
     },
     select: {
       name: true,
@@ -51,8 +53,10 @@ async function getMunicipalityGeoJson(ibgeCode: string | null | undefined) {
 }
 
 export default async function MunicipioPage({ params }: PageProps) {
+  const { slug } = await params;
+
   const municipality = await prisma.municipality.findUnique({
-    where: { slug: params.slug },
+    where: { slug: slug },
     include: {
       highlights: {
         orderBy: { title: "asc" },
