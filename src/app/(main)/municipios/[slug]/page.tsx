@@ -1,6 +1,7 @@
 import { MapPin, Landmark } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import MunicipioMap from "./_components/MunicipioMap";
 import { PublicImageGallery } from "./_components/PublicImageGallery";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 interface PageProps {
   params: {
     slug: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const municipality = await prisma.municipality.findUnique({
+    where: {
+      slug: params.slug,
+    },
+    select: {
+      name: true,
+    },
+  });
+
+  if (!municipality) {
+    return {
+      title: "Município não encontrado",
+    };
+  }
+
+  return {
+    title: `${municipality.name} | ADETUR`,
   };
 }
 

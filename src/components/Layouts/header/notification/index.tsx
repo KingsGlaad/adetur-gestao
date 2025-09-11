@@ -100,7 +100,7 @@ export function Notification() {
                     {item.title}
                   </strong>
 
-                  <span className="truncate text-sm font-medium text-black dark:text-black-6">
+                  <span className="truncate text-sm font-medium text-black dark:text-black">
                     {item.subTitle}
                   </span>
                 </div>
@@ -112,7 +112,7 @@ export function Notification() {
         <Link
           href="#"
           onClick={() => setIsOpen(false)}
-          className="block rounded-lg border border-primary p-2 text-center text-sm font-medium tracking-wide text-primary outline-none transition-colors hover:bg-blue-light-5 focus:bg-blue-light-5 focus:text-primary focus-visible:border-primary dark:border-dark-3 dark:text-black-6 dark:hover:border-dark-5 dark:hover:bg-dark-3 dark:hover:text-black-7 dark:focus-visible:border-dark-5 dark:focus-visible:bg-dark-3 dark:focus-visible:text-black-7"
+          className="block rounded-lg border border-primary p-2 text-center text-sm font-medium tracking-wide text-primary outline-none transition-colors hover:bg-blue-light-5 focus:bg-blue-light-5 focus:text-primary focus-visible:border-primary dark:border-dark-3 dark:text-black dark:hover:border-dark-5 dark:hover:bg-dark-3 dark:hover:text-black-7 dark:focus-visible:border-dark-5 dark:focus-visible:bg-dark-3 dark:focus-visible:text-black-7"
         >
           Ver todas as notificações
         </Link>

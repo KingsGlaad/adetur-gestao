@@ -44,7 +44,7 @@ export default function SignIn() {
                 Bem-vindo de volta!
               </h1>
 
-              <p className="w-full max-w-[375px] font-medium text-black-4 dark:text-black-6">
+              <p className="w-full max-w-[375px] font-medium text-black-4 dark:text-black">
                 Para acessar o sistema, por favor, insira suas credenciais de
                 login. Se você ainda não possui uma conta, pode se registrar
                 aqui.

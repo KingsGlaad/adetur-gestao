@@ -35,7 +35,7 @@ export function UserInfo() {
             width={200}
             height={200}
           />
-          <figcaption className="flex items-center gap-1 font-medium text-black dark:text-black-6 max-[1024px]:sr-only">
+          <figcaption className="flex items-center gap-1 font-medium text-black dark:text-black max-[1024px]:sr-only">
             <span>{session?.user?.fullName || "User"}</span>
 
             <ChevronUpIcon
@@ -79,7 +79,7 @@ export function UserInfo() {
 
         <hr className="border-[#E8E8E8] dark:border-dark-3" />
 
-        <div className="p-2 text-base text-[#4B5563] dark:text-black-6 [&>*]:cursor-pointer">
+        <div className="p-2 text-base text-[#4B5563] dark:text-black [&>*]:cursor-pointer">
           <Link
             href={"/profile"}
             onClick={() => setIsOpen(false)}
@@ -105,7 +105,7 @@ export function UserInfo() {
 
         <hr className="border-[#E8E8E8] dark:border-dark-3" />
 
-        <div className="p-2 text-base text-[#4B5563] dark:text-black-6">
+        <div className="p-2 text-base text-[#4B5563] dark:text-black">
           <SignOutButton>
             <Button
               variant="default"
