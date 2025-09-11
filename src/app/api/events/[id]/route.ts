@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 // GET: Lista todos os eventos de um município
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const id = (await params).id;
@@ -23,7 +23,7 @@ export async function GET(
 // PUT: Atualiza um evento existente
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const data = await req.json();

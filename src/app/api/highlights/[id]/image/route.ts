@@ -5,13 +5,14 @@ import { uploadHightlightImages } from "@/lib/uploadHightlightImages";
 // POST: Atualizar a imagem de um destaque
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const id = (await params).id;
     const formData = await request.formData();
     const imageFile = formData.get("file") as File;
     const highlight = await prisma.highlight.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!highlight) {
@@ -31,7 +32,7 @@ export async function POST(
     // Faz o upload da nova imagem
     const imageUrl = await uploadHightlightImages(
       imageFile,
-      params.id,
+      id,
       highlight.title
     );
 

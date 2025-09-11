@@ -8,7 +8,7 @@ const BUCKET_NAME = "adetur-bucket";
 // GET: Busca todas as imagens da galeria de um evento
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const eventId = (await params).id;
@@ -28,7 +28,7 @@ export async function GET(
 // POST: Faz o upload de novas imagens para a galeria do evento
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const event = await prisma.event.findUnique({

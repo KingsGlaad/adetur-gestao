@@ -20,11 +20,12 @@ const highlightUpdateSchema = z.object({
 // GET: Buscar um destaque por ID
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const id = (await params).id;
     const highlight = await prisma.highlight.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         municipality: {
           select: {
@@ -55,9 +56,10 @@ export async function GET(
 // PUT: Atualizar um destaque
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const id = (await params).id;
     const body = await request.json();
     const parsedData = highlightUpdateSchema.safeParse(body);
 
@@ -81,7 +83,7 @@ export async function PUT(
     }
 
     const updatedHighlight = await prisma.highlight.update({
-      where: { id: params.id },
+      where: { id },
       data: { ...finalData },
     });
 
@@ -98,11 +100,12 @@ export async function PUT(
 // DELETE: Deletar um destaque
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const id = (await params).id;
     const highlight = await prisma.highlight.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!highlight) {
@@ -114,7 +117,7 @@ export async function DELETE(
 
     // Deleta o destaque do banco de dados
     await prisma.highlight.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ message: "Destaque removido com sucesso." });
