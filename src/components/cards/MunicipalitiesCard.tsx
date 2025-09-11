@@ -11,7 +11,7 @@ interface MunicipalitiesCardProps {
   municipalities: {
     id: string;
     name: string;
-    slug: string | null;
+    slug: string | null | undefined;
     coatOfArms: string | null;
     description: string | null;
     highlights: {

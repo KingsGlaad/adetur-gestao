@@ -110,7 +110,14 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
               {municipalities.map((municipality) => (
                 <MunicipalitiesCard
                   key={municipality.id}
-                  municipalities={municipality}
+                  municipalities={{
+                    id: municipality.id,
+                    name: municipality.name,
+                    slug: municipality.slug ?? null,
+                    coatOfArms: municipality.coatOfArms ?? null,
+                    description: municipality.description ?? null,
+                    highlights: municipality.highlights ?? [],
+                  }}
                 />
               ))}
             </div>
