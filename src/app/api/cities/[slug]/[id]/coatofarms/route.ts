@@ -7,10 +7,11 @@ const BUCKET_NAME = "adetur-bucket";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const municipalityId = (await params).id;
+    const { id: municipalityId } = await params;
+
     if (!municipalityId) {
       return NextResponse.json(
         { error: "ID do município é obrigatório." },
@@ -102,10 +103,11 @@ export async function POST(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const municipalityId = (await params).id;
+    const { id: municipalityId } = await params;
+
     if (!municipalityId) {
       return NextResponse.json(
         { error: "ID do município é obrigatório." },

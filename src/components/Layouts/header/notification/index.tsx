@@ -48,7 +48,7 @@ export function Notification() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className="grid size-12 place-items-center rounded-full border bg-gray-200 text-black outline-none hover:text-primary focus-visible:border-primary focus-visible:text-primary dark:border-dark-4 dark:bg-dark-3 dark:text-white dark:focus-visible:border-primary"
+        className="grid size-12 place-items-center rounded-full border bg-gray-200 text-black outline-none hover:text-primary focus-visible:border-primary focus-visible:text-primary dark:border-dark-4 dark:bg-black dark:text-white dark:focus-visible:border-primary"
         aria-label="View Notifications"
       >
         <span className="relative">

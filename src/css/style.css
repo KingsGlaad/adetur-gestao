@@ -32,7 +32,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply relative flex-1 rounded-full bg-neutral-200/40 dark:bg-dark-3;
+    @apply relative flex-1 rounded-full bg-neutral-200/40 dark:bg-black;
   }
 
   .chat-height {
@@ -442,7 +442,7 @@ span.flatpickr-weekday,
 }
 
 .rangeSliderCommon .noUi-connects {
-  @apply h-1.5 rounded-full bg-stroke dark:bg-dark-3;
+  @apply h-1.5 rounded-full bg-stroke dark:bg-black;
 }
 
 .rangeSliderCommon .noUi-connect {
