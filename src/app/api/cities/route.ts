@@ -10,6 +10,10 @@ export async function GET() {
             title: true,
           },
         },
+        events: { select: { title: true } },
+        images: {
+          select: { url: true },
+        },
       },
       orderBy: {
         name: "asc",
@@ -41,7 +45,7 @@ async function fetchIbgeCode(municipalityName: string): Promise<string | null> {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
   const data = await req.json();
 
   // Busca automaticamente o código do IBGE com base no nome do município
@@ -62,4 +66,35 @@ export async function POST(req: NextRequest) {
   });
 
   return NextResponse.json(municipio);
+}
+export async function POST(req: NextRequest) {
+  try {
+    const name = req.nextUrl.searchParams.get("name");
+
+    if (!name) {
+      return NextResponse.json(
+        { error: "Parâmetro 'name' é obrigatório." },
+        { status: 400 }
+      );
+    }
+
+    const existingMunicipality = await prisma.municipality.findUnique({
+      where: { slug: name }, // se o slug for diferente de name, troque aqui
+    });
+
+    if (!existingMunicipality) {
+      return NextResponse.json(
+        { error: "Município não encontrado." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(existingMunicipality);
+  } catch (error) {
+    console.error("Erro ao buscar município:", error);
+    return NextResponse.json(
+      { error: "Erro ao buscar município." },
+      { status: 500 }
+    );
+  }
 }

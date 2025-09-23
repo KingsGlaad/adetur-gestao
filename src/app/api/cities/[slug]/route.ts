@@ -51,3 +51,31 @@ export async function PUT(
 
   return NextResponse.json(municipio);
 }
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  try {
+    const slug = (await params).slug;
+
+    const municipio = await prisma.municipality.findUnique({
+      where: { slug },
+      include: { highlights: true, images: true },
+    });
+    if (!municipio) {
+      return NextResponse.json(
+        { error: "Município não encontrado." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(municipio);
+  } catch (error) {
+    console.error("Erro ao buscar município:", error);
+    return NextResponse.json(
+      { error: "Erro ao buscar município." },
+      { status: 500 }
+    );
+  }
+}
