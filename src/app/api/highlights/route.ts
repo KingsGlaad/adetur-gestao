@@ -6,7 +6,9 @@ import { z } from "zod";
 
 const highlightSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
-  description: z.string().min(1, "A descrição é obrigatória."),
+  description: z.string().optional(),
+  latitude: z.coerce.number().optional(),
+  longitude: z.coerce.number().optional(),
   municipalityId: z.string().min(1, "O município é obrigatório."),
 });
 
@@ -57,6 +59,8 @@ export async function POST(req: NextRequest) {
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
+    const latitude = formData.get("latitude") as string | null;
+    const longitude = formData.get("longitude") as string | null;
     const municipalityId = formData.get("municipalityId") as string;
     const files = formData.getAll("images") as File[];
 
@@ -64,6 +68,8 @@ export async function POST(req: NextRequest) {
     const parsedData = highlightSchema.safeParse({
       title,
       description,
+      latitude: latitude,
+      longitude: longitude,
       municipalityId,
     });
 
@@ -78,6 +84,8 @@ export async function POST(req: NextRequest) {
       data: {
         title,
         description,
+        latitude: latitude ? parseFloat(latitude) : null,
+        longitude: longitude ? parseFloat(longitude) : null,
         municipalityId,
       },
     });

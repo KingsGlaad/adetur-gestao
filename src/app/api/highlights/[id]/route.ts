@@ -52,6 +52,8 @@ export async function PUT(
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
+    const latitude = formData.get("latitude") as string | null;
+    const longitude = formData.get("longitude") as string | null;
     const municipalityId = formData.get("municipalityId") as string;
     const files = formData.getAll("images") as File[];
     const imagesToDeleteRaw = formData.get("imagesToDelete") as string | null;
@@ -128,6 +130,8 @@ export async function PUT(
       data: {
         title,
         description,
+        latitude: latitude ? parseFloat(latitude) : null,
+        longitude: longitude ? parseFloat(longitude) : null,
         municipalityId,
       },
     });

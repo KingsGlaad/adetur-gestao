@@ -32,6 +32,8 @@ import { Highlight } from "@/types/highligth";
 const highlightSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
   description: z.string().optional(),
+  latitude: z.coerce.number().optional(),
+  longitude: z.coerce.number().optional(),
   municipalityId: z.string().min(1, "Selecione um município."),
 });
 
@@ -60,6 +62,7 @@ export function HighlightFormDialog({
   const [existingImages, setExistingImages] = useState<
     { id: string; url: string }[]
   >([]);
+  const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -83,6 +86,8 @@ export function HighlightFormDialog({
     defaultValues: {
       title: initialData?.title || "",
       description: initialData?.description || "",
+      latitude: initialData?.latitude || undefined,
+      longitude: initialData?.longitude || undefined,
       municipalityId: initialData?.municipalityId || "",
     },
   });
@@ -96,6 +101,8 @@ export function HighlightFormDialog({
       reset({
         title: initialData.title,
         description: initialData.description ?? "",
+        latitude: initialData.latitude ?? undefined,
+        longitude: initialData.longitude ?? undefined,
         municipalityId: initialData.municipalityId,
       });
       setExistingImages(
@@ -105,22 +112,27 @@ export function HighlightFormDialog({
         }))
       );
     } else {
-      reset({ title: "", description: "", municipalityId: "" });
+      reset({
+        title: "",
+        description: "",
+        latitude: undefined,
+        longitude: undefined,
+        municipalityId: "",
+      });
       setExistingImages([]);
     }
     setImageFiles([]);
     setImagesToDelete([]);
+    setNewImagePreviews([]);
   }, [initialData, reset, isOpen]);
 
   // Efeito para limpar as URLs de objeto e evitar vazamento de memória
   useEffect(() => {
-    const newImageUrls = imageFiles.map((file) => URL.createObjectURL(file));
-
-    // Função de limpeza que será chamada quando o componente for desmontado ou as dependências mudarem
+    // Função de limpeza que será chamada quando o dialog for fechado (unmount)
     return () => {
-      newImageUrls.forEach((url) => URL.revokeObjectURL(url));
+      newImagePreviews.forEach((url) => URL.revokeObjectURL(url));
     };
-  }, [imageFiles]);
+  }, [newImagePreviews]);
 
   const onSubmit = async (data: HighlightFormValues) => {
     const totalImages = existingImages.length + imageFiles.length;
@@ -140,6 +152,12 @@ export function HighlightFormDialog({
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("description", data.description || "");
+      if (data.latitude !== undefined) {
+        formData.append("latitude", String(data.latitude));
+      }
+      if (data.longitude !== undefined) {
+        formData.append("longitude", String(data.longitude));
+      }
       formData.append("municipalityId", data.municipalityId);
       imageFiles.forEach((file) => {
         formData.append("images", file);
@@ -175,7 +193,10 @@ export function HighlightFormDialog({
         return;
       }
       const fileArray = Array.from(files);
-      setImageFiles((prev) => [...prev, ...fileArray]);
+      const newPreviews = fileArray.map((file) => URL.createObjectURL(file));
+
+      setImageFiles((prevFiles) => [...prevFiles, ...fileArray]);
+      setNewImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
     }
   };
 
@@ -188,9 +209,9 @@ export function HighlightFormDialog({
     setImagesToDelete((prev) => [...prev, image.id]);
   };
 
-  const imagePreviews = {
+  const allImagePreviews = {
     existing: existingImages,
-    new: imageFiles.map((file) => URL.createObjectURL(file)),
+    new: newImagePreviews,
   };
 
   if (!isMounted) return null;
@@ -212,7 +233,7 @@ export function HighlightFormDialog({
               disabled={existingImages.length + imageFiles.length >= 5}
             />
             <div className="flex flex-wrap gap-4">
-              {imagePreviews.existing.map((image) => (
+              {allImagePreviews.existing.map((image) => (
                 <div key={image.id} className="relative">
                   <Image
                     src={image.url}
@@ -232,7 +253,7 @@ export function HighlightFormDialog({
                   </Button>
                 </div>
               ))}
-              {imagePreviews.new.map((src, index) => (
+              {allImagePreviews.new.map((src, index) => (
                 <div key={index} className="relative">
                   <Image
                     src={src}
@@ -291,6 +312,27 @@ export function HighlightFormDialog({
                 {errors.municipalityId.message}
               </p>
             )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <Label>Latitude</Label>
+            <Input
+              type="number"
+              step="any"
+              {...register("latitude")}
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label>Longitude</Label>
+            <Input
+              type="number"
+              step="any"
+              {...register("longitude")}
+              className="mt-1"
+            />
           </div>
         </div>
 
