@@ -1,10 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
-import path from "path";
+import sharp from "sharp";
 
 const BUCKET_NAME = "adetur-bucket";
 
+/**
+ * Sanitiza o nome do município para gerar nomes de arquivos seguros
+ */
+function sanitizeMunicipalityName(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // remove acentos
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
+
+/**
+ * POST - Upload de brasão (substitui se já existir)
+ */
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -40,6 +55,7 @@ export async function POST(
       );
     }
 
+    // 🔥 Se já existe brasão, remove antes de subir o novo
     if (municipality.coatOfArms) {
       try {
         const urlParts = municipality.coatOfArms.split(
@@ -50,27 +66,29 @@ export async function POST(
           await supabase.storage.from(BUCKET_NAME).remove([oldFilePath]);
         }
       } catch (deleteError) {
-        console.error(
-          "Erro ao remover o brasão antigo (pode não existir):",
-          deleteError
-        );
+        console.error("Erro ao remover o brasão antigo:", deleteError);
       }
     }
 
-    const sanitizedName = municipality.name
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9-]/g, "");
+    // Converte para buffer
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-    const fileExtension = path.extname(file.name);
-    const fileName = `${sanitizedName}-coat-of-arms${fileExtension}`;
+    // 🔥 Converte/comprime para WebP mais leve
+    const compressedBuffer = await sharp(buffer)
+      .resize({ width: 800 }) // limita a largura (ajustável)
+      .webp({ quality: 80 }) // qualidade entre 0-100
+      .toBuffer();
+
+    const sanitizedName = sanitizeMunicipalityName(municipality.name);
+    const fileName = `${sanitizedName}-coat-of-arms.webp`;
     const filePath = `cities/${municipalityId}/${fileName}`;
 
+    // Faz upload no Supabase Storage
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from(BUCKET_NAME)
-      .upload(filePath, file, {
+      .upload(filePath, compressedBuffer, {
+        contentType: "image/webp",
         upsert: false,
       });
 
@@ -83,6 +101,7 @@ export async function POST(
       .from(BUCKET_NAME)
       .getPublicUrl(uploadData.path);
 
+    // Atualiza município no banco
     const updatedMunicipality = await prisma.municipality.update({
       where: { id: municipalityId },
       data: {
@@ -101,6 +120,9 @@ export async function POST(
   }
 }
 
+/**
+ * DELETE - Remove brasão existente
+ */
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }

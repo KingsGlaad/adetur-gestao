@@ -1,16 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
-import path from "path";
+import sharp from "sharp";
 
 const BUCKET_NAME = "adetur-bucket";
 
+/**
+ * Sanitiza nomes de arquivos, removendo acentos, caracteres especiais
+ * e garantindo que a extensão original seja preservada.
+ */
+function sanitizeFileName(fileName: string): string {
+  const extension = fileName.split(".").pop() || "";
+  const baseName = fileName.replace(/\.[^/.]+$/, "");
+
+  const sanitizedBase = baseName
+    .normalize("NFD") // separa acentos
+    .replace(/[\u0300-\u036f]/g, "") // remove acentos
+    .replace(/[^a-zA-Z0-9\-_]/g, "-") // só letras, números, "-" e "_"
+    .replace(/-+/g, "-") // evita múltiplos "-"
+    .replace(/^-|-$/g, "") // remove "-" no início/fim
+    .toLowerCase();
+
+  return extension
+    ? `${sanitizedBase}.${extension.toLowerCase()}`
+    : sanitizedBase;
+}
+
+/**
+ * GET - Lista imagens de um município
+ */
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const municipalityId = (await params).id;
+
     const images = await prisma.municipalityImage.findMany({
       where: { municipalityId },
       orderBy: { createdAt: "asc" },
@@ -26,6 +51,10 @@ export async function GET(
   }
 }
 
+/**
+ * POST - Upload de imagens para a galeria de um município
+ */
+
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -37,19 +66,33 @@ export async function POST(
 
     if (!files.length) {
       return NextResponse.json(
-        { error: "Nenhum ficheiro enviado." },
+        { error: "Nenhum arquivo enviado." },
         { status: 400 }
       );
     }
 
     const uploadResults = await Promise.all(
       files.map(async (file) => {
-        const sanitizedFileName = file.name.toLowerCase().replace(/\s+/g, "-");
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        // 🔥 Converte e comprime a imagem para WebP
+        const compressedBuffer = await sharp(buffer)
+          .resize({ width: 1600 }) // opcional: limita a largura
+          .webp({ quality: 80 }) // qualidade entre 0-100
+          .toBuffer();
+
+        const sanitizedFileName = sanitizeFileName(file.name).replace(
+          /\.[^/.]+$/,
+          ".webp"
+        );
         const filePath = `cities/${municipalityId}/gallery/${Date.now()}-${sanitizedFileName}`;
 
         const { error: uploadError } = await supabase.storage
           .from(BUCKET_NAME)
-          .upload(filePath, file);
+          .upload(filePath, compressedBuffer, {
+            contentType: "image/webp",
+          });
 
         if (uploadError) throw uploadError;
 
@@ -76,9 +119,13 @@ export async function POST(
   }
 }
 
+/**
+ * DELETE - Remove imagem do Supabase Storage e do banco
+ */
 export async function DELETE(req: NextRequest) {
   try {
     const { imageId } = await req.json();
+
     if (!imageId) {
       return NextResponse.json(
         { error: "ID da imagem é obrigatório." },
@@ -91,7 +138,6 @@ export async function DELETE(req: NextRequest) {
     });
 
     if (!image) {
-      // Se não estiver na base de dados, não há nada a fazer
       return NextResponse.json({ message: "Imagem já removida." });
     }
 

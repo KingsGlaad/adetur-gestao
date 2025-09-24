@@ -8,6 +8,7 @@ export async function GET() {
         highlights: {
           select: {
             title: true,
+            galleryImages: { select: { url: true } },
           },
         },
         events: { select: { title: true } },
