@@ -44,10 +44,10 @@ export async function GET(
 // PUT: Atualizar um destaque
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const id = (await params).id;
     const formData = await req.formData();
 
     const title = formData.get("title") as string;

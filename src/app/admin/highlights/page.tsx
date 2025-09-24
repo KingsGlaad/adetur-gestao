@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { columns } from "./_components/tables/columns";
 import { DataTable } from "./_components/tables/data-table";
 import axios from "axios";
@@ -47,6 +47,11 @@ export default function HighlightsPage() {
     Promise.all([fetchHighlights(), fetchMunicipalities()]);
   }, []);
 
+  const memoizedColumns = useMemo(
+    () => columns(fetchHighlights, municipalities),
+    [municipalities]
+  );
+
   if (loading) {
     return <div className="flex-1 space-y-4 p-8 pt-6">Carregando...</div>;
   }
@@ -57,7 +62,7 @@ export default function HighlightsPage() {
         <h2 className="text-3xl font-bold tracking-tight">Destaques</h2>
       </div>
       <DataTable
-        columns={columns(fetchHighlights, municipalities)}
+        columns={memoizedColumns}
         data={highlights}
         municipalities={municipalities}
         onUpdate={fetchHighlights}

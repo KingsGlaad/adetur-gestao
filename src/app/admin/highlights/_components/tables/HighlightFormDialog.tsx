@@ -31,7 +31,7 @@ import { Highlight } from "@/types/highligth";
 
 const highlightSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
-  description: z.string().min(1, "A descrição é obrigatória."),
+  description: z.string().optional(),
   municipalityId: z.string().min(1, "Selecione um município."),
 });
 
@@ -112,6 +112,16 @@ export function HighlightFormDialog({
     setImagesToDelete([]);
   }, [initialData, reset, isOpen]);
 
+  // Efeito para limpar as URLs de objeto e evitar vazamento de memória
+  useEffect(() => {
+    const newImageUrls = imageFiles.map((file) => URL.createObjectURL(file));
+
+    // Função de limpeza que será chamada quando o componente for desmontado ou as dependências mudarem
+    return () => {
+      newImageUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [imageFiles]);
+
   const onSubmit = async (data: HighlightFormValues) => {
     const totalImages = existingImages.length + imageFiles.length;
     if (totalImages === 0) {
@@ -180,11 +190,7 @@ export function HighlightFormDialog({
 
   const imagePreviews = {
     existing: existingImages,
-    new: imageFiles.map((file) => {
-      // Cuidado: createObjectURL pode causar memory leaks se não for revogado.
-      // Para este caso de uso de curta duração (dialog), é aceitável.
-      return URL.createObjectURL(file);
-    }),
+    new: imageFiles.map((file) => URL.createObjectURL(file)),
   };
 
   if (!isMounted) return null;

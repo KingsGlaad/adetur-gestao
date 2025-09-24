@@ -1,6 +1,3 @@
-import { Highlight as PrismaHighlight } from "@/generated";
-
-import { Municipality } from "@/generated";
 import { z } from "zod";
 
 export interface Highlight {
