@@ -158,12 +158,6 @@ export async function DELETE(
       );
     }
 
-    // Remove imagem do Supabase se existir
-    if (highlight.image) {
-      const filePath = highlight.image.split(`${BUCKET_NAME}/`)[1];
-      await supabase.storage.from(BUCKET_NAME).remove([filePath]);
-    }
-
     await prisma.highlight.delete({ where: { id } });
 
     return NextResponse.json({ message: "Destaque excluído com sucesso." });

@@ -1,11 +1,9 @@
-import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import prismaRandom from "prisma-extension-random";
+import { prismaRandomInstance as rand } from "@/lib/prisma";
 
 // GET: Buscar todos os destaques
 export async function GET() {
   try {
-    const rand = prisma.$extends(prismaRandom());
     const highlights = await rand.highlight.findManyRandom(5, {
       select: {
         id: true,
