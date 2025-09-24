@@ -1,10 +1,21 @@
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { prismaRandomInstance as rand } from "@/lib/prisma";
 
 // GET: Buscar todos os destaques
 export async function GET() {
   try {
-    const highlights = await rand.highlight.findManyRandom(5, {
+    const count = await prisma.highlight.count();
+    if (count === 0) {
+      return NextResponse.json(
+        { message: "Nenhum destaque encontrado." },
+        { status: 200 }
+      );
+    }
+    const randomIndex = Math.floor(Math.random() * count);
+
+    const highlights = await prisma.highlight.findMany({
+      skip: randomIndex,
+      take: 5,
       select: {
         id: true,
         title: true,
