@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import path from "path";
 import { supabase } from "@/lib/supabase";
+import sharp from "sharp";
 
 // GET: Lista todos os eventos de um município
 export async function GET(req: NextRequest) {
@@ -20,6 +20,18 @@ export async function GET(req: NextRequest) {
 
 const BUCKET_NAME = "adetur-bucket";
 
+/**
+ * Sanitiza o título para gerar nomes de arquivos seguros
+ */
+function sanitizeTitle(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // remove acentos
+    .toLowerCase()
+    .replace(/\s+/g, "-") // substitui espaços por hífens
+    .replace(/[^a-z0-9-]/g, ""); // remove caracteres não alfanuméricos (exceto hífen)
+}
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -28,7 +40,7 @@ export async function POST(req: NextRequest) {
     const description = formData.get("description") as string;
     const date = formData.get("date") as string;
     const municipalityId = formData.get("municipalitie") as string;
-    const file = formData.get("file") as File | null;
+    const file = formData.get("image") as File | null;
 
     // Cria o evento no banco
     const newEvent = await prisma.event.create({
@@ -44,14 +56,25 @@ export async function POST(req: NextRequest) {
 
     // Se houver arquivo, faz upload
     if (file) {
-      const sanitizedTitle = title.toLowerCase().replace(/\s+/g, "-");
-      const filePath = `cities/${municipalityId}/events/${
-        newEvent.id
-      }/${sanitizedTitle}${path.extname(file.name)}`;
+      // Converte para buffer e otimiza a imagem
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      const compressedBuffer = await sharp(buffer)
+        .resize({ width: 1200, withoutEnlargement: true }) // Redimensiona se for maior que 1200px
+        .webp({ quality: 80 }) // Converte para WebP com 80% de qualidade
+        .toBuffer();
+
+      const sanitizedTitle = sanitizeTitle(title);
+      const fileName = `${sanitizedTitle}.webp`;
+      const filePath = `cities/${municipalityId}/events/${newEvent.id}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from(BUCKET_NAME)
-        .upload(filePath, file, { upsert: true });
+        .upload(filePath, compressedBuffer, {
+          contentType: "image/webp",
+          upsert: true,
+        });
 
       if (uploadError) {
         return NextResponse.json(

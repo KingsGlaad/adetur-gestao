@@ -7,16 +7,13 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, Loader2, Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { toast } from "sonner";
 import Image from "next/image";
 
@@ -24,30 +21,29 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
 
 import { Municipality } from "@/types/municipality";
 
 const eventSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
   description: z.string().min(1, "A descrição é obrigatória."),
-  date: z.date({ message: "A data é obrigatória." }),
+  date: z
+    .string()
+    .min(1, "A data é obrigatória.")
+    .refine((val) => /^\d{2}\/\d{2}\/\d{4}$/.test(val), {
+      message: "Data inválida. Use o formato DD/MM/AAAA.",
+    }),
   municipalitie: z.string().min(1, "Selecione um município."),
 });
 
-type EventFormValues = z.infer<typeof eventSchema>;
+// Usamos z.input para obter os tipos antes da transformação do Zod
+type EventFormValues = z.input<typeof eventSchema>;
 
 export function CreateEventDialog() {
   const [open, setOpen] = useState(false);
@@ -67,7 +63,7 @@ export function CreateEventDialog() {
     defaultValues: {
       title: "",
       description: "",
-      date: undefined,
+      date: "",
       municipalitie: "",
     },
   });
@@ -81,32 +77,71 @@ export function CreateEventDialog() {
 
   const onSubmit: SubmitHandler<EventFormValues> = async (data) => {
     setIsSubmitting(true);
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("municipalitie", data.municipalitie);
-    formData.append("date", data.date.toISOString());
-    if (imageFile) formData.append("image", imageFile);
-
     try {
-      await axios.post("/api/events", formData);
+      // Validamos os dados com o Zod
+      const validatedData = eventSchema.parse(data);
+
+      // Transformamos a data para Date aqui
+      const [day, month, year] = validatedData.date.split("/").map(Number);
+      const dateObj = new Date(year, month - 1, day);
+
+      const formData = new FormData();
+      formData.append("title", validatedData.title);
+      formData.append("description", validatedData.description);
+      formData.append("municipalitie", validatedData.municipalitie);
+      formData.append("date", dateObj.toISOString());
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
+      await axios.post("/api/events", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       toast.success("Evento criado com sucesso!");
       setOpen(false);
       reset();
       setImageFile(null);
       setImagePreview(null);
-    } catch {
-      toast.error("Erro ao criar evento.");
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Erros de validação já são mostrados pelo react-hook-form
+        console.error("Erros de validação:", error.issues);
+      } else {
+        toast.error("Erro ao criar evento.");
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // Função para lidar com a mudança de imagem
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  // Função para formatar a data enquanto o usuário digita
+  const handleDateChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: { onChange: (value: string) => void }
+  ) => {
+    const value = e.target.value.replace(/\D/g, ""); // Remove não-dígitos
+    let formattedValue = value;
+
+    if (value.length > 2) {
+      formattedValue = `${value.slice(0, 2)}/${value.slice(2, 4)}`;
+    }
+    if (value.length > 4) {
+      formattedValue = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(
+        4,
+        8
+      )}`;
+    }
+
+    field.onChange(formattedValue);
   };
 
   return (
@@ -126,7 +161,7 @@ export function CreateEventDialog() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Imagem de Capa */}
           <div>
-            <Label>Imagem de Capa</Label>
+            <Label className="gap-0.5">Imagem de Capa</Label>
             <div className="mt-2 flex items-center gap-4 p-4 border rounded-lg">
               <Image
                 src={imagePreview || "/images/no-image.jpeg"}
@@ -147,7 +182,7 @@ export function CreateEventDialog() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <Label>Nome do Evento</Label>
-              <Input {...register("title")} />
+              <Input {...register("title")} className="mt-1" />
               {errors.title && (
                 <p className="text-sm text-red-500 mt-1">
                   {errors.title.message}
@@ -161,7 +196,7 @@ export function CreateEventDialog() {
                 name="municipalitie"
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full mt-1">
                       <SelectValue placeholder="Selecione um município" />
                     </SelectTrigger>
                     <SelectContent>
@@ -184,7 +219,7 @@ export function CreateEventDialog() {
 
           <div>
             <Label>Descrição</Label>
-            <Textarea {...register("description")} />
+            <Textarea {...register("description")} className="mt-1" />
             {errors.description && (
               <p className="text-sm text-red-500 mt-1">
                 {errors.description.message}
@@ -193,38 +228,17 @@ export function CreateEventDialog() {
           </div>
 
           <div>
-            <Label>Data do Evento</Label>
+            <Label>Data do Evento (DD/MM/AAAA)</Label>
             <Controller
               control={control}
               name="date"
               render={({ field }) => (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal mt-1",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {field.value ? (
-                        format(field.value, "PPP", { locale: ptBR })
-                      ) : (
-                        <span>Escolha uma data</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      locale={ptBR}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                <Input
+                  {...field}
+                  className="mt-1"
+                  onChange={(e) => handleDateChange(e, field)}
+                  placeholder="Ex: 25/12/2024"
+                />
               )}
             />
             {errors.date && (
@@ -243,8 +257,6 @@ export function CreateEventDialog() {
             )}
           </Button>
         </form>
-
-        <DialogFooter />
       </DialogContent>
     </Dialog>
   );
