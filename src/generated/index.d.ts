@@ -5452,6 +5452,7 @@ export namespace Prisma {
     title: string | null
     description: string | null
     latitude: number | null
+    image: string | null
     longitude: number | null
     municipalityId: string | null
     createdAt: Date | null
@@ -5462,6 +5463,7 @@ export namespace Prisma {
     title: string | null
     description: string | null
     latitude: number | null
+    image: string | null
     longitude: number | null
     municipalityId: string | null
     createdAt: Date | null
@@ -5472,6 +5474,7 @@ export namespace Prisma {
     title: number
     description: number
     latitude: number
+    image: number
     longitude: number
     municipalityId: number
     createdAt: number
@@ -5494,6 +5497,7 @@ export namespace Prisma {
     title?: true
     description?: true
     latitude?: true
+    image?: true
     longitude?: true
     municipalityId?: true
     createdAt?: true
@@ -5504,6 +5508,7 @@ export namespace Prisma {
     title?: true
     description?: true
     latitude?: true
+    image?: true
     longitude?: true
     municipalityId?: true
     createdAt?: true
@@ -5514,6 +5519,7 @@ export namespace Prisma {
     title?: true
     description?: true
     latitude?: true
+    image?: true
     longitude?: true
     municipalityId?: true
     createdAt?: true
@@ -5611,6 +5617,7 @@ export namespace Prisma {
     title: string
     description: string | null
     latitude: number | null
+    image: string | null
     longitude: number | null
     municipalityId: string
     createdAt: Date
@@ -5640,6 +5647,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     latitude?: boolean
+    image?: boolean
     longitude?: boolean
     municipalityId?: boolean
     createdAt?: boolean
@@ -5653,6 +5661,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     latitude?: boolean
+    image?: boolean
     longitude?: boolean
     municipalityId?: boolean
     createdAt?: boolean
@@ -5664,6 +5673,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     latitude?: boolean
+    image?: boolean
     longitude?: boolean
     municipalityId?: boolean
     createdAt?: boolean
@@ -5675,12 +5685,13 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     latitude?: boolean
+    image?: boolean
     longitude?: boolean
     municipalityId?: boolean
     createdAt?: boolean
   }
 
-  export type HighlightOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "latitude" | "longitude" | "municipalityId" | "createdAt", ExtArgs["result"]["highlight"]>
+  export type HighlightOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "latitude" | "image" | "longitude" | "municipalityId" | "createdAt", ExtArgs["result"]["highlight"]>
   export type HighlightInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     galleryImages?: boolean | Highlight$galleryImagesArgs<ExtArgs>
     municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
@@ -5704,6 +5715,7 @@ export namespace Prisma {
       title: string
       description: string | null
       latitude: number | null
+      image: string | null
       longitude: number | null
       municipalityId: string
       createdAt: Date
@@ -6136,6 +6148,7 @@ export namespace Prisma {
     readonly title: FieldRef<"Highlight", 'String'>
     readonly description: FieldRef<"Highlight", 'String'>
     readonly latitude: FieldRef<"Highlight", 'Float'>
+    readonly image: FieldRef<"Highlight", 'String'>
     readonly longitude: FieldRef<"Highlight", 'Float'>
     readonly municipalityId: FieldRef<"Highlight", 'String'>
     readonly createdAt: FieldRef<"Highlight", 'DateTime'>
@@ -13183,6 +13196,7 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     latitude: 'latitude',
+    image: 'image',
     longitude: 'longitude',
     municipalityId: 'municipalityId',
     createdAt: 'createdAt'
@@ -13613,6 +13627,7 @@ export namespace Prisma {
     title?: StringFilter<"Highlight"> | string
     description?: StringNullableFilter<"Highlight"> | string | null
     latitude?: FloatNullableFilter<"Highlight"> | number | null
+    image?: StringNullableFilter<"Highlight"> | string | null
     longitude?: FloatNullableFilter<"Highlight"> | number | null
     municipalityId?: StringFilter<"Highlight"> | string
     createdAt?: DateTimeFilter<"Highlight"> | Date | string
@@ -13625,6 +13640,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     latitude?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
@@ -13640,6 +13656,7 @@ export namespace Prisma {
     title?: StringFilter<"Highlight"> | string
     description?: StringNullableFilter<"Highlight"> | string | null
     latitude?: FloatNullableFilter<"Highlight"> | number | null
+    image?: StringNullableFilter<"Highlight"> | string | null
     longitude?: FloatNullableFilter<"Highlight"> | number | null
     municipalityId?: StringFilter<"Highlight"> | string
     createdAt?: DateTimeFilter<"Highlight"> | Date | string
@@ -13652,6 +13669,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     latitude?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
@@ -13670,6 +13688,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Highlight"> | string
     description?: StringNullableWithAggregatesFilter<"Highlight"> | string | null
     latitude?: FloatNullableWithAggregatesFilter<"Highlight"> | number | null
+    image?: StringNullableWithAggregatesFilter<"Highlight"> | string | null
     longitude?: FloatNullableWithAggregatesFilter<"Highlight"> | number | null
     municipalityId?: StringWithAggregatesFilter<"Highlight"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Highlight"> | Date | string
@@ -14349,6 +14368,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     latitude?: number | null
+    image?: string | null
     longitude?: number | null
     createdAt?: Date | string
     galleryImages?: HighlightImageCreateNestedManyWithoutHighlightInput
@@ -14360,6 +14380,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     latitude?: number | null
+    image?: string | null
     longitude?: number | null
     municipalityId: string
     createdAt?: Date | string
@@ -14371,6 +14392,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     galleryImages?: HighlightImageUpdateManyWithoutHighlightNestedInput
@@ -14382,6 +14404,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     municipalityId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14393,6 +14416,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     latitude?: number | null
+    image?: string | null
     longitude?: number | null
     municipalityId: string
     createdAt?: Date | string
@@ -14403,6 +14427,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14412,6 +14437,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     municipalityId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15200,6 +15226,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     latitude?: SortOrder
+    image?: SortOrder
     longitude?: SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
@@ -15215,6 +15242,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     latitude?: SortOrder
+    image?: SortOrder
     longitude?: SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
@@ -15225,6 +15253,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     latitude?: SortOrder
+    image?: SortOrder
     longitude?: SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
@@ -16372,6 +16401,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     latitude?: number | null
+    image?: string | null
     longitude?: number | null
     createdAt?: Date | string
     galleryImages?: HighlightImageCreateNestedManyWithoutHighlightInput
@@ -16382,6 +16412,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     latitude?: number | null
+    image?: string | null
     longitude?: number | null
     createdAt?: Date | string
     galleryImages?: HighlightImageUncheckedCreateNestedManyWithoutHighlightInput
@@ -16571,6 +16602,7 @@ export namespace Prisma {
     title?: StringFilter<"Highlight"> | string
     description?: StringNullableFilter<"Highlight"> | string | null
     latitude?: FloatNullableFilter<"Highlight"> | number | null
+    image?: StringNullableFilter<"Highlight"> | string | null
     longitude?: FloatNullableFilter<"Highlight"> | number | null
     municipalityId?: StringFilter<"Highlight"> | string
     createdAt?: DateTimeFilter<"Highlight"> | Date | string
@@ -16934,6 +16966,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     latitude?: number | null
+    image?: string | null
     longitude?: number | null
     createdAt?: Date | string
     municipality: MunicipalityCreateNestedOneWithoutHighlightsInput
@@ -16944,6 +16977,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     latitude?: number | null
+    image?: string | null
     longitude?: number | null
     municipalityId: string
     createdAt?: Date | string
@@ -16970,6 +17004,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     municipality?: MunicipalityUpdateOneRequiredWithoutHighlightsNestedInput
@@ -16980,6 +17015,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     municipalityId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17497,6 +17533,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     latitude?: number | null
+    image?: string | null
     longitude?: number | null
     createdAt?: Date | string
   }
@@ -17582,6 +17619,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     galleryImages?: HighlightImageUpdateManyWithoutHighlightNestedInput
@@ -17592,6 +17630,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     galleryImages?: HighlightImageUncheckedUpdateManyWithoutHighlightNestedInput
@@ -17602,6 +17641,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

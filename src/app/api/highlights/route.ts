@@ -1,22 +1,25 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { uploadHightlightImages } from "@/lib/uploadHightlightImages";
+import { supabase } from "@/lib/supabase";
+import sharp from "sharp";
 import { z } from "zod";
 
 const highlightSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
   description: z.string().min(1, "A descrição é obrigatória."),
-  link: z
-    .string()
-    .url("O link deve ser uma URL válida.")
-    .optional()
-    .or(z.literal("")),
-  municipalityId: z.string().optional().or(z.literal("")),
-  publishedAt: z
-    .string()
-    .refine((val) => !isNaN(new Date(val).getTime()), "Data inválida."),
+  municipalityId: z.string().min(1, "O município é obrigatório."),
 });
+
+const BUCKET_NAME = "adetur-bucket";
+
+function sanitizeTitle(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
 
 // GET: Buscar todos os destaques
 export async function GET() {
@@ -29,6 +32,7 @@ export async function GET() {
         municipality: {
           select: {
             name: true,
+            id: true,
           },
         },
       },
@@ -45,74 +49,83 @@ export async function GET() {
 }
 
 // POST: Criar um novo destaque
-{
-  /** 
-export async function POST(request: Request) {
+
+export async function POST(req: NextRequest) {
   try {
-    const formData = await request.formData();
+    const formData = await req.formData();
+
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    const link = formData.get("link") as string;
-    const municipalityId = formData.get("municipality") as string;
-    const publishedAtStr = formData.get("publishedAt") as string;
-    const imageFile = formData.get("image") as File;
-
-    const publishedAt = new Date(publishedAtStr);
+    const municipalityId = formData.get("municipalityId") as string;
+    const files = formData.getAll("images") as File[];
 
     // Validação
     const parsedData = highlightSchema.safeParse({
       title,
       description,
-      link,
       municipalityId,
-      publishedAt: publishedAtStr,
     });
 
     if (!parsedData.success) {
       return NextResponse.json(
-        {
-          message: "Dados de entrada inválidos.",
-          errors: parsedData.error.flatten(),
-        },
+        { message: "Dados inválidos", errors: parsedData.error.flatten() },
         { status: 400 }
       );
     }
 
-    if (!imageFile) {
-      return NextResponse.json(
-        { message: "A imagem é obrigatória." },
-        { status: 400 }
-      );
-    }
-
-    // Cria o destaque no banco de dados primeiro
     const newHighlight = await prisma.highlight.create({
       data: {
         title,
         description,
-        municipality: municipalityId
-          ? { connect: { id: municipalityId } }
-          : undefined,
+        municipalityId,
       },
     });
 
-    // Faz o upload da imagem para o Supabase
-    const imageUrl = await uploadHightlightImages(
-      imageFile,
-      newHighlight.id,
-      title
-    );
+    const imageUrls: string[] = [];
 
-    if (!imageUrl) {
-      await prisma.highlight.delete({ where: { id: newHighlight.id } });
-      return NextResponse.json(
-        { message: "Erro ao fazer upload da imagem." },
-        { status: 500 }
-      );
+    if (files.length > 0) {
+      for (const file of files) {
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        const compressedBuffer = await sharp(buffer)
+          .resize({ width: 1200, withoutEnlargement: true })
+          .webp({ quality: 80 })
+          .toBuffer();
+
+        const sanitizedTitle = sanitizeTitle(file.name.split(".")[0]);
+        const fileName = `${Date.now()}-${sanitizedTitle}.webp`;
+        const filePath = `cities/${municipalityId}/highlights/${newHighlight.id}/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from(BUCKET_NAME)
+          .upload(filePath, compressedBuffer, {
+            contentType: "image/webp",
+            upsert: true,
+          });
+
+        if (uploadError)
+          throw new Error(
+            `Erro no upload para Supabase: ${uploadError.message}`
+          );
+
+        const { data: publicUrlData } = supabase.storage
+          .from(BUCKET_NAME)
+          .getPublicUrl(filePath);
+
+        imageUrls.push(publicUrlData.publicUrl);
+      }
+
+      await prisma.highlightImage.createMany({
+        data: imageUrls.map((url) => ({
+          url,
+          highlightId: newHighlight.id,
+        })),
+      });
     }
 
     return NextResponse.json(
-      { message: "Destaque criado com sucesso!" },
+      { ...newHighlight, galleryImages: imageUrls.map((url) => ({ url })) },
       { status: 201 }
     );
   } catch (error) {
@@ -122,6 +135,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-}
-  */
 }

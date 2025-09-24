@@ -1,39 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { z } from "zod";
+import { supabase } from "@/lib/supabase";
+import sharp from "sharp";
 
-const highlightUpdateSchema = z.object({
-  title: z.string().min(1, "O título é obrigatório."),
-  description: z.string().min(1, "A descrição é obrigatória."),
-  link: z
-    .string()
-    .url("O link deve ser uma URL válida.")
-    .optional()
-    .or(z.literal("")),
-  municipalityId: z.string().optional().or(z.literal("")),
-  publishedAt: z
-    .string()
-    .refine((val) => !isNaN(new Date(val).getTime()), "Data inválida."),
-});
+const BUCKET_NAME = "adetur-bucket";
 
-// GET: Buscar um destaque por ID
+function sanitizeTitle(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
+
+// GET: Buscar um destaque específico
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  req: NextRequest,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = (await params).id;
+    const { id } = params;
     const highlight = await prisma.highlight.findUnique({
       where: { id },
-      include: {
-        municipality: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
     });
 
     if (!highlight) {
@@ -45,7 +34,6 @@ export async function GET(
 
     return NextResponse.json(highlight);
   } catch (error) {
-    console.error("Erro ao buscar destaque:", error);
     return NextResponse.json(
       { message: "Erro ao buscar destaque." },
       { status: 500 }
@@ -55,36 +43,87 @@ export async function GET(
 
 // PUT: Atualizar um destaque
 export async function PUT(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  req: NextRequest,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = (await params).id;
-    const body = await request.json();
-    const parsedData = highlightUpdateSchema.safeParse(body);
+    const { id } = params;
+    const formData = await req.formData();
 
-    if (!parsedData.success) {
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const municipalityId = formData.get("municipalityId") as string;
+    const files = formData.getAll("images") as File[];
+
+    const existingHighlight = await prisma.highlight.findUnique({
+      where: { id },
+    });
+    if (!existingHighlight) {
       return NextResponse.json(
-        {
-          message: "Dados de entrada inválidos.",
-          errors: parsedData.error.flatten(),
-        },
-        { status: 400 }
+        { message: "Destaque não encontrado." },
+        { status: 404 }
       );
     }
 
-    const { municipalityId, publishedAt, ...data } = parsedData.data;
-    const finalData: any = {
-      ...data,
-      publishedAt: new Date(publishedAt),
-    };
-    if (municipalityId) {
-      finalData.municipalityId = municipalityId;
+    if (files.length > 0) {
+      // 1. Remover imagens antigas do storage e do DB
+      const oldImages = await prisma.highlightImage.findMany({
+        where: { highlightId: id },
+      });
+      if (oldImages.length > 0) {
+        const oldFilePaths = oldImages.map(
+          (img) => img.url.split(`${BUCKET_NAME}/`)[1]
+        );
+        await supabase.storage.from(BUCKET_NAME).remove(oldFilePaths);
+        await prisma.highlightImage.deleteMany({ where: { highlightId: id } });
+      }
+
+      // 2. Fazer upload das novas imagens
+      const imageUrls: string[] = [];
+      for (const file of files) {
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        const compressedBuffer = await sharp(buffer)
+          .resize({ width: 1200, withoutEnlargement: true })
+          .webp({ quality: 80 })
+          .toBuffer();
+
+        const sanitizedFileName = sanitizeTitle(file.name.split(".")[0]);
+        const fileName = `${Date.now()}-${sanitizedFileName}.webp`;
+        const filePath = `cities/${municipalityId}/highlights/${id}/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from(BUCKET_NAME)
+          .upload(filePath, compressedBuffer, {
+            contentType: "image/webp",
+            upsert: true,
+          });
+
+        if (uploadError)
+          throw new Error(
+            `Erro no upload para Supabase: ${uploadError.message}`
+          );
+
+        const { data: publicUrlData } = supabase.storage
+          .from(BUCKET_NAME)
+          .getPublicUrl(filePath);
+        imageUrls.push(publicUrlData.publicUrl);
+      }
+
+      // 3. Salvar novas URLs no DB
+      await prisma.highlightImage.createMany({
+        data: imageUrls.map((url) => ({ url, highlightId: id })),
+      });
     }
 
     const updatedHighlight = await prisma.highlight.update({
       where: { id },
-      data: { ...finalData },
+      data: {
+        title,
+        description,
+        municipalityId,
+      },
     });
 
     return NextResponse.json(updatedHighlight);
@@ -97,16 +136,14 @@ export async function PUT(
   }
 }
 
-// DELETE: Deletar um destaque
+// DELETE: Excluir um destaque
 export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  req: NextRequest,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = (await params).id;
-    const highlight = await prisma.highlight.findUnique({
-      where: { id },
-    });
+    const { id } = params;
+    const highlight = await prisma.highlight.findUnique({ where: { id } });
 
     if (!highlight) {
       return NextResponse.json(
@@ -115,16 +152,19 @@ export async function DELETE(
       );
     }
 
-    // Deleta o destaque do banco de dados
-    await prisma.highlight.delete({
-      where: { id },
-    });
+    // Remove imagem do Supabase se existir
+    if (highlight.image) {
+      const filePath = highlight.image.split(`${BUCKET_NAME}/`)[1];
+      await supabase.storage.from(BUCKET_NAME).remove([filePath]);
+    }
 
-    return NextResponse.json({ message: "Destaque removido com sucesso." });
+    await prisma.highlight.delete({ where: { id } });
+
+    return NextResponse.json({ message: "Destaque excluído com sucesso." });
   } catch (error) {
-    console.error("Erro ao deletar destaque:", error);
+    console.error("Erro ao excluir destaque:", error);
     return NextResponse.json(
-      { message: "Erro ao deletar destaque." },
+      { message: "Erro ao excluir destaque." },
       { status: 500 }
     );
   }

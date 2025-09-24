@@ -160,6 +160,7 @@ exports.Prisma.HighlightScalarFieldEnum = {
   title: 'title',
   description: 'description',
   latitude: 'latitude',
+  image: 'image',
   longitude: 'longitude',
   municipalityId: 'municipalityId',
   createdAt: 'createdAt'

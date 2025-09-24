@@ -60,6 +60,7 @@ model Highlight {
   title          String
   description    String?
   latitude       Float?
+  image          String?
   longitude      Float?
   municipalityId String
   galleryImages  HighlightImage[]
