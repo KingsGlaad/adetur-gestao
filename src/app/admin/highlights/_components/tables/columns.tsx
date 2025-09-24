@@ -1,17 +1,19 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { HighlightWithMunicipality } from "@/types/highligth";
+import { Municipality } from "@/types/municipality";
+import { Highlight } from "@/types/highligth";
 
 export const columns = (
-  onUpdate: () => void
-): ColumnDef<HighlightWithMunicipality>[] => [
+  onUpdate: () => void,
+  municipalities: Municipality[]
+): ColumnDef<Highlight>[] => [
   {
     accessorKey: "title",
     header: "Título",
   },
   {
-    accessorKey: "municipality.name",
+    accessorKey: "municipalityId",
     header: "Município",
     cell: ({ row }) => row.original.municipality?.name || "N/A",
   },
@@ -25,6 +27,12 @@ export const columns = (
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} onUpdate={onUpdate} />,
+    cell: ({ row }) => (
+      <CellAction
+        data={row.original}
+        onUpdate={onUpdate}
+        municipalities={municipalities}
+      />
+    ),
   },
 ];

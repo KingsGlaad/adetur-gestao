@@ -12,14 +12,20 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { HighlightFormDialog } from "./HighlightFormDialog";
+import { Municipality } from "@/types/municipality";
 import { Highlight } from "@/types/highligth";
 
 interface CellActionProps {
   data: Highlight;
   onUpdate: () => void;
+  municipalities: Municipality[];
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data, onUpdate }) => {
+export const CellAction: React.FC<CellActionProps> = ({
+  data,
+  onUpdate,
+  municipalities,
+}) => {
   const [loading, setLoading] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -43,6 +49,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data, onUpdate }) => {
         onOpenChange={setIsEditOpen}
         initialData={data}
         onUpdate={onUpdate}
+        municipalities={municipalities}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

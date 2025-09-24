@@ -1,22 +1,22 @@
-// Define Highlight type manually or import from the correct module if available
-export type PrismaHighlight = {
-  id: string;
-  title: string;
-  description?: string;
-  latitude: number;
-  longitude: number;
-  municipalitie: string;
-  // Add other fields as needed
-};
+import { Highlight as PrismaHighlight } from "@/generated";
+
 import { Municipality } from "@/generated";
 import { z } from "zod";
 
-// Tipo base do Prisma
-export type Highlight = PrismaHighlight;
-
-export type HighlightWithMunicipality = PrismaHighlight & {
-  municipality: Pick<Municipality, "name"> | null;
-};
+export interface Highlight {
+  id: string;
+  title: string;
+  image: string | null;
+  description: string | null;
+  municipalityId: string;
+  municipality: {
+    name: string;
+  } | null;
+  latitude: number | null;
+  longitude: number | null;
+  createdAt: Date;
+  galleryImages?: { id: string; url: string }[];
+}
 
 // Estados de loading
 export interface LoadingStates {

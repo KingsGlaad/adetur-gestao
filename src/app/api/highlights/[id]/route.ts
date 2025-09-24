@@ -54,6 +54,7 @@ export async function PUT(
     const description = formData.get("description") as string;
     const municipalityId = formData.get("municipalityId") as string;
     const files = formData.getAll("images") as File[];
+    const imagesToDeleteRaw = formData.get("imagesToDelete") as string | null;
 
     const existingHighlight = await prisma.highlight.findUnique({
       where: { id },
@@ -65,20 +66,25 @@ export async function PUT(
       );
     }
 
-    if (files.length > 0) {
-      // 1. Remover imagens antigas do storage e do DB
-      const oldImages = await prisma.highlightImage.findMany({
-        where: { highlightId: id },
-      });
-      if (oldImages.length > 0) {
-        const oldFilePaths = oldImages.map(
+    // 1. Deletar imagens marcadas para exclusão
+    if (imagesToDeleteRaw) {
+      const imagesToDelete: string[] = JSON.parse(imagesToDeleteRaw);
+      if (imagesToDelete.length > 0) {
+        const imagesData = await prisma.highlightImage.findMany({
+          where: { id: { in: imagesToDelete } },
+        });
+        const oldFilePaths = imagesData.map(
           (img) => img.url.split(`${BUCKET_NAME}/`)[1]
         );
         await supabase.storage.from(BUCKET_NAME).remove(oldFilePaths);
-        await prisma.highlightImage.deleteMany({ where: { highlightId: id } });
+        await prisma.highlightImage.deleteMany({
+          where: { id: { in: imagesToDelete } },
+        });
       }
+    }
 
-      // 2. Fazer upload das novas imagens
+    // 2. Fazer upload de novas imagens
+    if (files.length > 0) {
       const imageUrls: string[] = [];
       for (const file of files) {
         const arrayBuffer = await file.arrayBuffer();
@@ -111,7 +117,7 @@ export async function PUT(
         imageUrls.push(publicUrlData.publicUrl);
       }
 
-      // 3. Salvar novas URLs no DB
+      // 3. Salvar novas URLs no banco de dados
       await prisma.highlightImage.createMany({
         data: imageUrls.map((url) => ({ url, highlightId: id })),
       });

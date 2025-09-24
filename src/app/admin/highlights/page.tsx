@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -5,10 +6,12 @@ import { columns } from "./_components/tables/columns";
 import { DataTable } from "./_components/tables/data-table";
 import axios from "axios";
 import { toast } from "sonner";
-import { HighlightWithMunicipality } from "@/types/highligth";
+import { Municipality } from "@/types/municipality";
+import { Highlight } from "@/types/highligth";
 
 export default function HighlightsPage() {
-  const [highlights, setHighlights] = useState<HighlightWithMunicipality[]>([]);
+  const [highlights, setHighlights] = useState<Highlight[]>([]);
+  const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Função para buscar os destaques da API
@@ -16,7 +19,12 @@ export default function HighlightsPage() {
     setLoading(true);
     try {
       const res = await axios.get("/api/highlights");
-      setHighlights(res.data);
+      // A API de listagem precisa incluir a galeria de imagens
+      const highlightsWithImages = res.data.map((h: any) => ({
+        ...h,
+        galleryImages: h.galleryImages || [],
+      }));
+      setHighlights(highlightsWithImages);
     } catch (error) {
       console.error("Erro ao buscar destaques:", error);
       toast.error("Erro ao carregar os destaques.");
@@ -25,9 +33,18 @@ export default function HighlightsPage() {
     }
   };
 
+  const fetchMunicipalities = async () => {
+    try {
+      const res = await axios.get("/api/cities");
+      setMunicipalities(res.data);
+    } catch (error) {
+      toast.error("Erro ao carregar municípios.");
+    }
+  };
+
   // Busca os dados quando o componente é montado
   useEffect(() => {
-    fetchHighlights();
+    Promise.all([fetchHighlights(), fetchMunicipalities()]);
   }, []);
 
   if (loading) {
@@ -40,8 +57,9 @@ export default function HighlightsPage() {
         <h2 className="text-3xl font-bold tracking-tight">Destaques</h2>
       </div>
       <DataTable
-        columns={columns(fetchHighlights)}
+        columns={columns(fetchHighlights, municipalities)}
         data={highlights}
+        municipalities={municipalities}
         onUpdate={fetchHighlights}
       />
     </div>

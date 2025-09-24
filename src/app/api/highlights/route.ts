@@ -35,6 +35,7 @@ export async function GET() {
             id: true,
           },
         },
+        galleryImages: true,
       },
     });
 

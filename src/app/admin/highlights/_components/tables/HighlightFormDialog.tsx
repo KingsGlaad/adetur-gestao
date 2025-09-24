@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, X } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,6 +40,7 @@ type HighlightFormValues = z.infer<typeof highlightSchema>;
 interface HighlightFormDialogProps {
   initialData?: Highlight | null;
   onUpdate: () => void;
+  municipalities: Municipality[];
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
@@ -47,16 +48,19 @@ interface HighlightFormDialogProps {
 export function HighlightFormDialog({
   initialData,
   onUpdate,
+  municipalities,
   isOpen: controlledIsOpen,
   onOpenChange: controlledOnOpenChange,
 }: HighlightFormDialogProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [internalIsOpen, setInternalIsOpen] = useState(false);
-  const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
+  // Novas imagens a serem enviadas
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[]>(
-    initialData?.galleryImages?.map((img) => img.url) || []
-  );
+  // Imagens que já existem e são mantidas
+  const [existingImages, setExistingImages] = useState<
+    { id: string; url: string }[]
+  >([]);
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isOpen = controlledIsOpen ?? internalIsOpen;
@@ -85,32 +89,39 @@ export function HighlightFormDialog({
 
   useEffect(() => {
     setIsMounted(true);
-    axios
-      .get<Municipality[]>("/api/cities")
-      .then((res) => setMunicipalities(res.data))
-      .catch(() => toast.error("Erro ao carregar municípios."));
   }, []);
 
   useEffect(() => {
     if (initialData) {
       reset({
         title: initialData.title,
-        description: initialData.description,
+        description: initialData.description ?? "",
         municipalityId: initialData.municipalityId,
       });
-      setImagePreviews(initialData.galleryImages?.map((img) => img.url) || []);
+      setExistingImages(
+        (initialData.galleryImages || []).map((img, idx) => ({
+          id: img.id ?? String(idx),
+          url: img.url,
+        }))
+      );
     } else {
       reset({ title: "", description: "", municipalityId: "" });
-      setImagePreviews([]);
+      setExistingImages([]);
     }
     setImageFiles([]);
+    setImagesToDelete([]);
   }, [initialData, reset, isOpen]);
 
   const onSubmit = async (data: HighlightFormValues) => {
-    if (!initialData && imageFiles.length === 0) {
+    const totalImages = existingImages.length + imageFiles.length;
+    if (totalImages === 0) {
       toast.error(
-        "A imagem de capa é obrigatória para criar um novo destaque."
+        "Pelo menos uma imagem é obrigatória para criar um destaque."
       );
+      return;
+    }
+    if (totalImages > 5) {
+      toast.error("Um destaque pode ter no máximo 5 imagens.");
       return;
     }
 
@@ -118,11 +129,14 @@ export function HighlightFormDialog({
     try {
       const formData = new FormData();
       formData.append("title", data.title);
-      formData.append("description", data.description);
+      formData.append("description", data.description || "");
       formData.append("municipalityId", data.municipalityId);
       imageFiles.forEach((file) => {
         formData.append("images", file);
       });
+      if (imagesToDelete.length > 0) {
+        formData.append("imagesToDelete", JSON.stringify(imagesToDelete));
+      }
 
       if (initialData) {
         await axios.put(`/api/highlights/${initialData.id}`, formData);
@@ -143,11 +157,34 @@ export function HighlightFormDialog({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
+      const totalImages =
+        existingImages.length + imageFiles.length + files.length;
+      if (totalImages > 5) {
+        toast.error("Você pode selecionar no máximo 5 imagens.");
+        e.target.value = ""; // Limpa a seleção
+        return;
+      }
       const fileArray = Array.from(files);
-      setImageFiles(fileArray);
-      const previewUrls = fileArray.map((file) => URL.createObjectURL(file));
-      setImagePreviews(previewUrls);
+      setImageFiles((prev) => [...prev, ...fileArray]);
     }
+  };
+
+  const handleRemoveNewImage = (index: number) => {
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleRemoveExistingImage = (image: { id: string; url: string }) => {
+    setExistingImages((prev) => prev.filter((img) => img.id !== image.id));
+    setImagesToDelete((prev) => [...prev, image.id]);
+  };
+
+  const imagePreviews = {
+    existing: existingImages,
+    new: imageFiles.map((file) => {
+      // Cuidado: createObjectURL pode causar memory leaks se não for revogado.
+      // Para este caso de uso de curta duração (dialog), é aceitável.
+      return URL.createObjectURL(file);
+    }),
   };
 
   if (!isMounted) return null;
@@ -159,27 +196,56 @@ export function HighlightFormDialog({
       </DialogHeader>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         <div>
-          <Label>Galeria de Imagens</Label>
+          <Label>Galeria de Imagens (Máx. 5)</Label>
           <div className="mt-2 flex flex-col gap-4 p-4 border rounded-lg">
             <Input
               type="file"
               accept="image/*"
               multiple
               onChange={handleImageChange}
+              disabled={existingImages.length + imageFiles.length >= 5}
             />
             <div className="flex flex-wrap gap-4">
-              {imagePreviews.length > 0
-                ? imagePreviews.map((src, index) => (
-                    <Image
-                      key={index}
-                      src={src}
-                      alt={`Preview ${index + 1}`}
-                      width={100}
-                      height={100}
-                      className="object-cover rounded-md bg-slate-100"
-                    />
-                  ))
-                : null}
+              {imagePreviews.existing.map((image) => (
+                <div key={image.id} className="relative">
+                  <Image
+                    src={image.url}
+                    alt="Imagem existente"
+                    width={100}
+                    height={100}
+                    className="object-cover rounded-md bg-slate-100"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
+                    onClick={() => handleRemoveExistingImage(image)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+              {imagePreviews.new.map((src, index) => (
+                <div key={index} className="relative">
+                  <Image
+                    src={src}
+                    alt={`Preview ${index + 1}`}
+                    width={100}
+                    height={100}
+                    className="object-cover rounded-md bg-slate-100"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
+                    onClick={() => handleRemoveNewImage(index)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
             </div>
           </div>
         </div>

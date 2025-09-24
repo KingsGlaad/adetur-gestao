@@ -29,16 +29,19 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { HighlightFormDialog } from "./HighlightFormDialog";
+import { Municipality } from "@/types/municipality";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  municipalities: Municipality[];
   onUpdate: () => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  municipalities,
   onUpdate,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -74,7 +77,10 @@ export function DataTable<TData, TValue>({
               }
             />
           </div>
-          <HighlightFormDialog onUpdate={onUpdate} />
+          <HighlightFormDialog
+            onUpdate={onUpdate}
+            municipalities={municipalities}
+          />
         </div>
 
         <div className="rounded-md border overflow-hidden">
