@@ -30,8 +30,7 @@ import { AnimatedSection } from "./animations/AnimatedSection";
 import { features, tourismSegments, odsGoals } from "@/data/site-data";
 import { Municipality } from "@/types/municipality";
 import dynamic from "next/dynamic";
-import MapPage from "./MapPage";
-const DynamicMap = dynamic(() => import("./MapPage"), {
+const RegionMap = dynamic(() => import("./RegionMap"), {
   ssr: false,
   loading: () => (
     <div className="flex h-full w-full items-center justify-center bg-gray-200">
@@ -125,7 +124,10 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
           {/* Mapa */}
           <div className="hidden lg:block w-full lg:w-3/5 h-[calc(100vh-4rem)] sticky top-16">
             <div className="h-full px-8 py-4">
-              <MapPage municipalities={municipalities} selectedMunicipality={selectedMunicipality} />
+              <RegionMap
+                municipalities={municipalities}
+                selectedMunicipality={selectedMunicipality}
+              />
             </div>
           </div>
         </section>

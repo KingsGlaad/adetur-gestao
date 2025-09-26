@@ -11,12 +11,12 @@ import {
 } from "react-leaflet";
 import { LatLngTuple, divIcon, GeoJSON as GeoJSONType } from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
-import { MunicipalityRefined } from "@/types/municipality";
-import { Highlight } from "@/types/highligth"; // ajuste conforme seu tipo real
-import { useEffect } from "react";
+import { Municipality } from "@/types/municipality";
+import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
-import { MapPin  } from "lucide-react";
+import { Loader2, MapPin } from "lucide-react";
 import Image from "next/image";
+import { MunicipalityRefined } from "@/types/municipality";
 
 const ZOOM = 10;
 // Ícone personalizado para os destaques
@@ -41,21 +41,36 @@ function ChangeView({ center, zoom }: { center: LatLngTuple; zoom: number }) {
 type GeoJsonFeatureCollection = GeoJSON.FeatureCollection<GeoJSON.Geometry>;
 
 type MunicipalityMapProps = {
-  mapCenter: LatLngTuple;
   municipalities: MunicipalityRefined[];
   selectedMunicipality: MunicipalityRefined | null;
-  highlights: Highlight[]; // Destaques, com lat/lng e info
-  geoJSONAlta: GeoJsonFeatureCollection;
-  geoJSONAdetur: GeoJsonFeatureCollection;
 };
 
-export default function MunicipalityMap({
+export default function RegionMap({
   municipalities,
-  mapCenter,
   selectedMunicipality,
-  geoJSONAlta,
-  geoJSONAdetur,
 }: MunicipalityMapProps) {
+  const [geoJsonAlta, setGeoJsonAlta] =
+    useState<GeoJsonFeatureCollection | null>(null);
+  const [geoJsonAdetur, setGeoJsonAdetur] =
+    useState<GeoJsonFeatureCollection | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const mapCenter: LatLngTuple = [-21.110773, -47.440252];
+
+  useEffect(() => {
+    setIsLoading(true);
+    Promise.all([
+      fetch("/altamogiana.geojson").then((r) => r.json()),
+      fetch("/adetur.geojson").then((r) => r.json()),
+    ])
+      .then(([alta, adetur]) => {
+        setGeoJsonAlta(alta);
+        setGeoJsonAdetur(adetur);
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+  }, []);
+
   const selectedCenter: LatLngTuple =
     selectedMunicipality &&
     typeof selectedMunicipality.latitude === "number" &&
@@ -64,9 +79,9 @@ export default function MunicipalityMap({
       : mapCenter;
 
   const geoJsonStyle = {
-    color: "#007BFF", // Cor unificada para as malhas
+    color: "#007BFF",
     weight: 2,
-    fillColor: "#87CEEB", // Preenchimento unificado
+    fillColor: "#87CEEB",
     fillOpacity: 0.4,
   };
 
@@ -81,6 +96,12 @@ export default function MunicipalityMap({
       doubleClickZoom={true}
     >
       <ChangeView center={selectedCenter} zoom={ZOOM} />
+      {isLoading && (
+        <div className="absolute inset-0 z-[1000] flex items-center justify-center bg-gray-200/50 backdrop-blur-sm">
+          <Loader2 className="h-10 w-10 animate-spin text-primary" />
+        </div>
+      )}
+
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
