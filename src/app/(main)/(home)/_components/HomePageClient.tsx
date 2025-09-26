@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import {
   MapPin,
   Users,
@@ -10,6 +11,7 @@ import {
   Fish,
   Trees,
   Globe,
+  Loader2,
 } from "lucide-react";
 import Image from "next/image";
 import {
@@ -19,19 +21,33 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { MunicipalitiesCard } from "@/components/cards/MunicipalitiesCard";
+import Link from "next/link";
 import { HeroSectionCarousel } from "./Hero-Section";
-import MapPage from "./MapPage";
 
 import { AnimatedSection } from "./animations/AnimatedSection";
 
 import { features, tourismSegments, odsGoals } from "@/data/site-data";
 import { Municipality } from "@/types/municipality";
+import dynamic from "next/dynamic";
+import MapPage from "./MapPage";
+const DynamicMap = dynamic(() => import("./MapPage"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center bg-gray-200">
+      <Loader2 className="h-10 w-10 animate-spin text-primary" />
+    </div>
+  ),
+});
 
 interface HomePageClientProps {
   municipalities: Municipality[];
 }
 
 export function HomePageClient({ municipalities }: HomePageClientProps) {
+  const [selectedMunicipality, setSelectedMunicipality] =
+    useState<Municipality | null>(null);
+  const isLoading = !municipalities || municipalities.length === 0;
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden">
       {/* Hero Section - Geralmente não precisa de animação de scroll */}
@@ -41,32 +57,80 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
 
       {/* Cada seção principal da página é envolvida pelo AnimatedSection */}
       <AnimatedSection>
-        <section id="mapa" className="py-12 bg-white">
-          <div className="container mx-auto max-w-6xl px-4">
-            <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-              Mapa da Região
-            </h2>
-            <div className="w-full h-[500px] rounded-lg shadow-lg overflow-hidden mx-auto pt-16">
-              <MapPage />
+        <section
+          id="mapa"
+          className="flex flex-col lg:flex-row min-h-[calc(100vh-4rem)] bg-white text-neutral-900"
+        >
+          {/* Lista */}
+          <div className="w-full lg:w-2/5 lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto">
+            <div className="container mx-auto px-8 py-8 max-w-xl">
+              <h1 className="text-3xl font-bold mb-8">Municípios</h1>
+              <div className="grid gap-4">
+                {isLoading
+                  ? Array.from({ length: 6 }).map((_, idx) => (
+                      <div
+                        key={idx}
+                        className=" border border-blue-900/35 rounded-lg overflow-hidden animate-pulse"
+                      >
+                        <div className="relative h-32 bg-blue-900/30" />
+                        <div className="p-4">
+                          <div className="h-4 bg-blue-900/30 rounded w-3/4 mb-2"></div>
+                          <div className="h-3 bg-blue-900/30 rounded w-full mb-2"></div>
+                          <div className="h-3 bg-blue-900/30 rounded w-5/6 mb-4"></div>
+                          <div className="flex gap-2 mb-3">
+                            <div className="h-5 w-16 bg-blue-900/30 rounded-full"></div>
+                            <div className="h-5 w-16 bg-blue-900/30 rounded-full"></div>
+                          </div>
+                          <div className="h-8 bg-blue-900/30 rounded w-full"></div>
+                        </div>
+                      </div>
+                    ))
+                  : municipalities.map((municipality) => (
+                      <div
+                        key={municipality.name}
+                        className="bg-blue-900 border border-blue-900/35 rounded-lg overflow-hidden hover:border-neutral-500 hover:scale-105 transition-transform duration-300 cursor-pointer"
+                        onClick={() => setSelectedMunicipality(municipality)}
+                      >
+                        <div className="relative h-32">
+                          <Image
+                            src={municipality.coatOfArms || ""}
+                            alt={municipality.name}
+                            fill
+                            className="object-cover w-full h-full"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <h2 className="text-lg font-semibold text-white mb-1">
+                            {municipality.name}
+                          </h2>
+                          <p className="text-sm text-neutral-400 mb-2 line-clamp-2">
+                            {municipality.description}
+                          </p>
+
+                          <Link
+                            href={`/municipios/${municipality.slug}`}
+                            className="inline-flex items-center justify-center w-full px-3 py-1.5 bg-white text-neutral-700 rounded-md hover:bg-blue-400 transition-colors text-sm"
+                          >
+                            <MapPin className="w-3.5 h-3.5 mr-1.5" />
+                            Ver Detalhes
+                          </Link>
+                        </div>
+                      </div>
+                    ))}
+              </div>
             </div>
-            <div className="mt-4 bg-gray-100 p-4 rounded-lg shadow-md">
-              <h3 className="font-semibold text-lg mb-2">Legenda</h3>
-              <ul className="text-sm space-y-1">
-                <li>
-                  <span className="inline-block w-4 h-4 bg-blue-500 mr-2 rounded"></span>
-                  Cidades pertencentes a ADETUR - Alta Mogiana
-                </li>
-                <li>
-                  <span className="inline-block w-4 h-4 bg-yellow-500 mr-2 rounded"></span>
-                  Cidades pertencentes ao Território da Alta Mogiana
-                </li>
-              </ul>
+          </div>
+
+          {/* Mapa */}
+          <div className="hidden lg:block w-full lg:w-3/5 h-[calc(100vh-4rem)] sticky top-16">
+            <div className="h-full px-8 py-4">
+              <MapPage municipalities={municipalities} selectedMunicipality={selectedMunicipality} />
             </div>
           </div>
         </section>
       </AnimatedSection>
 
-      <AnimatedSection>
+      <AnimatedSection className="relative z-10">
         <section id="diferenciais" className="py-12 bg-white">
           <div className="container mx-auto max-w-6xl px-4">
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">

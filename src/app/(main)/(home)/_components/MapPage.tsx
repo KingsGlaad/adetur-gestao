@@ -1,19 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import { MunicipalityRefined } from "@/types/municipality";
 import { Highlight } from "@/types/highligth";
 import { LatLngTuple } from "leaflet";
 import { Loader2 } from "lucide-react";
+import RegionMap from "./RegionMap";
 
-const DynamicMap = dynamic(() => import("./RegionMap"), {
-  ssr: false,
-});
+interface MapPageProps {
+  municipalities: MunicipalityRefined[];
+  selectedMunicipality: MunicipalityRefined | null;
+}
 
 type GeoJsonFeatureCollection = GeoJSON.FeatureCollection<GeoJSON.Geometry>;
 
-export default function MapPage() {
+export default function MapPage({
+  municipalities,
+  selectedMunicipality,
+}: MapPageProps) {
   const [geoJsonAlta, setGeoJsonAlta] =
     useState<GeoJsonFeatureCollection | null>(null);
   const [geoJsonAdetur, setGeoJsonAdetur] =
@@ -21,12 +25,7 @@ export default function MapPage() {
   const [geoJsonTer, setGeoJsonTer] = useState<GeoJsonFeatureCollection | null>(
     null
   );
-  const [municipalities, setMunicipalities] = useState<MunicipalityRefined[]>(
-    []
-  );
   const [highlights, setHighlights] = useState<Highlight[]>([]);
-  const [selectedMunicipality, setSelectedMunicipality] =
-    useState<MunicipalityRefined | null>(null);
 
   // Centro padrão da região (exemplo)
   const CENTER: LatLngTuple = [-21.110773, -47.440252];
@@ -48,19 +47,12 @@ export default function MapPage() {
 
   // Fetch municípios e destaques do seu backend/Supabase/etc
   useEffect(() => {
-    async function fetchData() {
-      // Simulação: substitua pelo seu fetch real
-      const fetchedMunicipalities: MunicipalityRefined[] = await fetch(
-        "/api/cities"
-      ).then((r) => r.json());
-      console.log(fetchedMunicipalities);
+    const fetchData = async () => {
       const fetchedHighlights: Highlight[] = await fetch(
         "/api/highlights"
       ).then((r) => r.json());
-
-      setMunicipalities(fetchedMunicipalities);
       setHighlights(fetchedHighlights);
-    }
+    };
     fetchData();
   }, []);
 
@@ -68,12 +60,13 @@ export default function MapPage() {
     return (
       <div className="flex justify-center">
         <Loader2 className="animate text-primary" />
+        <Loader2 className="animate-spin text-primary" />
       </div>
     );
 
   return (
     <div className="h-[100vh] w-[100%]">
-      <DynamicMap
+      <RegionMap
         mapCenter={CENTER}
         municipalities={municipalities}
         selectedMunicipality={selectedMunicipality}

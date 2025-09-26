@@ -17,30 +17,16 @@ import "leaflet/dist/leaflet.css";
 import { BinocularsIcon, MapPin, Pin } from "lucide-react";
 import Image from "next/image";
 
-const ZOOM = 8;
+const ZOOM = 10;
 // Ícone personalizado para os destaques
 const iconMarkup = renderToStaticMarkup(
-  <MapPin size={50} className="text-blue-600 fill-blue-500 drop-shadow-lg" />
+  <MapPin size={32} className="text-red-600 fill-red-500 drop-shadow-lg" />
 );
 const customIcon = divIcon({
   html: iconMarkup,
   className: "bg-transparent border-0",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-});
-
-// Ícone personalizado para os destaques
-const highlightIconMarkup = renderToStaticMarkup(
-  <BinocularsIcon
-    size={32}
-    className="text-black fill-red-500 drop-shadow-lg"
-  />
-);
-const customHighlightIcon = divIcon({
-  html: highlightIconMarkup,
-  className: "bg-transparent border-0",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
 });
 
 function ChangeView({ center, zoom }: { center: LatLngTuple; zoom: number }) {
@@ -60,17 +46,14 @@ type MunicipalityMapProps = {
   highlights: Highlight[]; // Destaques, com lat/lng e info
   geoJSONAlta: GeoJsonFeatureCollection;
   geoJSONAdetur: GeoJsonFeatureCollection;
-  geoJSONTerritorio: GeoJsonFeatureCollection;
 };
 
 export default function MunicipalityMap({
   municipalities,
   mapCenter,
   selectedMunicipality,
-  highlights,
   geoJSONAlta,
   geoJSONAdetur,
-  geoJSONTerritorio,
 }: MunicipalityMapProps) {
   const selectedCenter: LatLngTuple =
     selectedMunicipality &&
@@ -79,28 +62,11 @@ export default function MunicipalityMap({
       ? [selectedMunicipality.latitude, selectedMunicipality.longitude]
       : mapCenter;
 
-  // Estilo da malha GeoJSON
-  const geoJsonStyleAlta = {
-    color: "#FFFF00",
+  const geoJsonStyle = {
+    color: "#007BFF", // Cor unificada para as malhas
     weight: 2,
-    fillColor: "#EEDD82",
+    fillColor: "#87CEEB", // Preenchimento unificado
     fillOpacity: 0.4,
-  };
-
-  // Estilo da malha GeoJSON
-  const geoJsonStyleAdetur = {
-    color: "#00BFFF",
-    weight: 2,
-    fillColor: "#87CEEB",
-    fillOpacity: 0.4,
-  };
-
-  // Estilo da malha GeoJSON
-  const geoJsonStyleTer = {
-    color: "#000000",
-    weight: 1,
-    fillColor: "#000000",
-    fillOpacity: 0.0,
   };
 
   return (
@@ -120,9 +86,8 @@ export default function MunicipalityMap({
       />
 
       {/* Malha dos municípios (GeoJSON) */}
-      <GeoJSON data={geoJSONTerritorio} style={geoJsonStyleTer} />
-      <GeoJSON data={geoJSONAlta} style={geoJsonStyleAlta} />
-      <GeoJSON data={geoJSONAdetur} style={geoJsonStyleAdetur} />
+      {geoJSONAlta && <GeoJSON data={geoJSONAlta} style={geoJsonStyle} />}
+      {geoJSONAdetur && <GeoJSON data={geoJSONAdetur} style={geoJsonStyle} />}
 
       {/* Pins dos municípios */}
       {municipalities.map((municipality) => {
@@ -164,34 +129,6 @@ export default function MunicipalityMap({
                 >
                   Ver mais detalhes
                 </a>
-              </div>
-            </Popup>
-          </Marker>
-        );
-      })}
-
-      {/* Pins dos highlights */}
-      {highlights.map((highlight) => {
-        if (
-          typeof highlight.latitude !== "number" ||
-          typeof highlight.longitude !== "number"
-        )
-          return null;
-
-        return (
-          <Marker
-            key={`highlight-${highlight.id}`}
-            position={[highlight.latitude, highlight.longitude]}
-            icon={customHighlightIcon}
-            // Você pode usar outro ícone para highlights se quiser
-          >
-            <Popup>
-              <div className="p-2">
-                <h3 className="font-semibold">{highlight.title}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {highlight.description}
-                </p>
-                {/* Outros dados que queira mostrar */}
               </div>
             </Popup>
           </Marker>
