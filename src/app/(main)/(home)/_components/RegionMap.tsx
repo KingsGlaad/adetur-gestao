@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import {
@@ -12,9 +13,9 @@ import { LatLngTuple, divIcon, GeoJSON as GeoJSONType } from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MunicipalityRefined } from "@/types/municipality";
 import { Highlight } from "@/types/highligth"; // ajuste conforme seu tipo real
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "leaflet/dist/leaflet.css";
-import { BinocularsIcon, MapPin, Pin } from "lucide-react";
+import { MapPin  } from "lucide-react";
 import Image from "next/image";
 
 const ZOOM = 10;

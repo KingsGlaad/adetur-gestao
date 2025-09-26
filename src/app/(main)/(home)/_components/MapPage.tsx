@@ -72,7 +72,6 @@ export default function MapPage({
         selectedMunicipality={selectedMunicipality}
         geoJSONAlta={geoJsonAlta}
         geoJSONAdetur={geoJsonAdetur}
-        geoJSONTerritorio={geoJsonTer}
         highlights={highlights}
       />
     </div>
