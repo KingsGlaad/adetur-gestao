@@ -108,8 +108,8 @@ export default function RegionMap({
       />
 
       {/* Malha dos municípios (GeoJSON) */}
-      {geoJSONAlta && <GeoJSON data={geoJSONAlta} style={geoJsonStyle} />}
-      {geoJSONAdetur && <GeoJSON data={geoJSONAdetur} style={geoJsonStyle} />}
+      {geoJsonAlta && <GeoJSON data={geoJsonAlta} style={geoJsonStyle} />}
+      {geoJsonAdetur && <GeoJSON data={geoJsonAdetur} style={geoJsonStyle} />}
 
       {/* Pins dos municípios */}
       {municipalities.map((municipality) => {
