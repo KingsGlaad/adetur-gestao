@@ -17,12 +17,15 @@ function sanitizeTitle(name: string): string {
 // GET: Buscar um destaque específico
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const id  = (await params).id;
     const highlight = await prisma.highlight.findUnique({
       where: { id },
+      include:{
+        galleryImages: true
+      }
     });
 
     if (!highlight) {
