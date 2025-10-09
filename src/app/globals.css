@@ -181,5 +181,6 @@
   body {
     @apply bg-background text-foreground;
     margin-top: 70px;
+    background-color: "#eaf6ff"
   }
 }

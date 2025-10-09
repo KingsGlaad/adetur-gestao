@@ -40,11 +40,6 @@ export const features = [
     description: "Mais de 20 municípios conectados em uma única plataforma",
   },
   {
-    icon: "Users",
-    title: "Gestão de Guias",
-    description: "Cadastro e gerenciamento de guias turísticos locais",
-  },
-  {
     icon: "Calendar",
     title: "Eventos",
     description: "Promoção e organização de eventos turísticos",

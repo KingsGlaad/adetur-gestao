@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   MapPin,
   Users,
@@ -25,11 +25,11 @@ import { MunicipalitiesCard } from "@/components/cards/MunicipalitiesCard";
 import Link from "next/link";
 import { HeroSectionCarousel } from "./Hero-Section";
 
-import { AnimatedSection } from "./animations/AnimatedSection";
-
 import { features, tourismSegments, odsGoals } from "@/data/site-data";
 import { Municipality } from "@/types/municipality";
 import dynamic from "next/dynamic";
+import { StatsBackground } from "./svgs/StatsBackground";
+import { useParallax } from "@/hooks/useParallax";
 const RegionMap = dynamic(() => import("./RegionMap"), {
   ssr: false,
   loading: () => (
@@ -47,6 +47,7 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
   const [selectedMunicipality, setSelectedMunicipality] =
     useState<Municipality | null>(null);
   const isLoading = !municipalities || municipalities.length === 0;
+  const parallaxStyle = useParallax(0.03);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden">
@@ -55,8 +56,8 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
         <HeroSectionCarousel />
       </section>
 
-      {/* Cada seção principal da página é envolvida pelo AnimatedSection */}
-      <AnimatedSection>
+     
+      
         <section
           id="mapa"
           className="flex flex-col lg:flex-row min-h-[calc(100vh-4rem)] bg-white text-neutral-900"
@@ -131,15 +132,16 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
             </div>
           </div>
         </section>
-      </AnimatedSection>
+      
 
-      <AnimatedSection className="relative z-10">
-        <section id="diferenciais" className="py-12 bg-white">
-          <div className="container mx-auto max-w-6xl px-4">
+      
+        <section id="diferenciais" className="py-12 bg-white relative overflow-hidden">
+          <StatsBackground/>
+          <div className="container mx-auto max-w-6xl px-4 relative z-10">
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
               Nossos Diferenciais
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="flex flex-wrap justify-center md:justify-between gap-8">
               {features.map((feature) => {
                 const Icon =
                   feature.icon === "MapPin"
@@ -152,7 +154,7 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
                 return (
                   <div
                     key={feature.title}
-                    className="bg-blue-900 rounded-lg shadow-md p-8 flex flex-col items-center text-center text-white transition-transform hover:scale-105"
+                    className="bg-blue-900 rounded-lg shadow-md p-8 flex flex-col items-center text-center text-white transition-transform hover:scale-105 w-full sm:w-auto md:w-[calc(33.333%-1.5rem)] lg:w-[calc(25%-1.5rem)]"
                   >
                     <Icon className="w-14 h-14 mb-4" />
                     <h3 className="text-xl font-semibold mb-2">
@@ -165,12 +167,12 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
             </div>
           </div>
         </section>
-      </AnimatedSection>
+      
 
-      <AnimatedSection>
-        <section id="municipios" className="py-12 bg-gray-100">
-          <div className="container mx-auto max-w-6xl px-4">
-            <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+      
+        <section id="municipios" className="relative overflow-hidden py-5 px-4 sm:px-6 lg:px-8">
+          <div className="relative z-20 py-12">
+             <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
               Municípios Integrados
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -189,10 +191,18 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
               ))}
             </div>
           </div>
+          <div className="absolute inset-0 z-0" style={parallaxStyle}>
+            <Image
+              src="/bg/bg-municipios2.png"
+              alt="Detalhe de fundo com montanhas"
+              fill
+              className="object-cover object-bottom opacity-55"
+            />
+          </div>
         </section>
-      </AnimatedSection>
+      
 
-      <AnimatedSection>
+      
         <section id="segmentos" className="py-12 bg-white">
           <div className="container mx-auto max-w-6xl px-4">
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
@@ -232,9 +242,9 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
             </div>
           </div>
         </section>
-      </AnimatedSection>
+      
 
-      <AnimatedSection>
+      
         <section id="ods" className="py-12 bg-gray-100">
           <div className="container mx-auto max-w-6xl px-4">
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
@@ -265,7 +275,7 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
             </div>
           </div>
         </section>
-      </AnimatedSection>
+      
     </div>
   );
 }
