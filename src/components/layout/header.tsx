@@ -12,7 +12,7 @@ export function Header() {
     { name: "Quem Somos", href: "/quem-somos" },
     { name: "Municípios", href: "/municipios" },
     { name: "História - Alta Mogiana", href: "/historia" },
-    { name: "Faça parte", href: "#contato" },
+    { name: "Faça parte", href: "/contato" },
   ];
 
   return (

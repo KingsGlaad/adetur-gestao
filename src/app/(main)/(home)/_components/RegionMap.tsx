@@ -17,6 +17,7 @@ import "leaflet/dist/leaflet.css";
 import { Loader2, MapPin } from "lucide-react";
 import Image from "next/image";
 import { MunicipalityRefined } from "@/types/municipality";
+import { set } from "zod";
 
 const ZOOM = 10;
 // Ícone personalizado para os destaques
@@ -49,9 +50,9 @@ export default function RegionMap({
   municipalities,
   selectedMunicipality,
 }: MunicipalityMapProps) {
-  const [geoJsonAlta, setGeoJsonAlta] =
-    useState<GeoJsonFeatureCollection | null>(null);
   const [geoJsonAdetur, setGeoJsonAdetur] =
+    useState<GeoJsonFeatureCollection | null>(null);
+    const [geoJsonAltamogiana, setGeoJsonAltamogiana] =
     useState<GeoJsonFeatureCollection | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,13 +60,13 @@ export default function RegionMap({
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([
-      fetch("/altamogiana.geojson").then((r) => r.json()),
+    Promise.all([      
       fetch("/adetur.geojson").then((r) => r.json()),
+      fetch("/altamogiana.geojson").then((r) => r.json()),
     ])
-      .then(([alta, adetur]) => {
-        setGeoJsonAlta(alta);
+      .then(([adetur, altamogiana]) => {
         setGeoJsonAdetur(adetur);
+        setGeoJsonAltamogiana(altamogiana);
       })
       .catch(console.error)
       .finally(() => setIsLoading(false));
@@ -78,10 +79,17 @@ export default function RegionMap({
       ? [selectedMunicipality.latitude, selectedMunicipality.longitude]
       : mapCenter;
 
-  const geoJsonStyle = {
+  const geoJsonStyleAdetur = {
     color: "#007BFF",
     weight: 2,
     fillColor: "#87CEEB",
+    fillOpacity: 0.4,
+  };
+
+   const geoJsonStyleAlta = {
+    color: "#FFD700",
+    weight: 2,
+    fillColor: "#EDE332",
     fillOpacity: 0.4,
   };
 
@@ -108,8 +116,8 @@ export default function RegionMap({
       />
 
       {/* Malha dos municípios (GeoJSON) */}
-      {geoJsonAlta && <GeoJSON data={geoJsonAlta} style={geoJsonStyle} />}
-      {geoJsonAdetur && <GeoJSON data={geoJsonAdetur} style={geoJsonStyle} />}
+      {geoJsonAltamogiana && <GeoJSON data={geoJsonAltamogiana} style={geoJsonStyleAlta} />}
+      {geoJsonAdetur && <GeoJSON data={geoJsonAdetur} style={geoJsonStyleAdetur} />}
 
       {/* Pins dos municípios */}
       {municipalities.map((municipality) => {
