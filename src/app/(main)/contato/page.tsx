@@ -16,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { useFormStatus } from "react-dom";
 import { z } from "zod";
 import { contactSchema } from "./schema";
@@ -50,15 +51,19 @@ export default function ContatoPage() {
   });
 
   useEffect(() => {
-    if (state.message) {
-      if (state.success) {
-        toast.success(state.message);
-        reset(); // Limpa o formulário em caso de sucesso
-      } else {
-        toast.error(state.message);
-      }
+    // Se não houver mensagem, não faz nada.
+    if (!state.message) {
+      return;
     }
-  }, [state, reset]);
+
+    // Exibe o toast com base no sucesso ou falha.
+    if (state.success) {
+      toast.success(state.message);
+      reset(); // Limpa o formulário apenas em caso de sucesso.
+    } else {
+      toast.error(state.message);
+    }
+  }, [state.success, state.message, reset]); // Depende dos valores primitivos do estado
 
   return (
     <>
@@ -81,11 +86,23 @@ export default function ContatoPage() {
             </CardHeader>
             <CardContent>
               <form
-                action={formAction} className="space-y-6">
+                onSubmit={handleSubmit((data) => {
+                  const formData = new FormData();
+                  Object.entries(data).forEach(([key, value]) => {
+                    formData.append(key, value);
+                  });
+                  formAction(formData);
+                })}
+                className="space-y-6"
+                noValidate 
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">Nome</Label>
-                    <Input id="name" {...register("name")} />
+                    <Input
+                      id="name"
+                      {...register("name")}
+                      className={cn(errors.name && "border-red-500 focus-visible:ring-red-500")} />
                     {errors.name && (
                       <p className="text-sm text-red-500">
                         {errors.name.message}
@@ -94,7 +111,10 @@ export default function ContatoPage() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">E-mail</Label>
-                    <Input id="email" type="email" {...register("email")} />
+                    <Input
+                      id="email"
+                      type="email" {...register("email")}
+                      className={cn(errors.email && "border-red-500 focus-visible:ring-red-500")} />
                     {errors.email && (
                       <p className="text-sm text-red-500">
                         {errors.email.message}
@@ -105,7 +125,10 @@ export default function ContatoPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="subject">Assunto</Label>
-                  <Input id="subject" {...register("subject")} />
+                  <Input
+                    id="subject"
+                    {...register("subject")}
+                    className={cn(errors.subject && "border-red-500 focus-visible:ring-red-500")} />
                   {errors.subject && (
                     <p className="text-sm text-red-500">
                       {errors.subject.message}
@@ -115,7 +138,11 @@ export default function ContatoPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="message">Mensagem</Label>
-                  <Textarea id="message" rows={6} {...register("message")} />
+                  <Textarea
+                    id="message"
+                    rows={6}
+                    {...register("message")}
+                    className={cn(errors.message && "border-red-500 focus-visible:ring-red-500")} />
                   {errors.message && (
                     <p className="text-sm text-red-500">
                       {errors.message.message}
