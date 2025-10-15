@@ -16,7 +16,7 @@ async function getData(): Promise<Event[]> {
       },
     },
   });
-  console.log("Data fetched from database:", data);
+  
   return [...data];
 }
 export default async function EventsPage() {

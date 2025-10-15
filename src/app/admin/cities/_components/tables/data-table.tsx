@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -73,10 +74,12 @@ export function MunicipiosDataTable<TData, TValue>({
               }
             />
           </div>
-          <Button className="w-full md:w-auto">
-            <Plus className="mr-2 h-4 w-4" />
-            Adicionar Município
-          </Button>
+          <Link href="/admin/cities/new">
+            <Button className="cursor-pointer">
+              <Plus className="mr-2 h-4 w-4" />
+              Adicionar município
+            </Button>
+          </Link>
         </div>
 
         <div className="rounded-md border overflow-hidden">

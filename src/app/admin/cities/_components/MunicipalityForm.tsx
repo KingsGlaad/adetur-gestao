@@ -14,12 +14,14 @@ import { MunicipalityImageGallery } from "./municipality/MunicipalityImageGaller
 import { TiptapEditor } from "./municipality/TiptapEditor";
 
 interface MunicipalityFormProps {
-  municipio: MunicipalityRefined;
+  municipio: MunicipalityRefined | null;
 }
 
 export function MunicipalityForm({ municipio }: MunicipalityFormProps) {
   const { form, editor, isSubmitting, coatOfArms, gallery, onSubmit } =
     useMunicipalityForm(municipio);
+  
+  const isCreating = !municipio;
 
   const {
     register,
@@ -55,18 +57,22 @@ export function MunicipalityForm({ municipio }: MunicipalityFormProps) {
       </div>
 
       {/* SEÇÃO DA GALERIA */}
-      <MunicipalityImageGallery
-        images={gallery.images}
-        onAddImages={gallery.addImages}
-        onRemoveImage={gallery.removeImage}
-        isUploading={gallery.isLoading}
-      />
+      {!isCreating && (
+        <MunicipalityImageGallery
+          images={gallery.images}
+          onAddImages={gallery.addImages}
+          onRemoveImage={gallery.removeImage}
+          isUploading={gallery.isLoading}
+        />
+      )}
 
       <hr />
 
       {/* DADOS DO MUNICÍPIO */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Input type="hidden" {...register("id", { value: municipio.id })} />
+        {!isCreating && (
+          <Input type="hidden" {...register("id", { value: municipio.id })} />
+        )}
 
         <div>
           <Label>Nome</Label>
@@ -111,7 +117,7 @@ export function MunicipalityForm({ municipio }: MunicipalityFormProps) {
         {isSubmitting ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          "Salvar Todas as Alterações"
+          isCreating ? "Criar Município" : "Salvar Alterações"
         )}
       </Button>
     </form>

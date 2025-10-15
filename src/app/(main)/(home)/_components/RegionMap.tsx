@@ -116,7 +116,7 @@ export default function RegionMap({
       />
 
       {/* Malha dos municípios (GeoJSON) */}
-      {geoJsonAltamogiana && <GeoJSON data={geoJsonAltamogiana} style={geoJsonStyleAlta} />}
+      {/* {geoJsonAltamogiana && <GeoJSON data={geoJsonAltamogiana} style={geoJsonStyleAlta} />} */}
       {geoJsonAdetur && <GeoJSON data={geoJsonAdetur} style={geoJsonStyleAdetur} />}
 
       {/* Pins dos municípios */}

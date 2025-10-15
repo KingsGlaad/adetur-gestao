@@ -25,13 +25,13 @@ const municipalitySchema = z.object({
 
 type MunicipalityFormValues = z.infer<typeof municipalitySchema>;
 
-export function useMunicipalityForm(municipio: MunicipalityRefined) {
+export function useMunicipalityForm(municipio: MunicipalityRefined | null) {
   const router = useRouter();
 
   // Estados para as imagens
   const [coatOfArmsFile, setCoatOfArmsFile] = useState<File | null>(null);
   const [coatOfArmsPreview, setCoatOfArmsPreview] = useState<string | null>(
-    municipio.coatOfArms || null
+    municipio?.coatOfArms || null
   );
   const [galleryImages, setGalleryImages] = useState<MunicipalityImage[]>([]);
   const [isGalleryLoading, setIsGalleryLoading] = useState(true);
@@ -40,11 +40,11 @@ export function useMunicipalityForm(municipio: MunicipalityRefined) {
   const form = useForm<MunicipalityFormValues>({
     resolver: zodResolver(municipalitySchema),
     defaultValues: {
-      name: municipio.name,
-      description: municipio.description ?? "",
-      about: municipio.about ?? "",
-      latitude: municipio.latitude ?? undefined,
-      longitude: municipio.longitude ?? undefined,
+      name: municipio?.name ?? "",
+      description: municipio?.description ?? "",
+      about: municipio?.about ?? "",
+      latitude: municipio?.latitude ?? undefined,
+      longitude: municipio?.longitude ?? undefined,
     },
   });
 
@@ -54,7 +54,7 @@ export function useMunicipalityForm(municipio: MunicipalityRefined) {
       StarterKit.configure({ heading: { levels: [2, 3, 4] } }),
       TipTapLink.configure({ openOnClick: false, autolink: true }),
     ],
-    content: municipio.about,
+    content: municipio?.about ?? "",
     immediatelyRender: false,
     onUpdate: ({ editor }) =>
       form.setValue("about", editor.getHTML(), { shouldValidate: true }),
@@ -62,6 +62,10 @@ export function useMunicipalityForm(municipio: MunicipalityRefined) {
 
   // Lógica para a Galeria de Imagens
   const fetchGallery = async () => {
+    if (!municipio) {
+      setIsGalleryLoading(false);
+      return;
+    }
     setIsGalleryLoading(true);
     try {
       const res = await axios.get(
@@ -76,10 +80,14 @@ export function useMunicipalityForm(municipio: MunicipalityRefined) {
   };
 
   useEffect(() => {
-    fetchGallery();
-  }, [municipio.id]);
+    if (municipio?.id) {
+      fetchGallery();
+    }
+  }, [municipio?.id]);
 
   const handleAddGalleryImages = async (files: FileList) => {
+    if (!municipio) return;
+
     const formData = new FormData();
     Array.from(files).forEach((file) => formData.append("files", file));
     try {
@@ -95,6 +103,8 @@ export function useMunicipalityForm(municipio: MunicipalityRefined) {
   };
 
   const handleRemoveGalleryImage = async (imageId: string) => {
+    if (!municipio) return;
+
     try {
       await axios.delete(
         `/api/cities/${municipio.slug}/${municipio.id}/gallery`,
@@ -111,22 +121,36 @@ export function useMunicipalityForm(municipio: MunicipalityRefined) {
 
   // Lógica de Submissão Principal
   const onSubmit: SubmitHandler<MunicipalityFormValues> = async (data) => {
+    const isCreating = !municipio;
+
     try {
-      // 1. Atualiza os dados de texto
-      await axios.put(`/api/cities/${municipio.slug}`, data);
+      let response;
+      if (isCreating) {
+        // 1. Cria o município com os dados de texto
+        response = await axios.post(`/api/cities`, data);
+      } else {
+        // 1. Atualiza os dados de texto
+        response = await axios.put(`/api/cities/${municipio.slug}`, data);
+      }
+
+      const savedMunicipality = response.data;
 
       // 2. Se houver um novo ficheiro de brasão, faz o upload
       if (coatOfArmsFile) {
         const formData = new FormData();
         formData.append("file", coatOfArmsFile);
         formData.append("name", data.name);
-        await axios.post(
-          `/api/cities/${municipio.slug}/${municipio.id}/coatofarms`,
+        // A rota de upload precisa ser ajustada para receber o ID
+        await axios.put(
+          `/api/cities/${savedMunicipality.slug}/${savedMunicipality.id}/coatofarms`,
           formData
         );
       }
 
-      toast.success("Município atualizado com sucesso!");
+      toast.success(
+        `Município ${isCreating ? "criado" : "atualizado"} com sucesso!`
+      );
+      router.push("/admin/cities");
       router.refresh();
     } catch (error) {
       toast.error("Erro ao atualizar o município.");

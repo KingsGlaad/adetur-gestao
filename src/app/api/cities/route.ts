@@ -46,6 +46,16 @@ async function fetchIbgeCode(municipalityName: string): Promise<string | null> {
   }
 }
 
+function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-") // Substitui espaços por -
+    .replace(/[^\w\-]+/g, "") // Remove caracteres não alfanuméricos (exceto -)
+    .replace(/\-\-+/g, "-"); // Substitui múltiplos - por um único -
+}
+
 export async function PUT(req: NextRequest) {
   const data = await req.json();
 
@@ -70,32 +80,27 @@ export async function PUT(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
   try {
-    const name = req.nextUrl.searchParams.get("name");
+    const data = await req.json();
 
-    if (!name) {
-      return NextResponse.json(
-        { error: "Parâmetro 'name' é obrigatório." },
-        { status: 400 }
-      );
-    }
+    // Busca automaticamente o código do IBGE com base no nome do município
+    const ibgeCode = await fetchIbgeCode(data.name);
+    const slug = slugify(data.name);
 
-    const existingMunicipality = await prisma.municipality.findUnique({
-      where: { slug: name }, // se o slug for diferente de name, troque aqui
+    const municipio = await prisma.municipality.create({
+      data: {
+        name: data.name,
+        slug: slug,
+        description: data.description,
+        about: data.about,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        ibgeCode: ibgeCode, // Salva o código do IBGE na base de dados
+      },
     });
 
-    if (!existingMunicipality) {
-      return NextResponse.json(
-        { error: "Município não encontrado." },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(existingMunicipality);
+    return NextResponse.json(municipio);
   } catch (error) {
-    console.error("Erro ao buscar município:", error);
-    return NextResponse.json(
-      { error: "Erro ao buscar município." },
-      { status: 500 }
-    );
+    console.error("Erro ao criar município:", error);
+    return NextResponse.json({ error: "Erro ao criar município." }, { status: 500 });
   }
 }

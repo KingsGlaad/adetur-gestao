@@ -18,9 +18,9 @@ function sanitizeMunicipalityName(name: string): string {
 }
 
 /**
- * POST - Upload de brasão (substitui se já existir)
+ * PUT - Upload de brasão (cria ou substitui)
  */
-export async function POST(
+export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -89,7 +89,7 @@ export async function POST(
       .from(BUCKET_NAME)
       .upload(filePath, compressedBuffer, {
         contentType: "image/webp",
-        upsert: false,
+        upsert: true, // Usar upsert é mais seguro aqui
       });
 
     if (uploadError) {
@@ -125,7 +125,7 @@ export async function POST(
  */
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const { id: municipalityId } = await params;
@@ -172,4 +172,5 @@ export async function DELETE(
       { status: 500 }
     );
   }
+  // ... (código do DELETE permanece o mesmo, mas agora neste arquivo)
 }

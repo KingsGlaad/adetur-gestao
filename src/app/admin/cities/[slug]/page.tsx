@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { MunicipalityForm } from "./_components/MunicipalityForm";
+import { MunicipalityForm } from "../_components/MunicipalityForm";
 
 export default async function EditPage({
   params,

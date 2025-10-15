@@ -60,7 +60,7 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
       
         <section
           id="mapa"
-          className="flex flex-col lg:flex-row min-h-[calc(100vh-4rem)] bg-white text-neutral-900"
+          className="flex flex-col lg:flex-row min-h-[calc(100vh-4rem)] bg-white text-neutral-900 mt-12"
         >
           {/* Lista */}
           <div className="w-full lg:w-2/5 lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto">

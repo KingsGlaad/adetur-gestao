@@ -79,3 +79,24 @@ export async function GET(
     );
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  try {
+    const slug = (await params).slug;
+
+    const municipio = await prisma.municipality.delete({
+      where: { slug },
+    });
+
+    return NextResponse.json(municipio);
+  } catch (error) {
+    console.error("Erro ao deletar município:", error);
+    return NextResponse.json(
+      { error: "Erro ao deletar município." },
+      { status: 500 }
+    );
+  }
+}

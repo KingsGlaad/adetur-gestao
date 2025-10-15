@@ -7,11 +7,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react";
+import { Edit, Eye, Loader2, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { MunicipioDrawer } from "./municipality-drawer";
 import { useState } from "react";
 import { MunicipalityRefined } from "@/types/municipality";
+import axios from "axios";
+import { toast } from "sonner";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 interface MunicipioActionsProps {
   municipio: MunicipalityRefined;
@@ -19,6 +22,7 @@ interface MunicipioActionsProps {
 
 export function MunicipioActions({ municipio }: MunicipioActionsProps) {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter(); // adicionado
 
   const handleView = () => {
@@ -29,8 +33,17 @@ export function MunicipioActions({ municipio }: MunicipioActionsProps) {
     router.push(`/admin/cities/${municipio.slug}`);
   };
 
-  const handleDelete = (id: string) => {
-    alert(`Excluindo município ID: ${id}`);
+   const onDelete = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/cities/${municipio.slug}`);
+      toast.success("Município excluído.");
+      router.refresh(); // Recarrega a página atual para refletir as mudanças
+    } catch (error) {
+      toast.error("Ocorreu um erro ao excluir o município.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,13 +67,31 @@ export function MunicipioActions({ municipio }: MunicipioActionsProps) {
             Editar
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => handleDelete(municipio.id)}
-            className="text-destructive focus:text-destructive"
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Excluir
-          </DropdownMenuItem>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive hover:bg-destructive/10"
+                onSelect={(e) => e.preventDefault()}
+              >
+                {loading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Trash className="mr-2 h-4 w-4 text-destructive" />
+                )}
+                Excluir
+              </DropdownMenuItem>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+                <AlertDialogDescription>Esta ação não pode ser desfeita e excluirá permanentemente o município e todos os seus dados associados.</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogAction onClick={onDelete} className="bg-red-500 hover:bg-red-400 cursor-pointer">Excluir</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </DropdownMenuContent>
       </DropdownMenu>
 
