@@ -69,6 +69,7 @@ const MapPinIcon: FC<ComponentProps<"svg">> = (props) => (
 const quickLinks = [
   { href: "/", label: "Início" },
   { href: "/quem-somos", label: "Quem Somos" },
+  { href: "#blog", label: "Notícias" },
   { href: "/municipios", label: "Municípios" },
   { href: "/historia", label: "História" },
   { href: "/contato", label: "Faça parte" },

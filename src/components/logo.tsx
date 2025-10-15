@@ -1,27 +1,21 @@
-import darkLogo from "@/assets/logos/dark.svg";
-import logo from "@/assets/logos/main.svg";
 import Image from "next/image";
 
 export function Logo() {
   return (
-    <div className="relative h-8 max-w-[10.847rem]">
+    <div className="flex items-center gap-2">
       <Image
-        src={logo}
-        fill
-        className="dark:hidden"
-        alt="NextAdmin logo"
-        role="presentation"
+        src="/logo.png"
+        width={100}
+        height={100}
+        alt="ADETUR Logo"
         quality={100}
       />
-
-      <Image
-        src={darkLogo}
-        fill
-        className="hidden dark:block"
-        alt="NextAdmin logo"
-        role="presentation"
-        quality={100}
-      />
+      <div className="flex flex-col">
+        <span className="text-xl font-bold">ADETUR</span>
+        <span className="text-sm text-secondary">
+          Alta Mogiana
+        </span>
+      </div>
     </div>
   );
 }

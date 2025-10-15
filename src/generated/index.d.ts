@@ -1675,37 +1675,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type UserCountOutputType
-   */
-
-  export type UserCountOutputType = {
-    posts: number
-  }
-
-  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    posts?: boolean | UserCountOutputTypeCountPostsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserCountOutputType
-     */
-    select?: UserCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PostWhereInput
-  }
-
-
-  /**
    * Count Type MunicipalityCountOutputType
    */
 
@@ -2052,8 +2021,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     municipality?: boolean | User$municipalityArgs<ExtArgs>
-    posts?: boolean | User$postsArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2100,8 +2067,6 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clerkId" | "name" | "email" | "emailVerified" | "password" | "image" | "municipalityId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     municipality?: boolean | User$municipalityArgs<ExtArgs>
-    posts?: boolean | User$postsArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     municipality?: boolean | User$municipalityArgs<ExtArgs>
@@ -2114,7 +2079,6 @@ export namespace Prisma {
     name: "User"
     objects: {
       municipality: Prisma.$MunicipalityPayload<ExtArgs> | null
-      posts: Prisma.$PostPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2522,7 +2486,6 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     municipality<T extends User$municipalityArgs<ExtArgs> = {}>(args?: Subset<T, User$municipalityArgs<ExtArgs>>): Prisma__MunicipalityClient<$Result.GetResult<Prisma.$MunicipalityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    posts<T extends User$postsArgs<ExtArgs> = {}>(args?: Subset<T, User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2974,30 +2937,6 @@ export namespace Prisma {
      */
     include?: MunicipalityInclude<ExtArgs> | null
     where?: MunicipalityWhereInput
-  }
-
-  /**
-   * User.posts
-   */
-  export type User$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Post
-     */
-    select?: PostSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Post
-     */
-    omit?: PostOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
-    where?: PostWhereInput
-    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
-    cursor?: PostWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
   }
 
   /**
@@ -12014,9 +11953,10 @@ export namespace Prisma {
   export type PostMinAggregateOutputType = {
     id: string | null
     title: string | null
+    subtitle: string | null
+    slug: string | null
     content: string | null
     coverImage: string | null
-    authorId: string | null
     published: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -12025,9 +11965,10 @@ export namespace Prisma {
   export type PostMaxAggregateOutputType = {
     id: string | null
     title: string | null
+    subtitle: string | null
+    slug: string | null
     content: string | null
     coverImage: string | null
-    authorId: string | null
     published: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -12036,9 +11977,10 @@ export namespace Prisma {
   export type PostCountAggregateOutputType = {
     id: number
     title: number
+    subtitle: number
+    slug: number
     content: number
     coverImage: number
-    authorId: number
     published: number
     createdAt: number
     updatedAt: number
@@ -12049,9 +11991,10 @@ export namespace Prisma {
   export type PostMinAggregateInputType = {
     id?: true
     title?: true
+    subtitle?: true
+    slug?: true
     content?: true
     coverImage?: true
-    authorId?: true
     published?: true
     createdAt?: true
     updatedAt?: true
@@ -12060,9 +12003,10 @@ export namespace Prisma {
   export type PostMaxAggregateInputType = {
     id?: true
     title?: true
+    subtitle?: true
+    slug?: true
     content?: true
     coverImage?: true
-    authorId?: true
     published?: true
     createdAt?: true
     updatedAt?: true
@@ -12071,9 +12015,10 @@ export namespace Prisma {
   export type PostCountAggregateInputType = {
     id?: true
     title?: true
+    subtitle?: true
+    slug?: true
     content?: true
     coverImage?: true
-    authorId?: true
     published?: true
     createdAt?: true
     updatedAt?: true
@@ -12155,9 +12100,10 @@ export namespace Prisma {
   export type PostGroupByOutputType = {
     id: string
     title: string
+    subtitle: string | null
+    slug: string
     content: string
     coverImage: string | null
-    authorId: string
     published: boolean
     createdAt: Date
     updatedAt: Date
@@ -12183,72 +12129,63 @@ export namespace Prisma {
   export type PostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    subtitle?: boolean
+    slug?: boolean
     content?: boolean
     coverImage?: boolean
-    authorId?: boolean
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    subtitle?: boolean
+    slug?: boolean
     content?: boolean
     coverImage?: boolean
-    authorId?: boolean
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    subtitle?: boolean
+    slug?: boolean
     content?: boolean
     coverImage?: boolean
-    authorId?: boolean
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectScalar = {
     id?: boolean
     title?: boolean
+    subtitle?: boolean
+    slug?: boolean
     content?: boolean
     coverImage?: boolean
-    authorId?: boolean
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "coverImage" | "authorId" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
-  export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type PostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "subtitle" | "slug" | "content" | "coverImage" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
 
   export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Post"
-    objects: {
-      author: Prisma.$UserPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
+      subtitle: string | null
+      slug: string
       content: string
       coverImage: string | null
-      authorId: string
       published: boolean
       createdAt: Date
       updatedAt: Date
@@ -12646,7 +12583,6 @@ export namespace Prisma {
    */
   export interface Prisma__PostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12678,9 +12614,10 @@ export namespace Prisma {
   interface PostFieldRefs {
     readonly id: FieldRef<"Post", 'String'>
     readonly title: FieldRef<"Post", 'String'>
+    readonly subtitle: FieldRef<"Post", 'String'>
+    readonly slug: FieldRef<"Post", 'String'>
     readonly content: FieldRef<"Post", 'String'>
     readonly coverImage: FieldRef<"Post", 'String'>
-    readonly authorId: FieldRef<"Post", 'String'>
     readonly published: FieldRef<"Post", 'Boolean'>
     readonly createdAt: FieldRef<"Post", 'DateTime'>
     readonly updatedAt: FieldRef<"Post", 'DateTime'>
@@ -12701,10 +12638,6 @@ export namespace Prisma {
      */
     omit?: PostOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
-    /**
      * Filter, which Post to fetch.
      */
     where: PostWhereUniqueInput
@@ -12723,10 +12656,6 @@ export namespace Prisma {
      */
     omit?: PostOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
-    /**
      * Filter, which Post to fetch.
      */
     where: PostWhereUniqueInput
@@ -12744,10 +12673,6 @@ export namespace Prisma {
      * Omit specific fields from the Post
      */
     omit?: PostOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
     /**
      * Filter, which Post to fetch.
      */
@@ -12797,10 +12722,6 @@ export namespace Prisma {
      */
     omit?: PostOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
-    /**
      * Filter, which Post to fetch.
      */
     where?: PostWhereInput
@@ -12849,10 +12770,6 @@ export namespace Prisma {
      */
     omit?: PostOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
-    /**
      * Filter, which Posts to fetch.
      */
     where?: PostWhereInput
@@ -12896,10 +12813,6 @@ export namespace Prisma {
      */
     omit?: PostOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
-    /**
      * The data needed to create a Post.
      */
     data: XOR<PostCreateInput, PostUncheckedCreateInput>
@@ -12933,10 +12846,6 @@ export namespace Prisma {
      */
     data: PostCreateManyInput | PostCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -12951,10 +12860,6 @@ export namespace Prisma {
      * Omit specific fields from the Post
      */
     omit?: PostOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
     /**
      * The data needed to update a Post.
      */
@@ -13007,10 +12912,6 @@ export namespace Prisma {
      * Limit how many Posts to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -13025,10 +12926,6 @@ export namespace Prisma {
      * Omit specific fields from the Post
      */
     omit?: PostOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
     /**
      * The filter to search for the Post to update in case it exists.
      */
@@ -13055,10 +12952,6 @@ export namespace Prisma {
      * Omit specific fields from the Post
      */
     omit?: PostOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
     /**
      * Filter which Post to delete.
      */
@@ -13091,10 +12984,6 @@ export namespace Prisma {
      * Omit specific fields from the Post
      */
     omit?: PostOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PostInclude<ExtArgs> | null
   }
 
 
@@ -13237,9 +13126,10 @@ export namespace Prisma {
   export const PostScalarFieldEnum: {
     id: 'id',
     title: 'title',
+    subtitle: 'subtitle',
+    slug: 'slug',
     content: 'content',
     coverImage: 'coverImage',
-    authorId: 'authorId',
     published: 'published',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -13358,7 +13248,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     municipality?: XOR<MunicipalityNullableScalarRelationFilter, MunicipalityWhereInput> | null
-    posts?: PostListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -13373,7 +13262,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     municipality?: MunicipalityOrderByWithRelationInput
-    posts?: PostOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -13391,7 +13279,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     municipality?: XOR<MunicipalityNullableScalarRelationFilter, MunicipalityWhereInput> | null
-    posts?: PostListRelationFilter
   }, "id" | "clerkId" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -13987,48 +13874,49 @@ export namespace Prisma {
     NOT?: PostWhereInput | PostWhereInput[]
     id?: StringFilter<"Post"> | string
     title?: StringFilter<"Post"> | string
+    subtitle?: StringNullableFilter<"Post"> | string | null
+    slug?: StringFilter<"Post"> | string
     content?: StringFilter<"Post"> | string
     coverImage?: StringNullableFilter<"Post"> | string | null
-    authorId?: StringFilter<"Post"> | string
     published?: BoolFilter<"Post"> | boolean
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
-    author?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type PostOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrderInput | SortOrder
+    slug?: SortOrder
     content?: SortOrder
     coverImage?: SortOrderInput | SortOrder
-    authorId?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    author?: UserOrderByWithRelationInput
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    slug?: string
     AND?: PostWhereInput | PostWhereInput[]
     OR?: PostWhereInput[]
     NOT?: PostWhereInput | PostWhereInput[]
     title?: StringFilter<"Post"> | string
+    subtitle?: StringNullableFilter<"Post"> | string | null
     content?: StringFilter<"Post"> | string
     coverImage?: StringNullableFilter<"Post"> | string | null
-    authorId?: StringFilter<"Post"> | string
     published?: BoolFilter<"Post"> | boolean
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
-    author?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+  }, "id" | "slug">
 
   export type PostOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrderInput | SortOrder
+    slug?: SortOrder
     content?: SortOrder
     coverImage?: SortOrderInput | SortOrder
-    authorId?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14043,9 +13931,10 @@ export namespace Prisma {
     NOT?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Post"> | string
     title?: StringWithAggregatesFilter<"Post"> | string
+    subtitle?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    slug?: StringWithAggregatesFilter<"Post"> | string
     content?: StringWithAggregatesFilter<"Post"> | string
     coverImage?: StringNullableWithAggregatesFilter<"Post"> | string | null
-    authorId?: StringWithAggregatesFilter<"Post"> | string
     published?: BoolWithAggregatesFilter<"Post"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
@@ -14062,7 +13951,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     municipality?: MunicipalityCreateNestedOneWithoutUsersInput
-    posts?: PostCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -14076,7 +13964,6 @@ export namespace Prisma {
     municipalityId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUpdateInput = {
@@ -14090,7 +13977,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     municipality?: MunicipalityUpdateOneWithoutUsersNestedInput
-    posts?: PostUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -14104,7 +13990,6 @@ export namespace Prisma {
     municipalityId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -14747,20 +14632,22 @@ export namespace Prisma {
   export type PostCreateInput = {
     id?: string
     title: string
+    subtitle?: string | null
+    slug: string
     content: string
     coverImage?: string | null
     published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    author: UserCreateNestedOneWithoutPostsInput
   }
 
   export type PostUncheckedCreateInput = {
     id?: string
     title: string
+    subtitle?: string | null
+    slug: string
     content: string
     coverImage?: string | null
-    authorId: string
     published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14769,20 +14656,22 @@ export namespace Prisma {
   export type PostUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    author?: UserUpdateOneRequiredWithoutPostsNestedInput
   }
 
   export type PostUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
-    authorId?: StringFieldUpdateOperationsInput | string
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14791,9 +14680,10 @@ export namespace Prisma {
   export type PostCreateManyInput = {
     id?: string
     title: string
+    subtitle?: string | null
+    slug: string
     content: string
     coverImage?: string | null
-    authorId: string
     published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14802,6 +14692,8 @@ export namespace Prisma {
   export type PostUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -14812,9 +14704,10 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
-    authorId?: StringFieldUpdateOperationsInput | string
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14877,19 +14770,9 @@ export namespace Prisma {
     isNot?: MunicipalityWhereInput | null
   }
 
-  export type PostListRelationFilter = {
-    every?: PostWhereInput
-    some?: PostWhereInput
-    none?: PostWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
-  }
-
-  export type PostOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -15394,17 +15277,13 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type PostCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrder
+    slug?: SortOrder
     content?: SortOrder
     coverImage?: SortOrder
-    authorId?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15413,9 +15292,10 @@ export namespace Prisma {
   export type PostMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrder
+    slug?: SortOrder
     content?: SortOrder
     coverImage?: SortOrder
-    authorId?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15424,9 +15304,10 @@ export namespace Prisma {
   export type PostMinOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    subtitle?: SortOrder
+    slug?: SortOrder
     content?: SortOrder
     coverImage?: SortOrder
-    authorId?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15444,20 +15325,6 @@ export namespace Prisma {
     create?: XOR<MunicipalityCreateWithoutUsersInput, MunicipalityUncheckedCreateWithoutUsersInput>
     connectOrCreate?: MunicipalityCreateOrConnectWithoutUsersInput
     connect?: MunicipalityWhereUniqueInput
-  }
-
-  export type PostCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
-    createMany?: PostCreateManyAuthorInputEnvelope
-    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
-  }
-
-  export type PostUncheckedCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
-    createMany?: PostCreateManyAuthorInputEnvelope
-    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15484,34 +15351,6 @@ export namespace Prisma {
     delete?: MunicipalityWhereInput | boolean
     connect?: MunicipalityWhereUniqueInput
     update?: XOR<XOR<MunicipalityUpdateToOneWithWhereWithoutUsersInput, MunicipalityUpdateWithoutUsersInput>, MunicipalityUncheckedUpdateWithoutUsersInput>
-  }
-
-  export type PostUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
-    upsert?: PostUpsertWithWhereUniqueWithoutAuthorInput | PostUpsertWithWhereUniqueWithoutAuthorInput[]
-    createMany?: PostCreateManyAuthorInputEnvelope
-    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
-    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
-    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
-    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
-    update?: PostUpdateWithWhereUniqueWithoutAuthorInput | PostUpdateWithWhereUniqueWithoutAuthorInput[]
-    updateMany?: PostUpdateManyWithWhereWithoutAuthorInput | PostUpdateManyWithWhereWithoutAuthorInput[]
-    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
-  }
-
-  export type PostUncheckedUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
-    upsert?: PostUpsertWithWhereUniqueWithoutAuthorInput | PostUpsertWithWhereUniqueWithoutAuthorInput[]
-    createMany?: PostCreateManyAuthorInputEnvelope
-    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
-    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
-    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
-    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
-    update?: PostUpdateWithWhereUniqueWithoutAuthorInput | PostUpdateWithWhereUniqueWithoutAuthorInput[]
-    updateMany?: PostUpdateManyWithWhereWithoutAuthorInput | PostUpdateManyWithWhereWithoutAuthorInput[]
-    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
   export type UserCreateNestedManyWithoutMunicipalityInput = {
@@ -15965,22 +15804,8 @@ export namespace Prisma {
     update?: XOR<XOR<MunicipalityUpdateToOneWithWhereWithoutGuidesInput, MunicipalityUpdateWithoutGuidesInput>, MunicipalityUncheckedUpdateWithoutGuidesInput>
   }
 
-  export type UserCreateNestedOneWithoutPostsInput = {
-    create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPostsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
-  }
-
-  export type UserUpdateOneRequiredWithoutPostsNestedInput = {
-    create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPostsInput
-    upsert?: UserUpsertWithoutPostsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostsInput, UserUpdateWithoutPostsInput>, UserUncheckedUpdateWithoutPostsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -16200,36 +16025,6 @@ export namespace Prisma {
     create: XOR<MunicipalityCreateWithoutUsersInput, MunicipalityUncheckedCreateWithoutUsersInput>
   }
 
-  export type PostCreateWithoutAuthorInput = {
-    id?: string
-    title: string
-    content: string
-    coverImage?: string | null
-    published?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type PostUncheckedCreateWithoutAuthorInput = {
-    id?: string
-    title: string
-    content: string
-    coverImage?: string | null
-    published?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type PostCreateOrConnectWithoutAuthorInput = {
-    where: PostWhereUniqueInput
-    create: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput>
-  }
-
-  export type PostCreateManyAuthorInputEnvelope = {
-    data: PostCreateManyAuthorInput | PostCreateManyAuthorInput[]
-    skipDuplicates?: boolean
-  }
-
   export type MunicipalityUpsertWithoutUsersInput = {
     update: XOR<MunicipalityUpdateWithoutUsersInput, MunicipalityUncheckedUpdateWithoutUsersInput>
     create: XOR<MunicipalityCreateWithoutUsersInput, MunicipalityUncheckedCreateWithoutUsersInput>
@@ -16279,36 +16074,6 @@ export namespace Prisma {
     images?: MunicipalityImageUncheckedUpdateManyWithoutMunicipalityNestedInput
   }
 
-  export type PostUpsertWithWhereUniqueWithoutAuthorInput = {
-    where: PostWhereUniqueInput
-    update: XOR<PostUpdateWithoutAuthorInput, PostUncheckedUpdateWithoutAuthorInput>
-    create: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput>
-  }
-
-  export type PostUpdateWithWhereUniqueWithoutAuthorInput = {
-    where: PostWhereUniqueInput
-    data: XOR<PostUpdateWithoutAuthorInput, PostUncheckedUpdateWithoutAuthorInput>
-  }
-
-  export type PostUpdateManyWithWhereWithoutAuthorInput = {
-    where: PostScalarWhereInput
-    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutAuthorInput>
-  }
-
-  export type PostScalarWhereInput = {
-    AND?: PostScalarWhereInput | PostScalarWhereInput[]
-    OR?: PostScalarWhereInput[]
-    NOT?: PostScalarWhereInput | PostScalarWhereInput[]
-    id?: StringFilter<"Post"> | string
-    title?: StringFilter<"Post"> | string
-    content?: StringFilter<"Post"> | string
-    coverImage?: StringNullableFilter<"Post"> | string | null
-    authorId?: StringFilter<"Post"> | string
-    published?: BoolFilter<"Post"> | boolean
-    createdAt?: DateTimeFilter<"Post"> | Date | string
-    updatedAt?: DateTimeFilter<"Post"> | Date | string
-  }
-
   export type UserCreateWithoutMunicipalityInput = {
     id?: string
     clerkId?: string | null
@@ -16319,7 +16084,6 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    posts?: PostCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutMunicipalityInput = {
@@ -16332,7 +16096,6 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutMunicipalityInput = {
@@ -17350,114 +17113,6 @@ export namespace Prisma {
     images?: MunicipalityImageUncheckedUpdateManyWithoutMunicipalityNestedInput
   }
 
-  export type UserCreateWithoutPostsInput = {
-    id?: string
-    clerkId?: string | null
-    name?: string | null
-    email: string
-    emailVerified?: Date | string | null
-    password?: string | null
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    municipality?: MunicipalityCreateNestedOneWithoutUsersInput
-  }
-
-  export type UserUncheckedCreateWithoutPostsInput = {
-    id?: string
-    clerkId?: string | null
-    name?: string | null
-    email: string
-    emailVerified?: Date | string | null
-    password?: string | null
-    image?: string | null
-    municipalityId?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type UserCreateOrConnectWithoutPostsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
-  }
-
-  export type UserUpsertWithoutPostsInput = {
-    update: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
-    create: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutPostsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutPostsInput, UserUncheckedUpdateWithoutPostsInput>
-  }
-
-  export type UserUpdateWithoutPostsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    clerkId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    municipality?: MunicipalityUpdateOneWithoutUsersNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutPostsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    clerkId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    municipalityId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PostCreateManyAuthorInput = {
-    id?: string
-    title: string
-    content: string
-    coverImage?: string | null
-    published?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type PostUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
-    published?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PostUncheckedUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
-    published?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PostUncheckedUpdateManyWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
-    published?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type UserCreateManyMunicipalityInput = {
     id?: string
     clerkId?: string | null
@@ -17527,7 +17182,6 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    posts?: PostUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMunicipalityInput = {
@@ -17540,7 +17194,6 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutMunicipalityInput = {

@@ -11,6 +11,7 @@ export function Header() {
   const navigation = [
     { name: "Quem Somos", href: "/quem-somos" },
     { name: "Municípios", href: "/municipios" },
+    { name: "Notícias", href: "#blog" },
     { name: "História - Alta Mogiana", href: "/historia" },
     { name: "Faça parte", href: "/contato" },
   ];

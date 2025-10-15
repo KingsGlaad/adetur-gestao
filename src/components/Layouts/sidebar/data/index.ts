@@ -32,6 +32,17 @@ export const NAV_DATA = [
           },
         ],
       },
+      {
+        title: "Blog",
+        icon: Icons.BlogIcon,
+        items: [
+          {
+            title: "Posts",
+            url: "/admin/posts",
+          },
+        ],
+
+      }
     ],
   },
 ];

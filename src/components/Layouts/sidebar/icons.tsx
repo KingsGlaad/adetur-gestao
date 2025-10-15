@@ -1,10 +1,14 @@
-import { CastleIcon, ChevronUpIcon } from "lucide-react";
+import { CastleIcon, ChevronUpIcon, FileArchive } from "lucide-react";
 import { SVGProps } from "react";
 
 export type PropsType = SVGProps<SVGSVGElement>;
 
 export function ChevronUp() {
   return <ChevronUpIcon />;
+}
+
+export function BlogIcon() {
+  return <FileArchive/>;
 }
 
 export function CityIcon() {

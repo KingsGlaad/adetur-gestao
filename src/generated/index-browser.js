@@ -218,9 +218,10 @@ exports.Prisma.GuideScalarFieldEnum = {
 exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  subtitle: 'subtitle',
+  slug: 'slug',
   content: 'content',
   coverImage: 'coverImage',
-  authorId: 'authorId',
   published: 'published',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
