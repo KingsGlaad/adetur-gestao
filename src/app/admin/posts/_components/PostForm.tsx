@@ -130,7 +130,7 @@ export function PostForm({ initialData }: PostFormProps) {
       setExistingImage(null);
     }
   };
-
+ 
   const currentImage = imagePreview || existingImage;
 
   return (

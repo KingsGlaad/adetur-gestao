@@ -10,8 +10,6 @@ import {
   Heading2,
   Underline,
   Quote,
-  Undo,
-  Redo,
   Code,
 } from "lucide-react";
 import { Toggle } from "@/components/ui/toggle";
