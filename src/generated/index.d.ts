@@ -339,8 +339,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.16.2
-   * Query Engine version: 1c57fdcd7e44b29b9313256c76699e91c3ac3c43
+   * Prisma Client JS version: 6.17.1
+   * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
    */
   export type PrismaVersion = {
     client: string
@@ -11956,6 +11956,7 @@ export namespace Prisma {
     subtitle: string | null
     slug: string | null
     content: string | null
+    altText: string | null
     coverImage: string | null
     published: boolean | null
     createdAt: Date | null
@@ -11968,6 +11969,7 @@ export namespace Prisma {
     subtitle: string | null
     slug: string | null
     content: string | null
+    altText: string | null
     coverImage: string | null
     published: boolean | null
     createdAt: Date | null
@@ -11980,6 +11982,7 @@ export namespace Prisma {
     subtitle: number
     slug: number
     content: number
+    altText: number
     coverImage: number
     published: number
     createdAt: number
@@ -11994,6 +11997,7 @@ export namespace Prisma {
     subtitle?: true
     slug?: true
     content?: true
+    altText?: true
     coverImage?: true
     published?: true
     createdAt?: true
@@ -12006,6 +12010,7 @@ export namespace Prisma {
     subtitle?: true
     slug?: true
     content?: true
+    altText?: true
     coverImage?: true
     published?: true
     createdAt?: true
@@ -12018,6 +12023,7 @@ export namespace Prisma {
     subtitle?: true
     slug?: true
     content?: true
+    altText?: true
     coverImage?: true
     published?: true
     createdAt?: true
@@ -12103,6 +12109,7 @@ export namespace Prisma {
     subtitle: string | null
     slug: string
     content: string
+    altText: string | null
     coverImage: string | null
     published: boolean
     createdAt: Date
@@ -12132,6 +12139,7 @@ export namespace Prisma {
     subtitle?: boolean
     slug?: boolean
     content?: boolean
+    altText?: boolean
     coverImage?: boolean
     published?: boolean
     createdAt?: boolean
@@ -12144,6 +12152,7 @@ export namespace Prisma {
     subtitle?: boolean
     slug?: boolean
     content?: boolean
+    altText?: boolean
     coverImage?: boolean
     published?: boolean
     createdAt?: boolean
@@ -12156,6 +12165,7 @@ export namespace Prisma {
     subtitle?: boolean
     slug?: boolean
     content?: boolean
+    altText?: boolean
     coverImage?: boolean
     published?: boolean
     createdAt?: boolean
@@ -12168,13 +12178,14 @@ export namespace Prisma {
     subtitle?: boolean
     slug?: boolean
     content?: boolean
+    altText?: boolean
     coverImage?: boolean
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "subtitle" | "slug" | "content" | "coverImage" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "subtitle" | "slug" | "content" | "altText" | "coverImage" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
 
   export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Post"
@@ -12185,6 +12196,7 @@ export namespace Prisma {
       subtitle: string | null
       slug: string
       content: string
+      altText: string | null
       coverImage: string | null
       published: boolean
       createdAt: Date
@@ -12617,6 +12629,7 @@ export namespace Prisma {
     readonly subtitle: FieldRef<"Post", 'String'>
     readonly slug: FieldRef<"Post", 'String'>
     readonly content: FieldRef<"Post", 'String'>
+    readonly altText: FieldRef<"Post", 'String'>
     readonly coverImage: FieldRef<"Post", 'String'>
     readonly published: FieldRef<"Post", 'Boolean'>
     readonly createdAt: FieldRef<"Post", 'DateTime'>
@@ -13129,6 +13142,7 @@ export namespace Prisma {
     subtitle: 'subtitle',
     slug: 'slug',
     content: 'content',
+    altText: 'altText',
     coverImage: 'coverImage',
     published: 'published',
     createdAt: 'createdAt',
@@ -13877,6 +13891,7 @@ export namespace Prisma {
     subtitle?: StringNullableFilter<"Post"> | string | null
     slug?: StringFilter<"Post"> | string
     content?: StringFilter<"Post"> | string
+    altText?: StringNullableFilter<"Post"> | string | null
     coverImage?: StringNullableFilter<"Post"> | string | null
     published?: BoolFilter<"Post"> | boolean
     createdAt?: DateTimeFilter<"Post"> | Date | string
@@ -13889,6 +13904,7 @@ export namespace Prisma {
     subtitle?: SortOrderInput | SortOrder
     slug?: SortOrder
     content?: SortOrder
+    altText?: SortOrderInput | SortOrder
     coverImage?: SortOrderInput | SortOrder
     published?: SortOrder
     createdAt?: SortOrder
@@ -13904,6 +13920,7 @@ export namespace Prisma {
     title?: StringFilter<"Post"> | string
     subtitle?: StringNullableFilter<"Post"> | string | null
     content?: StringFilter<"Post"> | string
+    altText?: StringNullableFilter<"Post"> | string | null
     coverImage?: StringNullableFilter<"Post"> | string | null
     published?: BoolFilter<"Post"> | boolean
     createdAt?: DateTimeFilter<"Post"> | Date | string
@@ -13916,6 +13933,7 @@ export namespace Prisma {
     subtitle?: SortOrderInput | SortOrder
     slug?: SortOrder
     content?: SortOrder
+    altText?: SortOrderInput | SortOrder
     coverImage?: SortOrderInput | SortOrder
     published?: SortOrder
     createdAt?: SortOrder
@@ -13934,6 +13952,7 @@ export namespace Prisma {
     subtitle?: StringNullableWithAggregatesFilter<"Post"> | string | null
     slug?: StringWithAggregatesFilter<"Post"> | string
     content?: StringWithAggregatesFilter<"Post"> | string
+    altText?: StringNullableWithAggregatesFilter<"Post"> | string | null
     coverImage?: StringNullableWithAggregatesFilter<"Post"> | string | null
     published?: BoolWithAggregatesFilter<"Post"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
@@ -14635,6 +14654,7 @@ export namespace Prisma {
     subtitle?: string | null
     slug: string
     content: string
+    altText?: string | null
     coverImage?: string | null
     published?: boolean
     createdAt?: Date | string
@@ -14647,6 +14667,7 @@ export namespace Prisma {
     subtitle?: string | null
     slug: string
     content: string
+    altText?: string | null
     coverImage?: string | null
     published?: boolean
     createdAt?: Date | string
@@ -14659,6 +14680,7 @@ export namespace Prisma {
     subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14671,6 +14693,7 @@ export namespace Prisma {
     subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14683,6 +14706,7 @@ export namespace Prisma {
     subtitle?: string | null
     slug: string
     content: string
+    altText?: string | null
     coverImage?: string | null
     published?: boolean
     createdAt?: Date | string
@@ -14695,6 +14719,7 @@ export namespace Prisma {
     subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14707,6 +14732,7 @@ export namespace Prisma {
     subtitle?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15283,6 +15309,7 @@ export namespace Prisma {
     subtitle?: SortOrder
     slug?: SortOrder
     content?: SortOrder
+    altText?: SortOrder
     coverImage?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder
@@ -15295,6 +15322,7 @@ export namespace Prisma {
     subtitle?: SortOrder
     slug?: SortOrder
     content?: SortOrder
+    altText?: SortOrder
     coverImage?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder
@@ -15307,6 +15335,7 @@ export namespace Prisma {
     subtitle?: SortOrder
     slug?: SortOrder
     content?: SortOrder
+    altText?: SortOrder
     coverImage?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder

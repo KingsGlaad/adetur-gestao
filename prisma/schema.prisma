@@ -129,6 +129,7 @@ model Post {
   subtitle   String?
   slug       String   @unique
   content    String
+  altText    String?
   coverImage String?
   published  Boolean  @default(false)
   createdAt  DateTime @default(now())

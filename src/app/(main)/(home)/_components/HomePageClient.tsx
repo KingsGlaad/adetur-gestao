@@ -20,12 +20,12 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { MunicipalitiesCard } from "@/components/cards/MunicipalitiesCard";
+} from "@/components/ui/tooltip"; 
 import Link from "next/link";
 import { HeroSectionCarousel } from "./Hero-Section";
 
 import { features, tourismSegments, odsGoals } from "@/data/site-data";
+import { NewsSection } from "./NewsSection";
 import { Municipality } from "@/types/municipality";
 import dynamic from "next/dynamic";
 import { StatsBackground } from "./svgs/StatsBackground";
@@ -169,37 +169,7 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
         </section>
       
 
-      
-        <section id="municipios" className="relative overflow-hidden py-5 px-4 sm:px-6 lg:px-8">
-          <div className="relative z-20 py-12">
-             <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-              Municípios Integrados
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {municipalities.map((municipality) => (
-                <MunicipalitiesCard
-                  key={municipality.id}
-                  municipalities={{
-                    id: municipality.id,
-                    name: municipality.name,
-                    slug: municipality.slug ?? null,
-                    coatOfArms: municipality.coatOfArms ?? null,
-                    description: municipality.description ?? null,
-                    highlights: municipality.highlights ?? [],
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="absolute inset-0 z-0" style={parallaxStyle}>
-            <Image
-              src="/bg/bg-municipios2.png"
-              alt="Detalhe de fundo com montanhas"
-              fill
-              className="object-cover object-bottom opacity-55"
-            />
-          </div>
-        </section>
+      <NewsSection />
       
 
       

@@ -29,13 +29,21 @@ async function createUniqueSlug(title: string): Promise<string> {
   return uniqueSlug;
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const limit = searchParams.get("limit");
+
     const posts = await prisma.post.findMany({
+      where: {
+        published: true,
+      },
       orderBy: {
         createdAt: "desc",
       },
+      ...(limit && { take: parseInt(limit, 10) }),
     });
+
     return NextResponse.json(posts);
   } catch (error) {
     console.error("Erro ao buscar notícias:", error);
@@ -61,6 +69,7 @@ export async function POST(req: Request) {
     const title = formData.get("title") as string;
     const subtitle = formData.get("subtitle") as string;
     const content = formData.get("content") as string;
+    const altText = formData.get("altText") as string;
     const published = formData.get("published") === "true";
     const coverImage = formData.get("coverImage") as File | null;
 
@@ -80,6 +89,7 @@ export async function POST(req: Request) {
         subtitle,
         content,
         published,
+        altText,
       },
     });
 

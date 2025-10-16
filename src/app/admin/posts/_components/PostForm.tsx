@@ -23,7 +23,13 @@ import { EditorToolbar } from "./TiptapEditor";
 const postSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
   subtitle: z.string().optional(),
-  content: z.string().min(1, "O conteúdo é obrigatório."),
+  altText: z.string().optional(),
+  content: z
+    .string()
+    .refine(
+      (value) => value.replace(/<p><\/p>/g, "").trim().length > 0,
+      "O conteúdo é obrigatório."
+    ),
   published: z.boolean().default(false),
 });
 
@@ -58,6 +64,7 @@ export function PostForm({ initialData }: PostFormProps) {
       title: initialData?.title || "",
       subtitle: initialData?.subtitle || "",
       content: initialData?.content || "",
+      altText: initialData?.altText || "",
       published: initialData?.published || false,
     },
   });
@@ -99,6 +106,7 @@ export function PostForm({ initialData }: PostFormProps) {
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("subtitle", data.subtitle || "");
+      formData.append("altText", data.altText || "");
       formData.append("content", data.content);
       formData.append("published", String(data.published));
       if (imageFile) {
@@ -154,6 +162,13 @@ export function PostForm({ initialData }: PostFormProps) {
                 className="object-cover rounded-md"
               />
             </div>
+          )}
+        </div>
+        <div>
+          <Label>Créditos da imagem</Label>
+          <Input {...register("altText")} className="mt-1" />
+          {errors.altText && (
+            <p className="text-sm text-red-500 mt-1">{errors.altText.message}</p>
           )}
         </div>
         <div>
