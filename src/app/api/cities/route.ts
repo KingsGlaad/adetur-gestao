@@ -6,6 +6,9 @@ import { auth } from "@clerk/nextjs/server";
 export async function GET() {
   try {
     const municipalities = await prisma.municipality.findMany({
+      where: {
+        active: true,
+      },
       include: {
         highlights: {
           select: {
@@ -59,6 +62,12 @@ function slugify(text: string): string {
 }
 
 export async function PUT(req: NextRequest) {
+
+  const { userId } = await auth();
+  
+      if (!userId) {
+        return new NextResponse("Unauthorized", { status: 401 });
+      }
   const data = await req.json();
 
   // Busca automaticamente o código do IBGE com base no nome do município
@@ -75,6 +84,7 @@ export async function PUT(req: NextRequest) {
       longitude: data.longitude,
       coatOfArms: data.coatOfArms,
       ibgeCode: ibgeCode, // Salva o código do IBGE na base de dados
+      active: data.active ,
     },
   });
 
@@ -102,6 +112,7 @@ export async function POST(req: NextRequest) {
         latitude: data.latitude,
         longitude: data.longitude,
         ibgeCode: ibgeCode, // Salva o código do IBGE na base de dados
+        active: data.active ,
       },
     });
 

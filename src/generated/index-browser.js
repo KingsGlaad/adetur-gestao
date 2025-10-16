@@ -144,7 +144,8 @@ exports.Prisma.MunicipalityScalarFieldEnum = {
   slug: 'slug',
   ibgeCode: 'ibgeCode',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  active: 'active'
 };
 
 exports.Prisma.MunicipalityImageScalarFieldEnum = {

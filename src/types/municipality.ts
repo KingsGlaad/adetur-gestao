@@ -8,6 +8,7 @@ export type Municipality = {
   createdAt: Date;
   cordenates?: { latitude: string; longitude: string } | null;
   highlights?: { title: string; id: string }[] | null;
+  active: boolean;
 };
 
 export type MunicipalityRefined = {
@@ -22,4 +23,5 @@ export type MunicipalityRefined = {
   longitude?: number | null;
   ibgeCode?: string | null;
   highlights?: { title: string; id: string }[] | null;
+  active: boolean;
 };

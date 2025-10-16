@@ -3,6 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { MunicipioActions } from "./actions";
 import { Municipality } from "@/types/municipality";
+import { Badge } from "@/components/ui/badge";
 
 // Função para formatar números com separador de milhares
 export const formatarNumero = (numero: number) => {
@@ -54,7 +55,20 @@ export const columns: ColumnDef<Municipality>[] = [
     },
   },
   {
+    accessorKey: "active",
+    header: "Está ativo?",
+    cell: ({ row }) => {
+      const isActive = row.original.active;
+      return isActive ? (
+        <Badge className="bg-emerald-500 text-white hover:bg-emerald-600">Sim</Badge>
+      ) : (
+        <Badge variant="destructive" >Não</Badge>
+      );
+    },
+  },
+  {
     id: "actions",
+    header: "Ações",
     cell: ({ row }) => {
       const municipio = row.original;
       return <MunicipioActions municipio={municipio} />;

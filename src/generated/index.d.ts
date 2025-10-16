@@ -2992,6 +2992,7 @@ export namespace Prisma {
     ibgeCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    active: boolean | null
   }
 
   export type MunicipalityMaxAggregateOutputType = {
@@ -3006,6 +3007,7 @@ export namespace Prisma {
     ibgeCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    active: boolean | null
   }
 
   export type MunicipalityCountAggregateOutputType = {
@@ -3020,6 +3022,7 @@ export namespace Prisma {
     ibgeCode: number
     createdAt: number
     updatedAt: number
+    active: number
     _all: number
   }
 
@@ -3046,6 +3049,7 @@ export namespace Prisma {
     ibgeCode?: true
     createdAt?: true
     updatedAt?: true
+    active?: true
   }
 
   export type MunicipalityMaxAggregateInputType = {
@@ -3060,6 +3064,7 @@ export namespace Prisma {
     ibgeCode?: true
     createdAt?: true
     updatedAt?: true
+    active?: true
   }
 
   export type MunicipalityCountAggregateInputType = {
@@ -3074,6 +3079,7 @@ export namespace Prisma {
     ibgeCode?: true
     createdAt?: true
     updatedAt?: true
+    active?: true
     _all?: true
   }
 
@@ -3175,6 +3181,7 @@ export namespace Prisma {
     ibgeCode: string | null
     createdAt: Date
     updatedAt: Date
+    active: boolean
     _count: MunicipalityCountAggregateOutputType | null
     _avg: MunicipalityAvgAggregateOutputType | null
     _sum: MunicipalitySumAggregateOutputType | null
@@ -3208,6 +3215,7 @@ export namespace Prisma {
     ibgeCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    active?: boolean
     users?: boolean | Municipality$usersArgs<ExtArgs>
     highlights?: boolean | Municipality$highlightsArgs<ExtArgs>
     attractions?: boolean | Municipality$attractionsArgs<ExtArgs>
@@ -3229,6 +3237,7 @@ export namespace Prisma {
     ibgeCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    active?: boolean
   }, ExtArgs["result"]["municipality"]>
 
   export type MunicipalitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3243,6 +3252,7 @@ export namespace Prisma {
     ibgeCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    active?: boolean
   }, ExtArgs["result"]["municipality"]>
 
   export type MunicipalitySelectScalar = {
@@ -3257,9 +3267,10 @@ export namespace Prisma {
     ibgeCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    active?: boolean
   }
 
-  export type MunicipalityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "coatOfArms" | "latitude" | "longitude" | "about" | "slug" | "ibgeCode" | "createdAt" | "updatedAt", ExtArgs["result"]["municipality"]>
+  export type MunicipalityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "coatOfArms" | "latitude" | "longitude" | "about" | "slug" | "ibgeCode" | "createdAt" | "updatedAt" | "active", ExtArgs["result"]["municipality"]>
   export type MunicipalityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Municipality$usersArgs<ExtArgs>
     highlights?: boolean | Municipality$highlightsArgs<ExtArgs>
@@ -3294,6 +3305,7 @@ export namespace Prisma {
       ibgeCode: string | null
       createdAt: Date
       updatedAt: Date
+      active: boolean
     }, ExtArgs["result"]["municipality"]>
     composites: {}
   }
@@ -3734,6 +3746,7 @@ export namespace Prisma {
     readonly ibgeCode: FieldRef<"Municipality", 'String'>
     readonly createdAt: FieldRef<"Municipality", 'DateTime'>
     readonly updatedAt: FieldRef<"Municipality", 'DateTime'>
+    readonly active: FieldRef<"Municipality", 'Boolean'>
   }
     
 
@@ -13041,7 +13054,8 @@ export namespace Prisma {
     slug: 'slug',
     ibgeCode: 'ibgeCode',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    active: 'active'
   };
 
   export type MunicipalityScalarFieldEnum = (typeof MunicipalityScalarFieldEnum)[keyof typeof MunicipalityScalarFieldEnum]
@@ -13342,6 +13356,7 @@ export namespace Prisma {
     ibgeCode?: StringNullableFilter<"Municipality"> | string | null
     createdAt?: DateTimeFilter<"Municipality"> | Date | string
     updatedAt?: DateTimeFilter<"Municipality"> | Date | string
+    active?: BoolFilter<"Municipality"> | boolean
     users?: UserListRelationFilter
     highlights?: HighlightListRelationFilter
     attractions?: AttractionListRelationFilter
@@ -13362,6 +13377,7 @@ export namespace Prisma {
     ibgeCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    active?: SortOrder
     users?: UserOrderByRelationAggregateInput
     highlights?: HighlightOrderByRelationAggregateInput
     attractions?: AttractionOrderByRelationAggregateInput
@@ -13385,6 +13401,7 @@ export namespace Prisma {
     about?: StringNullableFilter<"Municipality"> | string | null
     createdAt?: DateTimeFilter<"Municipality"> | Date | string
     updatedAt?: DateTimeFilter<"Municipality"> | Date | string
+    active?: BoolFilter<"Municipality"> | boolean
     users?: UserListRelationFilter
     highlights?: HighlightListRelationFilter
     attractions?: AttractionListRelationFilter
@@ -13405,6 +13422,7 @@ export namespace Prisma {
     ibgeCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    active?: SortOrder
     _count?: MunicipalityCountOrderByAggregateInput
     _avg?: MunicipalityAvgOrderByAggregateInput
     _max?: MunicipalityMaxOrderByAggregateInput
@@ -13427,6 +13445,7 @@ export namespace Prisma {
     ibgeCode?: StringNullableWithAggregatesFilter<"Municipality"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Municipality"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Municipality"> | Date | string
+    active?: BoolWithAggregatesFilter<"Municipality"> | boolean
   }
 
   export type MunicipalityImageWhereInput = {
@@ -14061,6 +14080,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionCreateNestedManyWithoutMunicipalityInput
@@ -14081,6 +14101,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserUncheckedCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightUncheckedCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionUncheckedCreateNestedManyWithoutMunicipalityInput
@@ -14101,6 +14122,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUpdateManyWithoutMunicipalityNestedInput
@@ -14121,6 +14143,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUncheckedUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUncheckedUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUncheckedUpdateManyWithoutMunicipalityNestedInput
@@ -14141,6 +14164,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
   }
 
   export type MunicipalityUpdateManyMutationInput = {
@@ -14155,6 +14179,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type MunicipalityUncheckedUpdateManyInput = {
@@ -14169,6 +14194,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type MunicipalityImageCreateInput = {
@@ -14915,6 +14941,11 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type UserListRelationFilter = {
     every?: UserWhereInput
     some?: UserWhereInput
@@ -14987,6 +15018,7 @@ export namespace Prisma {
     ibgeCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    active?: SortOrder
   }
 
   export type MunicipalityAvgOrderByAggregateInput = {
@@ -15006,6 +15038,7 @@ export namespace Prisma {
     ibgeCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    active?: SortOrder
   }
 
   export type MunicipalityMinOrderByAggregateInput = {
@@ -15020,6 +15053,7 @@ export namespace Prisma {
     ibgeCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    active?: SortOrder
   }
 
   export type MunicipalitySumOrderByAggregateInput = {
@@ -15041,6 +15075,14 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type MunicipalityScalarRelationFilter = {
@@ -15298,11 +15340,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type PostCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -15340,14 +15377,6 @@ export namespace Prisma {
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type MunicipalityCreateNestedOneWithoutUsersInput = {
@@ -15472,6 +15501,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type UserUpdateManyWithoutMunicipalityNestedInput = {
@@ -15833,10 +15866,6 @@ export namespace Prisma {
     update?: XOR<XOR<MunicipalityUpdateToOneWithWhereWithoutGuidesInput, MunicipalityUpdateWithoutGuidesInput>, MunicipalityUncheckedUpdateWithoutGuidesInput>
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -15982,6 +16011,11 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -15996,11 +16030,6 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -16023,6 +16052,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     highlights?: HighlightCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionCreateNestedManyWithoutMunicipalityInput
     events?: EventCreateNestedManyWithoutMunicipalityInput
@@ -16042,6 +16072,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     highlights?: HighlightUncheckedCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionUncheckedCreateNestedManyWithoutMunicipalityInput
     events?: EventUncheckedCreateNestedManyWithoutMunicipalityInput
@@ -16077,6 +16108,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     highlights?: HighlightUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUpdateManyWithoutMunicipalityNestedInput
     events?: EventUpdateManyWithoutMunicipalityNestedInput
@@ -16096,6 +16128,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     highlights?: HighlightUncheckedUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUncheckedUpdateManyWithoutMunicipalityNestedInput
     events?: EventUncheckedUpdateManyWithoutMunicipalityNestedInput
@@ -16476,6 +16509,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionCreateNestedManyWithoutMunicipalityInput
@@ -16495,6 +16529,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserUncheckedCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightUncheckedCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionUncheckedCreateNestedManyWithoutMunicipalityInput
@@ -16530,6 +16565,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUpdateManyWithoutMunicipalityNestedInput
@@ -16549,6 +16585,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUncheckedUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUncheckedUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUncheckedUpdateManyWithoutMunicipalityNestedInput
@@ -16592,6 +16629,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionCreateNestedManyWithoutMunicipalityInput
     events?: EventCreateNestedManyWithoutMunicipalityInput
@@ -16611,6 +16649,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserUncheckedCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionUncheckedCreateNestedManyWithoutMunicipalityInput
     events?: EventUncheckedCreateNestedManyWithoutMunicipalityInput
@@ -16673,6 +16712,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUpdateManyWithoutMunicipalityNestedInput
     events?: EventUpdateManyWithoutMunicipalityNestedInput
@@ -16692,6 +16732,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUncheckedUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUncheckedUpdateManyWithoutMunicipalityNestedInput
     events?: EventUncheckedUpdateManyWithoutMunicipalityNestedInput
@@ -16767,6 +16808,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightCreateNestedManyWithoutMunicipalityInput
     events?: EventCreateNestedManyWithoutMunicipalityInput
@@ -16786,6 +16828,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserUncheckedCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightUncheckedCreateNestedManyWithoutMunicipalityInput
     events?: EventUncheckedCreateNestedManyWithoutMunicipalityInput
@@ -16821,6 +16864,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUpdateManyWithoutMunicipalityNestedInput
     events?: EventUpdateManyWithoutMunicipalityNestedInput
@@ -16840,6 +16884,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUncheckedUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUncheckedUpdateManyWithoutMunicipalityNestedInput
     events?: EventUncheckedUpdateManyWithoutMunicipalityNestedInput
@@ -16883,6 +16928,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionCreateNestedManyWithoutMunicipalityInput
@@ -16902,6 +16948,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserUncheckedCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightUncheckedCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionUncheckedCreateNestedManyWithoutMunicipalityInput
@@ -16964,6 +17011,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUpdateManyWithoutMunicipalityNestedInput
@@ -16983,6 +17031,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUncheckedUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUncheckedUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUncheckedUpdateManyWithoutMunicipalityNestedInput
@@ -17062,6 +17111,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionCreateNestedManyWithoutMunicipalityInput
@@ -17081,6 +17131,7 @@ export namespace Prisma {
     ibgeCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    active?: boolean
     users?: UserUncheckedCreateNestedManyWithoutMunicipalityInput
     highlights?: HighlightUncheckedCreateNestedManyWithoutMunicipalityInput
     attractions?: AttractionUncheckedCreateNestedManyWithoutMunicipalityInput
@@ -17116,6 +17167,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUpdateManyWithoutMunicipalityNestedInput
@@ -17135,6 +17187,7 @@ export namespace Prisma {
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    active?: BoolFieldUpdateOperationsInput | boolean
     users?: UserUncheckedUpdateManyWithoutMunicipalityNestedInput
     highlights?: HighlightUncheckedUpdateManyWithoutMunicipalityNestedInput
     attractions?: AttractionUncheckedUpdateManyWithoutMunicipalityNestedInput

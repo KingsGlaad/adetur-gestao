@@ -1,22 +1,32 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  GeoJSON,
+} from "react-leaflet";
 import { LatLngTuple, divIcon } from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MunicipalityRefined } from "@/types/municipality";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 
 const ZOOM = 13;
-const iconMarkup = renderToStaticMarkup(<MapPin className="fill-red-600" />);
+const iconMarkup = renderToStaticMarkup(
+  <MapPin size={32} className="text-red-600 fill-red-500 drop-shadow-lg" />
+);
 const customIcon = divIcon({
   html: iconMarkup,
-  className: "", // Zera a classe para não ter estilos estranhos do Leaflet
-  iconSize: [50, 50],
-  iconAnchor: [16, 32],
+  className: "bg-transparent border-0",
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
 });
+type GeoJsonFeatureCollection = GeoJSON.FeatureCollection<GeoJSON.Geometry>;
 
 function ChangeView({ center, zoom }: { center: LatLngTuple; zoom: number }) {
   const map = useMap();
@@ -37,6 +47,27 @@ export default function MunicipalityMap({
   mapCenter,
   selectedMunicipality,
 }: MunicipalityMapProps) {
+  const [geoJsonAdetur, setGeoJsonAdetur] =
+    useState<GeoJsonFeatureCollection | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    Promise.all([fetch("/adetur.geojson").then((r) => r.json())])
+      .then(([adetur]) => {
+        setGeoJsonAdetur(adetur);
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  const geoJsonStyleAdetur = {
+    color: "#007BFF",
+    weight: 2,
+    fillColor: "#87CEEB",
+    fillOpacity: 0.4,
+  };
+
   const selectedCenter: LatLngTuple =
     selectedMunicipality &&
     typeof selectedMunicipality.latitude === "number" &&
@@ -54,10 +85,25 @@ export default function MunicipalityMap({
       doubleClickZoom={true}
     >
       <ChangeView center={selectedCenter} zoom={ZOOM} />
+      {isLoading && (
+        <div className="absolute inset-0 z-[1000] flex items-center justify-center bg-gray-200/50 backdrop-blur-sm">
+          <Image
+            src="/logo.png"
+            alt="Adetur Logo"
+            width={30}
+            height={30}
+            className="animate-pulse"
+          />
+        </div>
+      )}
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      {geoJsonAdetur && (
+        <GeoJSON data={geoJsonAdetur} style={geoJsonStyleAdetur} />
+      )}
+
       {municipalities.map((municipality) => {
         if (
           typeof municipality.latitude !== "number" ||

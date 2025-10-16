@@ -43,6 +43,7 @@ model Municipality {
   images      MunicipalityImage[]
   createdAt   DateTime            @default(now())
   updatedAt   DateTime            @updatedAt
+  active      Boolean             @default(false)
 }
 
 model MunicipalityImage {

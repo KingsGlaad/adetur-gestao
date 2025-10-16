@@ -21,6 +21,7 @@ const municipalitySchema = z.object({
   latitude: z.number().optional(),
   longitude: z.number().optional(),
   id: z.string().optional(),
+  active: z.boolean().default(false),
 });
 
 type MunicipalityFormValues = z.infer<typeof municipalitySchema>;
@@ -45,6 +46,7 @@ export function useMunicipalityForm(municipio: MunicipalityRefined | null) {
       about: municipio?.about ?? "",
       latitude: municipio?.latitude ?? undefined,
       longitude: municipio?.longitude ?? undefined,
+      active: municipio?.active ?? false,
     },
   });
 

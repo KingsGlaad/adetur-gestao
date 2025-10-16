@@ -52,7 +52,7 @@ export default function RegionMap({
 }: MunicipalityMapProps) {
   const [geoJsonAdetur, setGeoJsonAdetur] =
     useState<GeoJsonFeatureCollection | null>(null);
-    const [geoJsonAltamogiana, setGeoJsonAltamogiana] =
+  const [geoJsonAltamogiana, setGeoJsonAltamogiana] =
     useState<GeoJsonFeatureCollection | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,7 +60,7 @@ export default function RegionMap({
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([      
+    Promise.all([
       fetch("/adetur.geojson").then((r) => r.json()),
       fetch("/altamogiana.geojson").then((r) => r.json()),
     ])
@@ -86,7 +86,7 @@ export default function RegionMap({
     fillOpacity: 0.4,
   };
 
-   const geoJsonStyleAlta = {
+  const geoJsonStyleAlta = {
     color: "#FFD700",
     weight: 2,
     fillColor: "#EDE332",
@@ -106,7 +106,13 @@ export default function RegionMap({
       <ChangeView center={selectedCenter} zoom={ZOOM} />
       {isLoading && (
         <div className="absolute inset-0 z-[1000] flex items-center justify-center bg-gray-200/50 backdrop-blur-sm">
-          <Loader2 className="h-10 w-10 animate-spin text-primary" />
+          <Image
+            src="/logo.png"
+            alt="Adetur Logo"
+            width={30}
+            height={30}
+            className="animate-pulse"
+          />
         </div>
       )}
 
@@ -117,7 +123,9 @@ export default function RegionMap({
 
       {/* Malha dos municípios (GeoJSON) */}
       {/* {geoJsonAltamogiana && <GeoJSON data={geoJsonAltamogiana} style={geoJsonStyleAlta} />} */}
-      {geoJsonAdetur && <GeoJSON data={geoJsonAdetur} style={geoJsonStyleAdetur} />}
+      {geoJsonAdetur && (
+        <GeoJSON data={geoJsonAdetur} style={geoJsonStyleAdetur} />
+      )}
 
       {/* Pins dos municípios */}
       {municipalities.map((municipality) => {

@@ -12,6 +12,8 @@ import { Loader2 } from "lucide-react";
 import { MunicipalityRefined } from "@/types/municipality";
 import { MunicipalityImageGallery } from "./municipality/MunicipalityImageGallery";
 import { TiptapEditor } from "./municipality/TiptapEditor";
+import { Controller } from "react-hook-form";
+import { Switch } from "@/components/ui/switch";
 
 interface MunicipalityFormProps {
   municipio: MunicipalityRefined | null;
@@ -26,6 +28,7 @@ export function MunicipalityForm({ municipio }: MunicipalityFormProps) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = form;
 
@@ -112,6 +115,21 @@ export function MunicipalityForm({ municipio }: MunicipalityFormProps) {
           />
         </div>
       </div>
+
+      <div className="flex items-center space-x-2">
+          <Controller
+            name="active"
+            control={control}
+            render={({ field }) => (
+              <Switch id="active" checked={field.value} onCheckedChange={field.onChange} />
+            )}
+          />
+
+          <Label htmlFor="active">Está ativo?</Label>
+      </div>
+
+              
+       
 
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? (
