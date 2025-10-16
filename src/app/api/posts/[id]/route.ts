@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
+import { auth } from "@clerk/nextjs/server";
 
 const BUCKET_NAME = "adetur-bucket";
 
@@ -24,6 +25,11 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { userId } = await auth();
+    
+        if (!userId) {
+          return new NextResponse("Unauthorized", { status: 401 });
+        }
     const { id } = (await params);
     const formData = await req.formData();
 
@@ -105,6 +111,11 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const { id } = (await params) ;
 
     const post = await prisma.post.findUnique({ where: { id } });

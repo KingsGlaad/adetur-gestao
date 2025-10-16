@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
 import sharp from "sharp";
+import { auth } from "@clerk/nextjs/server";
 
 const BUCKET_NAME = "adetur-bucket";
 
@@ -60,6 +61,11 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { userId } = await auth();
+    
+        if (!userId) {
+          return new NextResponse("Unauthorized", { status: 401 });
+        }
     const municipalityId = (await params).id;
     const formData = await req.formData();
     const files = formData.getAll("files") as File[];
@@ -124,6 +130,12 @@ export async function POST(
  */
 export async function DELETE(req: NextRequest) {
   try {
+
+    const { userId } = await auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const { imageId } = await req.json();
 
     if (!imageId) {

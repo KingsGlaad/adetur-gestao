@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { uploadHightlightImages } from "@/lib/uploadHightlightImages";
+import { auth } from "@clerk/nextjs/server";
 
 // POST: Atualizar a imagem de um destaque
 export async function POST(
@@ -8,6 +9,11 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { userId } = await auth();
+    
+        if (!userId) {
+          return new NextResponse("Unauthorized", { status: 401 });
+        }
     const id = (await params).id;
     const formData = await request.formData();
     const imageFile = formData.get("file") as File;

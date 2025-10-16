@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
+import { auth } from "@clerk/nextjs/server";
 
 // GET: Lista todos os eventos de um município
 export async function GET(req: NextRequest) {
@@ -34,6 +35,11 @@ function sanitizeTitle(name: string): string {
 
 export async function POST(req: NextRequest) {
   try {
+    const { userId } = await auth();
+    
+        if (!userId) {
+          return new NextResponse("Unauthorized", { status: 401 });
+        }
     const formData = await req.formData();
 
     const title = formData.get("title") as string;

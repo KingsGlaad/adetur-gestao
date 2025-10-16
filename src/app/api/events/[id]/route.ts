@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 
 // GET: Lista todos os eventos de um município
 export async function GET(
@@ -26,6 +27,12 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+
+    const { userId } = await auth();
+    
+        if (!userId) {
+          return new NextResponse("Unauthorized", { status: 401 });
+        }
     const data = await req.json();
     const id = (await params).id;
     const updatedEvent = await prisma.event.update({
@@ -49,6 +56,12 @@ export async function PUT(
 // DELETE: Remove um evento
 export async function DELETE(req: NextRequest) {
   try {
+
+    const { userId } = await auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const { id } = await req.json();
     // Lógica para remover a imagem do Supabase antes de apagar o registo
     const event = await prisma.event.findUnique({ where: { id } });

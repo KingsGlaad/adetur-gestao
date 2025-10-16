@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { prisma } from "@/lib/prisma"; // ajuste o path se for diferente
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET() {
   try {
@@ -80,6 +82,11 @@ export async function PUT(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
   try {
+    const { userId } = await auth();
+    
+        if (!userId) {
+          return new NextResponse("Unauthorized", { status: 401 });
+        }
     const data = await req.json();
 
     // Busca automaticamente o código do IBGE com base no nome do município

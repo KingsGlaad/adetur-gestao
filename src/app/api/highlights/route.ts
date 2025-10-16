@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
 import { z } from "zod";
+import { auth } from "@clerk/nextjs/server";
 
 const highlightSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
@@ -55,6 +56,12 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+
+    const { userId } = await auth();
+    
+        if (!userId) {
+          return new NextResponse("Unauthorized", { status: 401 });
+        }
     const formData = await req.formData();
 
     const title = formData.get("title") as string;

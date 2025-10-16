@@ -1,20 +1,20 @@
 import { NextResponse } from "next/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
 
 const BUCKET_NAME = "adetur-bucket";
 
-
 function generateSlug(title: string): string {
   return title
-    .normalize("NFD") 
-    .replace(/[\u0300-\u036f]/g, "") 
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "") 
+    .replace(/[^a-z0-9\s-]/g, "")
     .trim()
-    .replace(/\s+/g, "-") 
-    .replace(/-+/g, "-"); 
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
 }
 
 async function createUniqueSlug(title: string): Promise<string> {
@@ -45,6 +45,18 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const { userId } = await auth();
+    const user = await currentUser();
+
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    if(user?.publicMetadata.role !== "admin") {
+      return new NextResponse("Forbidden", { status: 403 });
+    }
+
     const formData = await req.formData();
     const title = formData.get("title") as string;
     const subtitle = formData.get("subtitle") as string;
@@ -53,7 +65,9 @@ export async function POST(req: Request) {
     const coverImage = formData.get("coverImage") as File | null;
 
     if (!title || !content) {
-      return new NextResponse("Título e conteúdo são obrigatórios", { status: 400 });
+      return new NextResponse("Título e conteúdo são obrigatórios", {
+        status: 400,
+      });
     }
 
     const slug = await createUniqueSlug(title);

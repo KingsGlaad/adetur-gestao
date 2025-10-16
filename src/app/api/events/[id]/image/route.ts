@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
 import path from "path";
+import { auth } from "@clerk/nextjs/server";
 
 const BUCKET_NAME = "adetur-bucket";
 
@@ -10,6 +11,12 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+
+    const { userId } = await auth();
+    
+        if (!userId) {
+          return new NextResponse("Unauthorized", { status: 401 });
+        }
     const eventId = (await params).id;
     const event = await prisma.event.findUnique({ where: { id: eventId } });
 
