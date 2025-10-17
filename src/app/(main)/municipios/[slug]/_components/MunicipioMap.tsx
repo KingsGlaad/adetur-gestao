@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
+import { TileLayer, Marker, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderToStaticMarkup } from "react-dom/server"; 
 import { divIcon } from "leaflet";
-import { MapPin, Eye } from "lucide-react";
+import { MapPin, Eye, MapPinOff, ImageIcon } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -15,7 +15,17 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import Image from "next/image";
-import { Highlight } from "@/types/highligth";
+import { Highlight } from "@/types/highligth"; // Corrigido: caminho e tipo para incluir imagens
+import Link from "next/link";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import {  MunicipalityRefined } from "@/types/municipality";
 
 // Importação dinâmica do MapContainer para evitar problemas de SSR
 const MapContainer = dynamic(
@@ -37,11 +47,7 @@ const customHighlightIcon = divIcon({
 type GeoJsonFeatureCollection = GeoJSON.FeatureCollection<GeoJSON.Geometry>;
 
 interface MunicipioMapProps {
-  municipality: {
-    name: string;
-    latitude: number | null;
-    longitude: number | null;
-  };
+  municipality:MunicipalityRefined;
   highlights: Highlight[];
   geoJsonData: GeoJsonFeatureCollection; // GeoJSON para o contorno do município
 }
@@ -51,9 +57,8 @@ export default function MunicipioMap({
   highlights,
   geoJsonData,
 }: MunicipioMapProps) {
-  const [selectedHighlight, setSelectedHighlight] = useState<Highlight | null>(
-    null
-  );
+  const [selectedHighlight, setSelectedHighlight] =
+    useState<Highlight | null>(null);
 
   console.log(selectedHighlight);
 
@@ -62,9 +67,11 @@ export default function MunicipioMap({
     typeof municipality.longitude !== "number"
   ) {
     return (
-      <div className="w-full h-full bg-slate-200 flex items-center justify-center">
-        <p>Localização indisponível.</p>
-      </div>
+      <div className="w-full h-full bg-slate-100 flex flex-col items-center justify-center text-center p-4">
+        <MapPinOff className="w-16 h-16 text-slate-400 mb-4" strokeWidth={1} />
+        <h3 className="text-lg font-semibold text-slate-600">Localização Indisponível</h3>
+        <p className="text-sm text-slate-500">Não foi possível carregar o mapa para este município.</p>
+      </div> 
     );
   }
 
@@ -123,28 +130,71 @@ export default function MunicipioMap({
         open={!!selectedHighlight}
         onOpenChange={(isOpen) => !isOpen && setSelectedHighlight(null)}
       >
-        <SheetContent className="w-[400px] sm:w-[540px] p-0">
+        <SheetContent className="w-[400px] sm:w-[540px] flex flex-col p-0">
           {selectedHighlight && (
-            <div>
-              <div className="relative w-full h-64">
-                <Image
-                  src={selectedHighlight.images?.[0] || "/images/no-image.jpeg"}
-                  alt={`Imagem de ${selectedHighlight.title}`}
-                  fill
-                  className="object-cover"
-                />
+            <>
+              {/* Seção do Carrossel */}
+              <div className="flex-shrink-0">
+                {selectedHighlight.galleryImages &&
+                selectedHighlight.galleryImages.length > 0 ? (
+                  <Carousel
+                    plugins={[
+                      Autoplay({
+                        delay: 5000,
+                        stopOnInteraction: true,
+                      }),
+                    ]}
+                    opts={{
+                      loop: true,
+                    }}
+                    className="w-full"
+                  >
+                    <CarouselContent>
+                      {selectedHighlight.galleryImages.map((image) => (
+                        <CarouselItem key={image.id}>
+                          <div className="relative w-full h-60">
+                            <Image
+                              src={image.url}
+                              alt={`Imagem de ${selectedHighlight.title}`}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="absolute left-4" />
+                    <CarouselNext className="absolute right-4" />
+                  </Carousel>
+                ) : (
+                  <div className="relative w-full h-60 bg-slate-100 flex flex-col items-center justify-center text-slate-500">
+                    <ImageIcon className="w-12 h-12 text-slate-400 mb-2" strokeWidth={1.5}/>
+                    <p className="text-sm">
+                      Nenhuma imagem disponível
+                    </p>
+                  </div>
+                )}
               </div>
-              <div className="p-6">
+
+              {/* Seção de Conteúdo com Scroll */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 <SheetHeader>
-                  <SheetTitle className="text-2xl">
+                  <SheetTitle className="text-2xl font-bold text-slate-900">
                     {selectedHighlight.title}
                   </SheetTitle>
-                  <SheetDescription className="pt-4 text-base">
-                    {selectedHighlight.description}
-                  </SheetDescription>
                 </SheetHeader>
+                <SheetDescription className="text-base text-slate-600 leading-relaxed">
+                  {selectedHighlight.description}
+                </SheetDescription>
+                <Link
+                  href={`/municipios/highlights/${selectedHighlight.id}`}
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                >
+                  <Eye className="w-4 h-4 mr-2" />
+                  Ver Detalhes
+                </Link>
               </div>
-            </div>
+            </>
           )}
         </SheetContent>
       </Sheet>

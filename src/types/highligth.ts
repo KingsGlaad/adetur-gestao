@@ -12,7 +12,14 @@ export interface Highlight {
   latitude: number | null;
   longitude: number | null;
   createdAt: Date;
-  galleryImages?: { id: string; url: string }[];
+  galleryImages?: HighlightWithImages[] | null;
+}
+
+export interface HighlightWithImages{
+  id: string;
+  url: string;
+  highlightId: string;
+  createdAt: Date;
 }
 
 // Estados de loading

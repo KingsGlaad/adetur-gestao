@@ -94,7 +94,7 @@ export default function Page() {
                 <p className="text-sm text-neutral-300">
                   A ADETUR realiza uma reunião na cidade de Luiz Antônio, na
                   Estação Ecológica Jataí. Durante o encontro, são apresentados
-                  o projeto "TV ALTA MOGIANA" em parceria com a TV Record e um
+                  o projeto &quot;TV ALTA MOGIANA&quot; em parceria com a TV Record e um
                   novo roteiro turístico para a cidade de Tambaú.
                 </p>
               </div>
@@ -158,7 +158,7 @@ export default function Page() {
                   Maio de 2025
                 </h3>
                 <p className="text-sm text-neutral-300">
-                  A agência participa do evento "PRT em Ação", promovido pelo
+                  A agência participa do evento &quot;PRT em Ação&quot;, promovido pelo
                   Ministério do Turismo e pela Secretaria de Turismo e Viagens
                   do Estado de São Paulo, contribuindo com debates e oficinas
                   sobre o desenvolvimento do turismo regional.
@@ -192,7 +192,7 @@ export default function Page() {
               Array.from({ length: 6 }).map((_, idx) => (
                 <MunicipalitiesCardSkeleton key={idx} /> // Usando o novo esqueleto
               ))}
-            {error && <p className="text-red-500">{error}</p>}
+            {error && <div className="text-red-500 bg-white p-4 rounded-lg text-center">{error}</div>}
             {!isLoading &&
               !error &&
               municipalities.map((municipality) => (

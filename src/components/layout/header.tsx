@@ -14,7 +14,7 @@ export function Header() {
     { name: "Notícias", href: "/noticias" },
     { name: "História - Alta Mogiana", href: "/historia" },
     { name: "Faça parte", href: "/contato" },
-    { name: "Transparencia", href: "/transparenciae" },
+    { name: "Transparencia", href: "/transparencia" },
   ];
 
   return (

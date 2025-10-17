@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ImageOff } from "lucide-react";
+import { Lightbox } from "@/components/images/Lightbox";
 
 interface PublicImageGalleryProps {
   images: string[];
@@ -20,23 +19,17 @@ export function PublicImageGallery({
 
   if (!images || images.length === 0) {
     return (
-      <div className="aspect-[16/10] w-full flex items-center justify-center bg-slate-200 rounded-lg">
-        <span className="text-slate-500">Nenhuma imagem disponível</span>
-      </div>
+      <div className="aspect-[16/10] w-full flex flex-col items-center justify-center bg-slate-100 rounded-lg text-slate-500">
+        <ImageOff className="w-12 h-12 text-slate-400 mb-2" strokeWidth={1.5} />
+        <h3 className="font-semibold">Nenhuma imagem disponível</h3>
+        <p className="text-sm">A galeria deste município está vazia.</p>
+      </div> 
     );
   }
 
   const openLightbox = (index: number) => {
     setSelectedImageIndex(index);
     setIsLightboxOpen(true);
-  };
-
-  const changeImage = (direction: "next" | "prev") => {
-    const newIndex =
-      direction === "next"
-        ? (selectedImageIndex + 1) % images.length
-        : (selectedImageIndex - 1 + images.length) % images.length;
-    setSelectedImageIndex(newIndex);
   };
 
   const [mainImage, ...thumbnailImages] = images;
@@ -84,33 +77,13 @@ export function PublicImageGallery({
       </div>
 
       {/* Lightbox Dialog */}
-      <Dialog open={isLightboxOpen} onOpenChange={setIsLightboxOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-transparent border-none shadow-none">
-          <Image
-            src={images[selectedImageIndex]}
-            alt={`Imagem ${selectedImageIndex + 1} de ${municipalityName}`}
-            width={1600}
-            height={900}
-            className="w-full h-full object-contain"
-          />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full h-10 w-10 bg-black/30 hover:bg-black/50 text-white"
-            onClick={() => changeImage("prev")}
-          >
-            <ChevronLeft />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-10 w-10 bg-black/30 hover:bg-black/50 text-white"
-            onClick={() => changeImage("next")}
-          >
-            <ChevronRight />
-          </Button>
-        </DialogContent>
-      </Dialog>
+      {isLightboxOpen && (
+        <Lightbox
+          images={images}
+          selectedIndex={selectedImageIndex}
+          onClose={() => setIsLightboxOpen(false)}
+        />
+      )}
     </div>
   );
 }
