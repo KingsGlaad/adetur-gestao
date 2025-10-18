@@ -1,74 +1,73 @@
-import { Button } from "@/components/ui/button";
+"use client";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal, Trash, Edit } from "lucide-react";
 import { useState } from "react";
-import { Event } from "@/types/events";
-import { EventDrawer } from "./event-drawer";
+import axios from "axios";
+import { toast } from "sonner";
+import { Municipality } from "@/types/municipality";
+import { EventWithRelations } from "@/types/events";
+import { EventFormDialog } from "./EventFormDialog";
 
-interface MunicipioActionsProps {
-  event: Event;
+interface CellActionProps {
+  data: EventWithRelations;
+  onUpdate: () => void;
+  municipalities: Municipality[];
 }
 
-export function EventActions({ event }: MunicipioActionsProps) {
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const router = useRouter(); // adicionado
+export const CellAction: React.FC<CellActionProps> = ({
+  data,
+  onUpdate,
+  municipalities,
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const handleView = () => {
-    setOpenDrawer(true);
-  };
-
-  const handleEdit = () => {
-    router.push(`/admin/events/${event.id}`);
-  };
-
-  const handleDelete = (id: string) => {
-    alert(`Excluindo evento ID: ${id}`);
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/events/${data.id}`);
+      toast.success("Destaque excluído.");
+      onUpdate();
+    } catch (error) {
+      toast.error("Ocorreu um erro ao excluir o destaque.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
+      <EventFormDialog
+        isOpen={isEditOpen}
+        onOpenChange={setIsEditOpen}
+        initialData={data}
+        onUpdate={onUpdate}
+        municipalities={municipalities}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <MoreHorizontal className="h-4 w-4" />
+          <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Abrir menu</span>
+            <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuContent align="end">
           <DropdownMenuLabel>Ações</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleView}>
-            <Eye className="mr-2 h-4 w-4" />
-            Visualizar
+          <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
+            <Edit className="mr-2 h-4 w-4" /> Editar
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleEdit}>
-            <Edit className="mr-2 h-4 w-4" />
-            Editar
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => handleDelete(event.id)}
-            className="text-destructive focus:text-destructive"
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Excluir
+          <DropdownMenuItem onClick={onDelete} disabled={loading}>
+            <Trash className="mr-2 h-4 w-4" /> Excluir
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <EventDrawer
-        event={event}
-        open={openDrawer}
-        onOpenChange={setOpenDrawer}
-      />
     </>
   );
-}
+};

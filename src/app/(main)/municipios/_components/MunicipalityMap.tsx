@@ -16,7 +16,7 @@ import "leaflet/dist/leaflet.css";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 
-const ZOOM = 13;
+const ZOOM = 9;
 const iconMarkup = renderToStaticMarkup(
   <MapPin size={32} className="text-red-600 fill-red-500 drop-shadow-lg" />
 );

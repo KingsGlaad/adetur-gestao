@@ -191,24 +191,29 @@ export const municipalities = [
 
 export const governanceStructure = [
   {
-    icon: "Building2",
-    title: "Gestores Públicos",
-    description: "Representantes do poder público municipal",
+    title: "Assembleia Geral",
+    description:
+      "Órgão soberano da ADETUR, composto por todos os associados. É responsável por definir as diretrizes gerais, eleger os conselhos e aprovar as contas e relatórios anuais.",
   },
   {
-    icon: "Users",
-    title: "Sociedade Civil",
-    description: "ONGs e representantes da comunidade",
+    title: "Conselho Deliberativo",
+    description:
+      "Formado por representantes eleitos, atua na definição de estratégias, aprovação de projetos e fiscalização das ações da diretoria, garantindo o alinhamento com os objetivos da associação.",
   },
   {
-    icon: "MapPin",
-    title: "Empresários",
-    description: "Representantes do setor turístico",
+    title: "Conselho Fiscal",
+    description:
+      "Responsável por examinar as contas, balanços e documentos financeiros da ADETUR, garantindo a transparência e a correta aplicação dos recursos da associação.",
   },
   {
-    icon: "Target",
-    title: "Setores Específicos",
-    description: "Cultura, educação, meio ambiente, segurança e saúde",
+    title: "Diretoria Executiva",
+    description:
+      "Composta pelo Presidente, Vice-Presidente e Diretores, é o órgão responsável pela administração diária da ADETUR, executando os projetos e representando a associação publicamente.",
+  },
+  {
+    title: "Grupos de Trabalho (GTs)",
+    description:
+      "Equipes focadas em áreas temáticas como infraestrutura, marketing e eventos. Propõem e desenvolvem ações específicas para fortalecer o turismo na região da Alta Mogiana.",
   },
 ];
 

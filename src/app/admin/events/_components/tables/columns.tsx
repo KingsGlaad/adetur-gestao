@@ -1,16 +1,15 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { EventActions } from "./actions";
-import { Event } from "@/types/events";
-
-// Função para formatar números com separador de milhares
-export const formatarNumero = (numero: number) => {
-  return numero.toLocaleString("pt-BR");
-};
+import { EventWithRelations } from "@/types/event";
+import { CellAction } from "./actions";
+import { Municipality } from "@/types/municipality";
 
 // Definição das colunas da tabela
-export const columns: ColumnDef<Event>[] = [
+export const columns = (
+  onUpdate: () => void,
+  municipalities: Municipality[]
+): ColumnDef<EventWithRelations>[] => [
   {
     accessorKey: "title",
     header: "Nome",
@@ -51,7 +50,13 @@ export const columns: ColumnDef<Event>[] = [
     id: "actions",
     cell: ({ row }) => {
       const event = row.original;
-      return <EventActions event={event} />;
+      return (
+        <CellAction
+          data={event}
+          onUpdate={onUpdate}
+          municipalities={municipalities}
+        />
+      );
     },
   },
 ];

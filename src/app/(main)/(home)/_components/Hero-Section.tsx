@@ -12,6 +12,7 @@ import { heroImages } from "@/data/site-data";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Search, Calendar } from "lucide-react";
+import Link from "next/link";
 
 export function HeroSectionCarousel() {
   const [api, setApi] = useState<CarouselApi>();
@@ -53,20 +54,24 @@ export function HeroSectionCarousel() {
                   {image.description}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <Button
-                    size="lg"
-                    className="text-lg px-8 py-4 bg-amber-300 hover:shadow-accent-foreground transform hover:scale-105 text-white"
-                  >
-                    <Search className="mr-2 h-5 w-5" />
-                    Explorar Destinos
-                  </Button>
-                  <Button
-                    size="lg"
-                    className="text-lg px-8 py-4 hover:shadow-accent-foreground transform-3d hover:scale-105"
-                  >
-                    <Calendar className="mr-2 h-5 w-5" />
-                    Eventos Locais
-                  </Button>
+                  <Link href="/municipios" passHref>
+                    <Button
+                      size="lg"
+                      className="text-lg px-8 py-4 bg-amber-300 hover:shadow-accent-foreground transform hover:scale-105 text-white"
+                    >
+                      <Search className="mr-2 h-5 w-5" />
+                      Explorar Destinos
+                    </Button>
+                  </Link>
+                  <Link href="/eventos" passHref>
+                    <Button
+                      size="lg"
+                      className="text-lg px-8 py-4 hover:shadow-accent-foreground transform-3d hover:scale-105"
+                    >
+                      <Calendar className="mr-2 h-5 w-5" />
+                      Eventos Locais
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </CarouselItem>

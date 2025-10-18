@@ -123,6 +123,10 @@
   --sidebar-border: 240 3.7% 15.9%;
   --sidebar-ring: 217.2 91.2% 59.8%;
 }
+.parallax-bg-trilhos {
+  position: relative;
+  background-color: #f0f2f5; /* Cor de fundo base caso a imagem não carregue */
+}
 
 /* =========================
    MAPEAMENTO TAILWIND

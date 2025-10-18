@@ -9,9 +9,9 @@ import VideoSection from "./_components/VideoSection";
 
 export default function Page() {
   return (
-    <div className="container mx-auto px-4 py-8 bg-white mt-8">
+    <div className="bg-gray-100">
       {/* Hero Section */}
-      <section className="mb-16">
+      <section className="mb-12 sm:mb-16">
         <div className="relative h-[300px] sm:h-[400px] md:h-[500px] w-full rounded-lg">
           <Image
             src={"/cmf/oficinas_Mogiana_Campinas.jpg"}
@@ -26,11 +26,11 @@ export default function Page() {
       </section>
 
       {/* Historia Section */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold mb-8 text-neutral-900">
+      <section className=" mx-auto px-4 py-8 sm:py-12 bg-gray-200">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-neutral-900 text-center">
           Histórico da Companhia Mogiana
         </h2>
-        <div className="p-6 rounded-lg shadow-sm">
+        <div className="p-4 sm:p-6 rounded-lg">
           <div className="space-y-6">
             <HistoriaSection />
           </div>
@@ -38,16 +38,16 @@ export default function Page() {
       </section>
 
       {/* Timeline Section */}
-      <section className="mb-16">
+      <section className="py-8 sm:py-12 bg-gray-50">
         <Timeline />
       </section>
 
       {/*Estrutura Section */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold mb-8 text-neutral-900">
+      <section className="mx-auto px-4 py-8 sm:py-12 bg-gray-200">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-neutral-900 text-center">
           Arquitetura Industrial
         </h2>
-        <div className="p-6 rounded-lg shadow-sm">
+        <div className="p-4 sm:p-6 rounded-lg">
           <div className="space-y-6">
             <ArquiteturaSection />
           </div>
@@ -55,11 +55,11 @@ export default function Page() {
       </section>
 
       {/*Locomotivas Section */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold mb-8 text-neutral-900">
+      <section className="container mx-auto px-4 py-8 sm:py-12">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-neutral-900 text-center">
           Locomotivas Usadas
         </h2>
-        <div className="p-6 rounded-lg shadow-sm">
+        <div className="p-4 sm:p-6 rounded-lg">
           <div className="space-y-6">
             <LocomotivasSection />
           </div>
@@ -67,11 +67,11 @@ export default function Page() {
       </section>
 
       {/*Video Section */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold mb-8 text-neutral-900">
+      <section className=" mx-auto px-4 py-8 sm:py-12">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-neutral-900 text-center">
           Assista conteúdos exclusivos
         </h2>
-        <div className="p-6 rounded-lg shadow-sm">
+        <div className="p-4 sm:p-6 rounded-lg">
           <div className="space-y-6">
             <VideoSection />
           </div>

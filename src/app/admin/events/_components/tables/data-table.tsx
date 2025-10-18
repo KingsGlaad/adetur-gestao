@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import {
   ColumnDef,
@@ -7,12 +6,18 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   useReactTable,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -22,29 +27,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { CreateEventDialog } from "./CreateEventDialog";
+import { Button } from "@/components/ui/button";
+import { Municipality } from "@/types/municipality";
+import { EventFormDialog } from "./EventFormDialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  municipalities: Municipality[];
+  onUpdate: () => void;
 }
 
-export function EventDataTable<TData, TValue>({
+export function DataTable<TData, TValue>({
   columns,
   data,
+  municipalities,
+  onUpdate,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
-    data: data,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -74,17 +77,19 @@ export function EventDataTable<TData, TValue>({
               }
             />
           </div>
-          <CreateEventDialog />
+          <EventFormDialog
+            onUpdate={onUpdate}
+            municipalities={municipalities}
+          />
         </div>
 
         <div className="rounded-md border overflow-hidden">
           <Table>
             <TableHeader className="bg-muted/50">
-              <TableRow>
-                {table
-                  .getHeaderGroups()
-                  .map((headerGroup) =>
-                    headerGroup.headers.map((header) => (
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
                       <TableHead key={header.id}>
                         {header.isPlaceholder
                           ? null
@@ -93,9 +98,10 @@ export function EventDataTable<TData, TValue>({
                               header.getContext()
                             )}
                       </TableHead>
-                    ))
-                  )}
-              </TableRow>
+                    );
+                  })}
+                </TableRow>
+              ))}
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (

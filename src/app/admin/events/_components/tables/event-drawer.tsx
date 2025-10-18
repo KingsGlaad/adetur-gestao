@@ -8,13 +8,13 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Event } from "@/types/events";
+import { EventWithRelations } from "@/types/events";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { format } from "date-fns";
 
 type EventDrawerProps = {
-  event: Event;
+  event: EventWithRelations;
   mode: "edit" | "view";
   open: boolean;
   onOpenChange: (open: boolean) => void;

@@ -51,20 +51,22 @@ export function EventForm({ event, onSubmit, isSubmitting }: EventFormProps) {
 
   useEffect(() => {
     // Reseta o formulário quando o evento selecionado muda
-    reset({
-      title: event?.title || "",
-      description: event?.description || "",
-      date: event?.date ? new Date(event.date) : undefined,
-      municipalityId: event?.municipalityId || "",
-    });
-    imageFile.setPreview(event?.image || null);
-    imageFile.setFile(null);
-  }, [event, reset, imageFile]);
+    if (event) {
+      reset({
+        title: event.title || "",
+        description: event.description || "",
+        date: event.date ? new Date(event.date) : undefined,
+        municipalityId: event.municipalityId || "",
+      });
+      imageFile.setPreview(event.image || null);
+      imageFile.setFile(null);
+    }
+  }, [event?.id, reset, imageFile.setPreview, imageFile.setFile]);
 
   useEffect(() => {
     const fetchMunicipalities = async () => {
       try {
-        const response = await fetch("/api/municipalities");
+        const response = await fetch("/api/cities");
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
         setMunicipalities(data);

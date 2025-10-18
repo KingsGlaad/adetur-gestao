@@ -21,7 +21,7 @@ export function useEvents(municipalityId: string) {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `/api/municipalities/${municipalityId}/events`
+        `/api/cities/${municipalityId}/events`
       );
       if (!response.ok) {
         throw new Error("Falha ao buscar eventos.");

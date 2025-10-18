@@ -1,3 +1,6 @@
+import { Municipality } from "./municipality";
+
+
 export type Event = {
   id: string | null;
   title: string | null;
@@ -17,3 +20,11 @@ export interface EventWithImages {
   eventId: string;
   createdAt: Date;
 }
+
+
+
+export type EventWithRelations = Event & {
+  municipality: Pick<Municipality, "name" | "slug">;
+  image: Pick<Event, "image">;
+  galleryImages?: EventWithImages[] | null;
+};

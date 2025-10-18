@@ -9,6 +9,19 @@ export async function GET(req: NextRequest) {
   try {
     const events = await prisma.event.findMany({
       orderBy: { date: "asc" }, // Ordena por data do evento
+      include: {
+        galleryImages: {
+          select: {
+            id: true,
+            url: true,
+          },
+        },
+        municipality: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
     return NextResponse.json(events);
   } catch (error) {
