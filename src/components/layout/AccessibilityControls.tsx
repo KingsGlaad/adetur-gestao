@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import VLibras from "vlibras-nextjs";
 import { Button } from "@/components/ui/button";
 import { Contrast, Minus, Plus } from "lucide-react";
 
@@ -36,39 +35,37 @@ export function AccessibilityControls() {
   };
 
   return (
-    <>
-      <div className="flex items-center gap-1">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={decreaseFontSize}
-          aria-label="Diminuir fonte"
-          className="hover:bg-black/10 dark:hover:bg-white/10"
-        >
-          <Minus className="h-5 w-5" />
-          <span className="sr-only">A-</span>
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={increaseFontSize}
-          aria-label="Aumentar fonte"
-          className="hover:bg-black/10 dark:hover:bg-white/10"
-        >
-          <Plus className="h-5 w-5" />
-          <span className="sr-only">A+</span>
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={toggleContrast}
-          aria-label="Alternar alto contraste"
-          className="hover:bg-black/10 dark:hover:bg-white/10"
-        >
-          <Contrast className="h-5 w-5" />
-          <span className="sr-only">Alto Contraste</span>
-        </Button>
-      </div>
-    </>
+    <div className="flex items-center gap-1">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={decreaseFontSize}
+        aria-label="Diminuir fonte"
+        className="hover:bg-black/10 dark:hover:bg-white/10"
+      >
+        <Minus className="h-5 w-5" />
+        <span className="sr-only">A-</span>
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={increaseFontSize}
+        aria-label="Aumentar fonte"
+        className="hover:bg-black/10 dark:hover:bg-white/10"
+      >
+        <Plus className="h-5 w-5" />
+        <span className="sr-only">A+</span>
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={toggleContrast}
+        aria-label="Alternar alto contraste"
+        className="hover:bg-black/10 dark:hover:bg-white/10"
+      >
+        <Contrast className="h-5 w-5" />
+        <span className="sr-only">Alto Contraste</span>
+      </Button>
+    </div>
   );
 }
