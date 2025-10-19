@@ -50,14 +50,14 @@ export function HeroSectionCarousel() {
                 <h1 className="text-5xl md:text-7xl font-bold text-amber-300 mb-6 leading-tight drop-shadow-lg">
                   {image.title}
                 </h1>
-                <p className="text-xl md:text-2xl text-primary-foreground mb-8 max-w-2xl">
+                <p className="text-xl md:text-2xl text-white/60 mb-8 max-w-2xl">
                   {image.description}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                   <Link href="/municipios" passHref>
                     <Button
                       size="lg"
-                      className="text-lg px-8 py-4 bg-amber-300 hover:shadow-accent-foreground transform hover:scale-105 text-white"
+                      className="text-lg px-8 py-4 bg-amber-300 hover:bg-amber-400 cursor-pointer hover:shadow-black/30 transform hover:scale-105 text-white"
                     >
                       <Search className="mr-2 h-5 w-5" />
                       Explorar Destinos
@@ -66,7 +66,7 @@ export function HeroSectionCarousel() {
                   <Link href="/eventos" passHref>
                     <Button
                       size="lg"
-                      className="text-lg px-8 py-4 hover:shadow-accent-foreground transform-3d hover:scale-105"
+                      className="text-lg px-8 py-4 text-white bg-green-400 hover:bg-green-500 cursor-pointer hover:shadow-black/30 transform-3d hover:scale-105"
                     >
                       <Calendar className="mr-2 h-5 w-5" />
                       Eventos Locais
