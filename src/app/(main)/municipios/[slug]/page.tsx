@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import { Users, Maximize, User, Smile, Fingerprint } from "lucide-react";
 import { Metadata } from "next";
 
 import { PublicImageGallery } from "./_components/PublicImageGallery"; // Será a galeria principal
@@ -54,6 +55,33 @@ async function getMunicipalityGeoJson(ibgeCode: string | null | undefined) {
   }
 }
 
+// Função para buscar detalhes do município no IBGE (Área e População)
+async function getMunicipalityDetails(ibgeCode: string | null | undefined) {
+  if (!ibgeCode) return { area: null, population: null };
+
+  try {
+    // Busca de metadados (incluindo área)
+    const metaPromise = fetch(
+      `https://servicodados.ibge.gov.br/api/v3/malhas/municipios/${ibgeCode}/metadados`
+    ).then((res) => (res.ok ? res.json() : null));
+
+    // Busca de estimativa de população
+    const popPromise = fetch(
+      `https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-4/variaveis/9324?localidades=N6[${ibgeCode}]`
+    ).then((res) => (res.ok ? res.json() : null));
+
+    const [metaResult, popResult] = await Promise.all([metaPromise, popPromise]);
+
+    const area = metaResult?.[0]?.area?.dimensao ?? null;
+    const population = popResult?.[0]?.resultados?.[0]?.series?.[0]?.serie?.['2021'] ?? null;
+
+    return { area, population };
+  } catch (error) {
+    console.error("Falha ao buscar detalhes do município no IBGE:", error);
+    return { area: null, population: null };
+  }
+}
+
 export default async function MunicipioPage({ params }: PageProps) {
   const { slug } = await params;
 
@@ -84,6 +112,9 @@ export default async function MunicipioPage({ params }: PageProps) {
   // Busca os dados geográficos
   const geoJsonData = await getMunicipalityGeoJson(municipality.ibgeCode);
 
+  // Busca os detalhes (área e população)
+  const details = await getMunicipalityDetails(municipality.ibgeCode);
+
   // Combina a imagem de capa com a galeria
   const displayImages = [
     municipality.coatOfArms,
@@ -93,13 +124,12 @@ export default async function MunicipioPage({ params }: PageProps) {
   return (
     <div className="w-full bg-white">
       {/* Seção 1: Cabeçalho e Descrição */}
-      <section className="bg-slate-50/70 py-16 sm:py-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <MunicipioHeader
-            name={municipality.name}
-            description={municipality.description}
-          />
-        </div>
+      <section className="relative overflow-hidden bg-slate-50/70">
+        <MunicipioHeader
+          name={municipality.name}
+          description={municipality.description}
+          coverImage={municipality.coatOfArms}
+        />
       </section>
       {/* Seção 4: Galeria e Sobre */}
       <section
@@ -107,10 +137,10 @@ export default async function MunicipioPage({ params }: PageProps) {
         className="py-16 sm:py-24 bg-slate-50"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
             {/* Coluna "Conheça Mais" */}
             {municipality.about && (
-              <div id="about-section">
+              <div id="about-section" className="flex flex-col">
                 <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-8">
                   Conheça Mais
                 </h2>
@@ -118,16 +148,45 @@ export default async function MunicipioPage({ params }: PageProps) {
                   className="prose prose-lg max-w-none"
                   dangerouslySetInnerHTML={{ __html: municipality.about }}
                 />
+                {/* Lista de Informações Adicionais */}
+                <div className="mt-10 border-t border-slate-200 pt-6">
+                  <ul className="space-y-4 text-slate-600 grid grid-cols-2 gap-4">
+                     {municipality.prefeito && (
+                      <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
+                        <User className="h-5 w-5 flex-shrink-0 mt-0.5 text-purple-600" />
+                        <span><strong>Prefeito(a):</strong> {municipality.prefeito}</span>
+                      </li>
+                    )}
+                    {details.population && (
+                       <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
+                        <Users className="h-5 w-5 flex-shrink-0 mt-0.5 text-blue-600" />
+                        <span><strong>População:</strong> {Number(details.population).toLocaleString("pt-BR")} (Est. 2021)</span>
+                      </li>
+                    )}
+                    {details.area && (
+                       <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
+                        <Maximize className="h-5 w-5 flex-shrink-0 mt-0.5 text-green-600" />
+                        <span><strong>Área Territorial:</strong> {Number(details.area).toLocaleString("pt-BR")} km²</span>
+                      </li>
+                    )}                   
+                    {municipality.gentilic && (
+                       <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4 h-[56px]">
+                        <Fingerprint className="h-5 w-5 flex-shrink-0 mt-0.5 text-yellow-600" />
+                        <span><strong>Gentílico:</strong> {municipality.gentilic}</span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
               </div>
             )}
             {/* Coluna da Galeria */}
-            <div id="gallery-section">
+            <div id="gallery-section" className="flex flex-col">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-8">
                 Galeria de Imagens
               </h2>
               <PublicImageGallery
                 images={displayImages}
-                municipalityName={municipality.name}
+                municipalityName={municipality.name}                
               />
             </div>
           </div>

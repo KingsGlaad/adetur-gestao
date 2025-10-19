@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -103,7 +103,7 @@ export function Header() {
                       </NavigationMenuItem>
                     ) : (
                       <NavigationMenuItem key={item.name}>
-                        <Link href={item.href} legacyBehavior passHref>
+                        <Link href={item.href}>
                           <NavigationMenuLink className="bg-transparent hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                             {item.name}
                           </NavigationMenuLink>

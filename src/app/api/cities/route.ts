@@ -85,6 +85,8 @@ export async function PUT(req: NextRequest) {
       coatOfArms: data.coatOfArms,
       ibgeCode: ibgeCode, // Salva o código do IBGE na base de dados
       active: data.active ,
+      prefeito: data.prefeito,
+      gentilic: data.gentilic,
     },
   });
 
@@ -113,6 +115,8 @@ export async function POST(req: NextRequest) {
         longitude: data.longitude,
         ibgeCode: ibgeCode, // Salva o código do IBGE na base de dados
         active: data.active ,
+        prefeito: data.prefeito,
+        gentilic: data.gentilic,
       },
     });
 

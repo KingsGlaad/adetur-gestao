@@ -9,6 +9,8 @@ export type Municipality = {
   cordenates?: { latitude: string; longitude: string } | null;
   highlights?: { title: string; id: string }[] | null;
   active: boolean;
+  prefeito?: string | null;
+  gentilic?: string | null;
 };
 
 export type MunicipalityRefined = {
@@ -24,4 +26,6 @@ export type MunicipalityRefined = {
   ibgeCode?: string | null;
   highlights?: { title: string; id: string }[] | null;
   active: boolean;
+  prefeito?: string | null;
+  gentilic?: string | null;
 };

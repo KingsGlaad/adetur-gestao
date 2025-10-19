@@ -22,6 +22,8 @@ const municipalitySchema = z.object({
   longitude: z.number().optional(),
   id: z.string().optional(),
   active: z.boolean().default(false),
+  prefeito: z.string().min(1, "O nome do prefeito é obrigatório"),
+  gentilic: z.string().min(1, "O gentílico é obrigatório"),
 });
 
 type MunicipalityFormValues = z.infer<typeof municipalitySchema>;
@@ -47,6 +49,8 @@ export function useMunicipalityForm(municipio: MunicipalityRefined | null) {
       latitude: municipio?.latitude ?? undefined,
       longitude: municipio?.longitude ?? undefined,
       active: municipio?.active ?? false,
+      prefeito: municipio?.prefeito ?? "",
+      gentilic: municipio?.gentilic ?? "",
     },
   });
 

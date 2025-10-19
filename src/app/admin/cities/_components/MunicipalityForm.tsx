@@ -95,6 +95,25 @@ export function MunicipalityForm({ municipio }: MunicipalityFormProps) {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <Label>Prefeito</Label>
+          <Input {...register("prefeito")} />
+          {errors.prefeito && (
+            <p className="text-sm text-red-500 mt-1">{errors.prefeito?.message}</p>
+          )}
+        </div>
+        <div>
+          <Label>Gentílico</Label>
+          <Input {...register("gentilic")} />
+          {errors.description && (
+            <p className="text-sm text-red-500 mt-1">
+              {errors.gentilic?.message}
+            </p>
+          )}
+        </div>
+      </div>
+
       <TiptapEditor editor={editor} error={errors.about?.message} />
 
       <div className="grid grid-cols-2 gap-4">

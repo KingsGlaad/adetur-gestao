@@ -141,6 +141,8 @@ exports.Prisma.MunicipalityScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   about: 'about',
+  prefeito: 'prefeito',
+  gentilic: 'gentilic',
   slug: 'slug',
   ibgeCode: 'ibgeCode',
   createdAt: 'createdAt',

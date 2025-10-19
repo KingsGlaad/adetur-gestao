@@ -77,7 +77,7 @@ const quickLinks = [
 
 const contactInfo = [
   { Icon: MailIcon, text: "contato@adeturaltamogiana.com.br", href: "mailto:contato@adeturaltamogiana.com.br" },
-  { Icon: PhoneIcon, text: "(XX) XXXX-XXXX", href: "tel:+550000000000" },
+  { Icon: PhoneIcon, text: "(16) 3984-2949", href: "tel:+551639842949" },
   { Icon: MapPinIcon, text: "Rua Deodoro da Fonseca, 1040, sala 5, Centro, São Simão/SP, CEP 14.200-000" },
 ];
 

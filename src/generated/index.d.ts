@@ -2988,6 +2988,8 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     about: string | null
+    prefeito: string | null
+    gentilic: string | null
     slug: string | null
     ibgeCode: string | null
     createdAt: Date | null
@@ -3003,6 +3005,8 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     about: string | null
+    prefeito: string | null
+    gentilic: string | null
     slug: string | null
     ibgeCode: string | null
     createdAt: Date | null
@@ -3018,6 +3022,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     about: number
+    prefeito: number
+    gentilic: number
     slug: number
     ibgeCode: number
     createdAt: number
@@ -3045,6 +3051,8 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     about?: true
+    prefeito?: true
+    gentilic?: true
     slug?: true
     ibgeCode?: true
     createdAt?: true
@@ -3060,6 +3068,8 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     about?: true
+    prefeito?: true
+    gentilic?: true
     slug?: true
     ibgeCode?: true
     createdAt?: true
@@ -3075,6 +3085,8 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     about?: true
+    prefeito?: true
+    gentilic?: true
     slug?: true
     ibgeCode?: true
     createdAt?: true
@@ -3177,6 +3189,8 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     about: string | null
+    prefeito: string | null
+    gentilic: string | null
     slug: string | null
     ibgeCode: string | null
     createdAt: Date
@@ -3211,6 +3225,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     about?: boolean
+    prefeito?: boolean
+    gentilic?: boolean
     slug?: boolean
     ibgeCode?: boolean
     createdAt?: boolean
@@ -3233,6 +3249,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     about?: boolean
+    prefeito?: boolean
+    gentilic?: boolean
     slug?: boolean
     ibgeCode?: boolean
     createdAt?: boolean
@@ -3248,6 +3266,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     about?: boolean
+    prefeito?: boolean
+    gentilic?: boolean
     slug?: boolean
     ibgeCode?: boolean
     createdAt?: boolean
@@ -3263,6 +3283,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     about?: boolean
+    prefeito?: boolean
+    gentilic?: boolean
     slug?: boolean
     ibgeCode?: boolean
     createdAt?: boolean
@@ -3270,7 +3292,7 @@ export namespace Prisma {
     active?: boolean
   }
 
-  export type MunicipalityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "coatOfArms" | "latitude" | "longitude" | "about" | "slug" | "ibgeCode" | "createdAt" | "updatedAt" | "active", ExtArgs["result"]["municipality"]>
+  export type MunicipalityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "coatOfArms" | "latitude" | "longitude" | "about" | "prefeito" | "gentilic" | "slug" | "ibgeCode" | "createdAt" | "updatedAt" | "active", ExtArgs["result"]["municipality"]>
   export type MunicipalityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Municipality$usersArgs<ExtArgs>
     highlights?: boolean | Municipality$highlightsArgs<ExtArgs>
@@ -3301,6 +3323,8 @@ export namespace Prisma {
       latitude: number | null
       longitude: number | null
       about: string | null
+      prefeito: string | null
+      gentilic: string | null
       slug: string | null
       ibgeCode: string | null
       createdAt: Date
@@ -3742,6 +3766,8 @@ export namespace Prisma {
     readonly latitude: FieldRef<"Municipality", 'Float'>
     readonly longitude: FieldRef<"Municipality", 'Float'>
     readonly about: FieldRef<"Municipality", 'String'>
+    readonly prefeito: FieldRef<"Municipality", 'String'>
+    readonly gentilic: FieldRef<"Municipality", 'String'>
     readonly slug: FieldRef<"Municipality", 'String'>
     readonly ibgeCode: FieldRef<"Municipality", 'String'>
     readonly createdAt: FieldRef<"Municipality", 'DateTime'>
@@ -13051,6 +13077,8 @@ export namespace Prisma {
     latitude: 'latitude',
     longitude: 'longitude',
     about: 'about',
+    prefeito: 'prefeito',
+    gentilic: 'gentilic',
     slug: 'slug',
     ibgeCode: 'ibgeCode',
     createdAt: 'createdAt',
@@ -13352,6 +13380,8 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Municipality"> | number | null
     longitude?: FloatNullableFilter<"Municipality"> | number | null
     about?: StringNullableFilter<"Municipality"> | string | null
+    prefeito?: StringNullableFilter<"Municipality"> | string | null
+    gentilic?: StringNullableFilter<"Municipality"> | string | null
     slug?: StringNullableFilter<"Municipality"> | string | null
     ibgeCode?: StringNullableFilter<"Municipality"> | string | null
     createdAt?: DateTimeFilter<"Municipality"> | Date | string
@@ -13373,6 +13403,8 @@ export namespace Prisma {
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     about?: SortOrderInput | SortOrder
+    prefeito?: SortOrderInput | SortOrder
+    gentilic?: SortOrderInput | SortOrder
     slug?: SortOrderInput | SortOrder
     ibgeCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -13399,6 +13431,8 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Municipality"> | number | null
     longitude?: FloatNullableFilter<"Municipality"> | number | null
     about?: StringNullableFilter<"Municipality"> | string | null
+    prefeito?: StringNullableFilter<"Municipality"> | string | null
+    gentilic?: StringNullableFilter<"Municipality"> | string | null
     createdAt?: DateTimeFilter<"Municipality"> | Date | string
     updatedAt?: DateTimeFilter<"Municipality"> | Date | string
     active?: BoolFilter<"Municipality"> | boolean
@@ -13418,6 +13452,8 @@ export namespace Prisma {
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     about?: SortOrderInput | SortOrder
+    prefeito?: SortOrderInput | SortOrder
+    gentilic?: SortOrderInput | SortOrder
     slug?: SortOrderInput | SortOrder
     ibgeCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -13441,6 +13477,8 @@ export namespace Prisma {
     latitude?: FloatNullableWithAggregatesFilter<"Municipality"> | number | null
     longitude?: FloatNullableWithAggregatesFilter<"Municipality"> | number | null
     about?: StringNullableWithAggregatesFilter<"Municipality"> | string | null
+    prefeito?: StringNullableWithAggregatesFilter<"Municipality"> | string | null
+    gentilic?: StringNullableWithAggregatesFilter<"Municipality"> | string | null
     slug?: StringNullableWithAggregatesFilter<"Municipality"> | string | null
     ibgeCode?: StringNullableWithAggregatesFilter<"Municipality"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Municipality"> | Date | string
@@ -14076,6 +14114,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -14097,6 +14137,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -14118,6 +14160,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14139,6 +14183,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14160,6 +14206,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -14175,6 +14223,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14190,6 +14240,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15014,6 +15066,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     about?: SortOrder
+    prefeito?: SortOrder
+    gentilic?: SortOrder
     slug?: SortOrder
     ibgeCode?: SortOrder
     createdAt?: SortOrder
@@ -15034,6 +15088,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     about?: SortOrder
+    prefeito?: SortOrder
+    gentilic?: SortOrder
     slug?: SortOrder
     ibgeCode?: SortOrder
     createdAt?: SortOrder
@@ -15049,6 +15105,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     about?: SortOrder
+    prefeito?: SortOrder
+    gentilic?: SortOrder
     slug?: SortOrder
     ibgeCode?: SortOrder
     createdAt?: SortOrder
@@ -16048,6 +16106,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -16068,6 +16128,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -16104,6 +16166,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16124,6 +16188,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16505,6 +16571,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -16525,6 +16593,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -16561,6 +16631,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16581,6 +16653,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16625,6 +16699,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -16645,6 +16721,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -16708,6 +16786,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16728,6 +16808,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16804,6 +16886,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -16824,6 +16908,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -16860,6 +16946,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16880,6 +16968,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16924,6 +17014,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -16944,6 +17036,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -17007,6 +17101,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17027,6 +17123,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17107,6 +17205,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -17127,6 +17227,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     about?: string | null
+    prefeito?: string | null
+    gentilic?: string | null
     slug?: string | null
     ibgeCode?: string | null
     createdAt?: Date | string
@@ -17163,6 +17265,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17183,6 +17287,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     about?: NullableStringFieldUpdateOperationsInput | string | null
+    prefeito?: NullableStringFieldUpdateOperationsInput | string | null
+    gentilic?: NullableStringFieldUpdateOperationsInput | string | null
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     ibgeCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

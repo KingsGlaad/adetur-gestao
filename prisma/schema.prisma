@@ -33,6 +33,8 @@ model Municipality {
   latitude    Float?
   longitude   Float?
   about       String?             @db.Text
+  prefeito    String?
+  gentilic    String?
   slug        String?             @unique
   ibgeCode    String?             @unique
   users       User[]

@@ -54,6 +54,8 @@ export async function PUT(
       coatOfArms: data.coatOfArms,
       ibgeCode: ibgeCode, // Salva o código do IBGE na base de dados
       active: data.active ,
+      prefeito: data.prefeito,
+      gentilic: data.gentilic,
     },
   });
 
