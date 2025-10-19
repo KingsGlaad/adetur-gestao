@@ -44,7 +44,7 @@ export function PublicImageGallery({
         >
           <Image
             src={mainImage}
-            alt={`Imagem principal de ${municipalityName}`}
+            alt={`Galeria de imagens de ${municipalityName} - Imagem principal`}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             priority

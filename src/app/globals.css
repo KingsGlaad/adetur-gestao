@@ -184,7 +184,74 @@
   }
   body {
     @apply bg-background text-foreground;
-    margin-top: 70px;
-    background-color: "#eaf6ff"
+    margin-top: 70px; /* Ajuste para o header fixo */
+    background-color: #eaf6ff;
+    transition: font-size 0.2s ease-in-out;
   }
+}
+
+/* =========================
+   ESTILOS DE ACESSIBILIDADE
+========================= */
+
+/* --- Alto Contraste --- */
+.high-contrast {
+  /* Fundo e Texto Padrão */
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.high-contrast body,
+.high-contrast section,
+.high-contrast div,
+.high-contrast header,
+.high-contrast nav,
+.high-contrast footer,
+.high-contrast main,
+.high-contrast aside,
+.high-contrast article,
+.high-contrast details,
+.high-contrast summary,
+.high-contrast dialog {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+.high-contrast h1, .high-contrast h2, .high-contrast h3, .high-contrast h4, .high-contrast h5, .high-contrast h6,
+.high-contrast p, .high-contrast span, .high-contrast strong, .high-contrast li {
+  color: #fff !important;
+  background-color: transparent !important;
+}
+
+.high-contrast a {
+  color: #ffff00 !important; /* Amarelo para links */
+  text-decoration: underline !important;
+}
+
+.high-contrast button, .high-contrast input, .high-contrast textarea, .high-contrast select {
+  background-color: #111 !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+}
+
+.high-contrast button:hover, .high-contrast a:hover {
+  background-color: #333 !important;
+}
+
+/* Esconde imagens decorativas e sobreposições */
+.high-contrast .bg-black\/50,
+.high-contrast .bg-gradient-to-t,
+.high-contrast .img-decorative {
+  display: none !important;
+}
+
+/* Garante que o texto sobreposto a imagens seja visível */
+.high-contrast .relative.text-white {
+  color: #fff !important;
+}
+
+/* Ajusta o widget do VLibras */
+.high-contrast [vw-access-button] {
+  filter: invert(1) grayscale(1) contrast(3);
 }

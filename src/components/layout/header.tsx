@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/accordion";
 import axios from "axios";
 import { Municipality } from "@/types/municipality";
+import { AccessibilityControls } from "./AccessibilityControls";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -113,6 +114,10 @@ export function Header() {
                   )}
                 </NavigationMenuList>
               </NavigationMenu>
+              {/* Controles de Acessibilidade */}
+              <div className="border-l border-slate-300 dark:border-white/20 pl-2 ml-2">
+                <AccessibilityControls />
+              </div>
             </div>
           </div>
 
@@ -172,6 +177,10 @@ export function Header() {
                   </Link>
                 )
               )}
+               {/* Controles de Acessibilidade para Mobile */}
+              <div className="border-t border-slate-300/50 dark:border-white/20 mt-4 pt-4 flex justify-center">
+                <AccessibilityControls />
+              </div>
             </div>
           </div>
         )}

@@ -19,11 +19,11 @@ export function MunicipioHeader({
           src={coverImage}
           alt={`Imagem de fundo de ${name}`}
           fill
-          className="object-cover blur-xs brightness-90"
+          className="object-cover blur-xs brightness-90 img-decorative"
         />
       )}
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative">
+      <div className="relative text-white">
         <h1 className="flex items-center justify-center gap-2 text-4xl font-bold tracking-tight sm:text-5xl">
           <MapPin className="h-10 w-10" /> {name}
         </h1>
