@@ -104,11 +104,9 @@ export function Header() {
                       </NavigationMenuItem>
                     ) : (
                       <NavigationMenuItem key={item.name}>
-                        <Link href={item.href}>
-                          <NavigationMenuLink className="bg-transparent hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                          <NavigationMenuLink href={item.href} className="bg-transparent hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                             {item.name}
                           </NavigationMenuLink>
-                        </Link>
                       </NavigationMenuItem>
                     )
                   )}

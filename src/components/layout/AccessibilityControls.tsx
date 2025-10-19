@@ -69,7 +69,6 @@ export function AccessibilityControls() {
           <span className="sr-only">Alto Contraste</span>
         </Button>
       </div>
-      {process.env.NODE_ENV === "production" && <VLibras forceOnload/>}
     </>
   );
 }
