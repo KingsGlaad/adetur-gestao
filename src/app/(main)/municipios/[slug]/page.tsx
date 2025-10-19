@@ -216,7 +216,7 @@ export default async function MunicipioPage({ params }: PageProps) {
             </div>
             {/* Coluna de Destaques */}
             <div className="lg:col-span-1 h-full lg:max-h-[70vh] lg:min-h-[600px]">
-              <HighlightsSection highlights={municipality.highlights} />
+              <HighlightsSection  highlights={municipality.highlights} />
             </div>
           </div>
         </div>
