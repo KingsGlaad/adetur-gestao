@@ -12,9 +12,11 @@ export default function MainLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      {children}
-      <VLibrasWidget />
-      <Footer />
+      <main id="main-content" className="flex-1 flex flex-col">
+        {children}
+        <Footer />
+      </main>
+      <VLibrasWidget /> {/* Movido para fora do main para não ser afetado pelo filtro */}
     </div>
   );
 }

@@ -178,7 +178,15 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t text-center text-white/50">
           <p>
             &copy; {new Date().getFullYear()} ADETUR. Todos os direitos
-            reservados.
+            reservados. Desenvolvido por{" "}
+            <a
+              href="https://github.com/KingsGlaad"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              Frame & Code Soluctions &copy;
+            </a>
           </p>
         </div>
       </div>

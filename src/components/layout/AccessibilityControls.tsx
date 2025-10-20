@@ -2,23 +2,37 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Contrast, Minus, Plus } from "lucide-react";
+import { AccessibilityIcon, Contrast, Minus, Plus } from "lucide-react";
+import Link from "next/link";
 
 export function AccessibilityControls() {
-  const [isHighContrast, setIsHighContrast] = useState(false);
-  const [fontSize, setFontSize] = useState(100); // Base font size in percent
+  // Inicializa o estado a partir do localStorage, se disponível
+  const [isHighContrast, setIsHighContrast] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("highContrast") === "true";
+    }
+    return false;
+  });
+  const [fontSize, setFontSize] = useState(() => {
+    if (typeof window !== "undefined") {
+      return Number(localStorage.getItem("fontSize")) || 100;
+    }
+    return 100;
+  });
 
-  // High Contrast Toggle
+  // Aplica as classes e estilos e salva no localStorage sempre que o estado mudar
   useEffect(() => {
+    localStorage.setItem("highContrast", String(isHighContrast));
+    const mainContent = document.getElementById("main-content");
     if (isHighContrast) {
-      document.body.classList.add("high-contrast");
+      mainContent?.classList.add("high-contrast");
     } else {
-      document.body.classList.remove("high-contrast");
+      mainContent?.classList.remove("high-contrast");
     }
   }, [isHighContrast]);
-
-  // Font Size Adjustment
+  
   useEffect(() => {
+    localStorage.setItem("fontSize", String(fontSize));
     document.documentElement.style.fontSize = `${fontSize}%`;
   }, [fontSize]);
 
@@ -66,6 +80,17 @@ export function AccessibilityControls() {
         <Contrast className="h-5 w-5" />
         <span className="sr-only">Alto Contraste</span>
       </Button>
+      <Link href="/acessibilidade" className="ml-2">
+        <Button
+          variant="ghost"
+          size="sm"          
+          aria-label="Página de acessibilidade"
+          className="hover:bg-black/10 dark:hover:bg-white/10"
+        >
+          <span className="sr-only">Acessibilidade</span>
+          <AccessibilityIcon className="h-5 w-5" />
+        </Button>
+      </Link>
     </div>
   );
 }
