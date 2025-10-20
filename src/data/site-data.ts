@@ -343,3 +343,31 @@ export const odsGoals = [
       "https://brasil.un.org/profiles/undg_country/themes/custom/undg/images/SDGs/pt-br/SDG-17.svg",
   },
 ];
+
+// Fictional data for testimonials
+export const fictionalReviews = [
+  {
+    id: 1,
+    name: "Ana Silva",
+    avatarUrl: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
+    rating: 5,
+    comment:
+      "Lugar incrível! A paisagem é de tirar o fôlego e a experiência foi inesquecível. Recomendo a todos que visitem.",
+  },
+  {
+    id: 2,
+    name: "Carlos Souza",
+    avatarUrl: "https://i.pravatar.cc/150?u=a042581f4e29026704e",
+    rating: 4,
+    comment:
+      "Muito bom, mas poderia ter mais estrutura para os visitantes. Mesmo assim, a beleza natural compensa. Voltarei com certeza.",
+  },
+  {
+    id: 3,
+    name: "Juliana Pereira",
+    avatarUrl: "https://i.pravatar.cc/150?u=a042581f4e29026704f",
+    rating: 5,
+    comment:
+      "Perfeito para um passeio em família. As crianças adoraram e nós também. Tudo muito bem cuidado e organizado.",
+  },
+];
