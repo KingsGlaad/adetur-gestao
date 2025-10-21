@@ -71,7 +71,13 @@ export async function GET(
 
     const municipio = await prisma.municipality.findUnique({
       where: { slug },
-      include: { highlights: true, images: true, events: true },
+      include: { images: true, events: true, 
+        highlights: {
+          include: {
+            galleryImages: true,
+          },
+        },
+       },
     });
     if (!municipio) {
       return NextResponse.json(

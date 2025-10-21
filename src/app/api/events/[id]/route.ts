@@ -24,6 +24,20 @@ export async function GET(
     const id = (await params).id;
     const events = await prisma.event.findMany({
       where: { id },
+      include: {
+        galleryImages: {
+          select: {
+            id: true,
+            url: true,
+          },
+        },
+        municipality: {
+          select: {
+            name: true,
+            slug: true,
+          },
+        },
+      },
     });
     return NextResponse.json(events);
   } catch (error) {
@@ -41,10 +55,10 @@ export async function PUT(
 ) {
   try {
     const { userId } = await auth();
-    
-        if (!userId) {
-          return new NextResponse("Unauthorized", { status: 401 });
-        }
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const id = (await params).id;
     const formData = await req.formData();
 
@@ -142,11 +156,9 @@ export async function PUT(
   }
 }
 
-
 // DELETE: Remove um evento
 export async function DELETE(req: NextRequest) {
   try {
-
     const { userId } = await auth();
 
     if (!userId) {
@@ -156,12 +168,10 @@ export async function DELETE(req: NextRequest) {
     // Lógica para remover a imagem do Supabase antes de apagar o registo
     const event = await prisma.event.findUnique({ where: { id } });
     const images = await prisma.eventImage.findMany({ where: { eventId: id } });
-    const filePaths = images.map(
-      (img) => img.url.split(`${BUCKET_NAME}/`)[1]
-    );
+    const filePaths = images.map((img) => img.url.split(`${BUCKET_NAME}/`)[1]);
     await supabase.storage.from(BUCKET_NAME).remove(filePaths);
     await prisma.eventImage.deleteMany({ where: { eventId: id } });
-    if(!event) {
+    if (!event) {
       return NextResponse.json(
         { error: "Evento não encontrado." },
         { status: 404 }
