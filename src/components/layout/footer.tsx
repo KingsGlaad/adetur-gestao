@@ -73,6 +73,7 @@ const quickLinks = [
   { href: "/municipios", label: "Municípios" },
   { href: "/historia", label: "História" },
   { href: "/contato", label: "Faça parte" },
+  { href: "/politica", label: "Política de Privacidade" },
 ];
 
 const contactInfo = [
