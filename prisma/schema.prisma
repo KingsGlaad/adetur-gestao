@@ -118,6 +118,7 @@ model Guide {
   description    String?
   image          String?
   email          String?
+  active         Boolean      @default(false)
   municipality   Municipality @relation(fields: [municipalityId], references: [id])
   municipalityId String
   createdAt      DateTime     @default(now())
