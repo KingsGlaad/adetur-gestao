@@ -31,6 +31,8 @@ export function MunicipalityImageGallery({
             <Image
               src={image.url}
               alt="Imagem da galeria"
+              width={100}
+              height={100}
               className="w-full h-full object-cover rounded-md border"
             />
             <Button

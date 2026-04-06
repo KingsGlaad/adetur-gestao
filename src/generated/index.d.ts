@@ -10923,6 +10923,7 @@ export namespace Prisma {
     description: string | null
     image: string | null
     email: string | null
+    active: boolean | null
     municipalityId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -10935,6 +10936,7 @@ export namespace Prisma {
     description: string | null
     image: string | null
     email: string | null
+    active: boolean | null
     municipalityId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -10948,6 +10950,7 @@ export namespace Prisma {
     description: number
     image: number
     email: number
+    active: number
     municipalityId: number
     createdAt: number
     updatedAt: number
@@ -10962,6 +10965,7 @@ export namespace Prisma {
     description?: true
     image?: true
     email?: true
+    active?: true
     municipalityId?: true
     createdAt?: true
     updatedAt?: true
@@ -10974,6 +10978,7 @@ export namespace Prisma {
     description?: true
     image?: true
     email?: true
+    active?: true
     municipalityId?: true
     createdAt?: true
     updatedAt?: true
@@ -10987,6 +10992,7 @@ export namespace Prisma {
     description?: true
     image?: true
     email?: true
+    active?: true
     municipalityId?: true
     createdAt?: true
     updatedAt?: true
@@ -11073,6 +11079,7 @@ export namespace Prisma {
     description: string | null
     image: string | null
     email: string | null
+    active: boolean
     municipalityId: string
     createdAt: Date
     updatedAt: Date
@@ -11103,6 +11110,7 @@ export namespace Prisma {
     description?: boolean
     image?: boolean
     email?: boolean
+    active?: boolean
     municipalityId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -11117,6 +11125,7 @@ export namespace Prisma {
     description?: boolean
     image?: boolean
     email?: boolean
+    active?: boolean
     municipalityId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -11131,6 +11140,7 @@ export namespace Prisma {
     description?: boolean
     image?: boolean
     email?: boolean
+    active?: boolean
     municipalityId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -11145,12 +11155,13 @@ export namespace Prisma {
     description?: boolean
     image?: boolean
     email?: boolean
+    active?: boolean
     municipalityId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type GuideOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "languages" | "description" | "image" | "email" | "municipalityId" | "createdAt" | "updatedAt", ExtArgs["result"]["guide"]>
+  export type GuideOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "languages" | "description" | "image" | "email" | "active" | "municipalityId" | "createdAt" | "updatedAt", ExtArgs["result"]["guide"]>
   export type GuideInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     municipality?: boolean | MunicipalityDefaultArgs<ExtArgs>
   }
@@ -11174,6 +11185,7 @@ export namespace Prisma {
       description: string | null
       image: string | null
       email: string | null
+      active: boolean
       municipalityId: string
       createdAt: Date
       updatedAt: Date
@@ -11608,6 +11620,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Guide", 'String'>
     readonly image: FieldRef<"Guide", 'String'>
     readonly email: FieldRef<"Guide", 'String'>
+    readonly active: FieldRef<"Guide", 'Boolean'>
     readonly municipalityId: FieldRef<"Guide", 'String'>
     readonly createdAt: FieldRef<"Guide", 'DateTime'>
     readonly updatedAt: FieldRef<"Guide", 'DateTime'>
@@ -13226,6 +13239,7 @@ export namespace Prisma {
     description: 'description',
     image: 'image',
     email: 'email',
+    active: 'active',
     municipalityId: 'municipalityId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -13926,6 +13940,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Guide"> | string | null
     image?: StringNullableFilter<"Guide"> | string | null
     email?: StringNullableFilter<"Guide"> | string | null
+    active?: BoolFilter<"Guide"> | boolean
     municipalityId?: StringFilter<"Guide"> | string
     createdAt?: DateTimeFilter<"Guide"> | Date | string
     updatedAt?: DateTimeFilter<"Guide"> | Date | string
@@ -13940,6 +13955,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    active?: SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13957,6 +13973,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Guide"> | string | null
     image?: StringNullableFilter<"Guide"> | string | null
     email?: StringNullableFilter<"Guide"> | string | null
+    active?: BoolFilter<"Guide"> | boolean
     municipalityId?: StringFilter<"Guide"> | string
     createdAt?: DateTimeFilter<"Guide"> | Date | string
     updatedAt?: DateTimeFilter<"Guide"> | Date | string
@@ -13971,6 +13988,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    active?: SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13990,6 +14008,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Guide"> | string | null
     image?: StringNullableWithAggregatesFilter<"Guide"> | string | null
     email?: StringNullableWithAggregatesFilter<"Guide"> | string | null
+    active?: BoolWithAggregatesFilter<"Guide"> | boolean
     municipalityId?: StringWithAggregatesFilter<"Guide"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Guide"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Guide"> | Date | string
@@ -14700,6 +14719,7 @@ export namespace Prisma {
     description?: string | null
     image?: string | null
     email?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     municipality: MunicipalityCreateNestedOneWithoutGuidesInput
@@ -14713,6 +14733,7 @@ export namespace Prisma {
     description?: string | null
     image?: string | null
     email?: string | null
+    active?: boolean
     municipalityId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14726,6 +14747,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     municipality?: MunicipalityUpdateOneRequiredWithoutGuidesNestedInput
@@ -14739,6 +14761,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     municipalityId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14752,6 +14775,7 @@ export namespace Prisma {
     description?: string | null
     image?: string | null
     email?: string | null
+    active?: boolean
     municipalityId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14765,6 +14789,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14777,6 +14802,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     municipalityId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15425,6 +15451,7 @@ export namespace Prisma {
     description?: SortOrder
     image?: SortOrder
     email?: SortOrder
+    active?: SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15437,6 +15464,7 @@ export namespace Prisma {
     description?: SortOrder
     image?: SortOrder
     email?: SortOrder
+    active?: SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15449,6 +15477,7 @@ export namespace Prisma {
     description?: SortOrder
     image?: SortOrder
     email?: SortOrder
+    active?: SortOrder
     municipalityId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16390,6 +16419,7 @@ export namespace Prisma {
     description?: string | null
     image?: string | null
     email?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -16402,6 +16432,7 @@ export namespace Prisma {
     description?: string | null
     image?: string | null
     email?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -16587,6 +16618,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Guide"> | string | null
     image?: StringNullableFilter<"Guide"> | string | null
     email?: StringNullableFilter<"Guide"> | string | null
+    active?: BoolFilter<"Guide"> | boolean
     municipalityId?: StringFilter<"Guide"> | string
     createdAt?: DateTimeFilter<"Guide"> | Date | string
     updatedAt?: DateTimeFilter<"Guide"> | Date | string
@@ -17405,6 +17437,7 @@ export namespace Prisma {
     description?: string | null
     image?: string | null
     email?: string | null
+    active?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17548,6 +17581,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17560,6 +17594,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17572,6 +17607,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

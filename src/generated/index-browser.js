@@ -213,6 +213,7 @@ exports.Prisma.GuideScalarFieldEnum = {
   description: 'description',
   image: 'image',
   email: 'email',
+  active: 'active',
   municipalityId: 'municipalityId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

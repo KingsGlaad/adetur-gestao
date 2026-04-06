@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//f/Projetos/adetur/adetur-gestao/**)",
+      "Bash(npx prisma:*)"
+    ]
+  }
+}
