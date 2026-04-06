@@ -32,7 +32,6 @@
     "@tiptap/react": "^3.0.9",
     "@tiptap/starter-kit": "^3.0.9",
     "@vis.gl/react-google-maps": "^1.5.5",
-    "add": "^2.0.6",
     "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -59,11 +58,11 @@
     "vaul": "^1.1.2",
     "vlibras-nextjs": "^1.1.2",
     "vlibras-player-nextjs": "^2.5.1",
-    "zod": "^4.0.14"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@prisma/client": "^6.17.1",
+    "@prisma/client": "^7.5.0",
     "@tailwindcss/postcss": "^4",
     "@types/leaflet": "^1.9.20",
     "@types/node": "^20",
@@ -72,7 +71,7 @@
     "@types/uuid": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
-    "prisma": "^6.17.1",
+    "prisma": "^7.5.0",
     "shadcn": "^3.4.2",
     "tailwindcss": "^4",
     "tsx": "^4.20.3",

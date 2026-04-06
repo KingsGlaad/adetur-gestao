@@ -3,16 +3,16 @@ import { SVGProps } from "react";
 
 export type PropsType = SVGProps<SVGSVGElement>;
 
-export function ChevronUp() {
-  return <ChevronUpIcon />;
+export function ChevronUp(props: PropsType) {
+  return <ChevronUpIcon {...props} />;
 }
 
-export function BlogIcon() {
-  return <FileArchive/>;
+export function BlogIcon(props: PropsType) {
+  return <FileArchive {...props} />;
 }
 
-export function CityIcon() {
-  return <CastleIcon />;
+export function CityIcon(props: PropsType) {
+  return <CastleIcon {...props} />;
 }
 
 export function HomeIcon(props: PropsType) {

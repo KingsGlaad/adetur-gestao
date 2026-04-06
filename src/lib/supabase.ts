@@ -7,4 +7,8 @@ if (!supabaseUrl || !supabaseKey) {
   throw new Error("Supabase URL or service key is missing.");
 }
 
+if (typeof window !== "undefined") {
+  throw new Error("Supabase service key should never be used on the client-side.");
+}
+
 export const supabase = createClient(supabaseUrl, supabaseKey);
