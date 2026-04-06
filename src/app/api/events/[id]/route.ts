@@ -84,14 +84,14 @@ export async function PUT(
     if (imagesToDeleteRaw) {
       const imagesToDelete: string[] = JSON.parse(imagesToDeleteRaw);
       if (imagesToDelete.length > 0) {
-        const imagesData = await prisma.highlightImage.findMany({
+        const imagesData = await prisma.eventImage.findMany({
           where: { id: { in: imagesToDelete } },
         });
         const oldFilePaths = imagesData.map(
           (img) => img.url.split(`${BUCKET_NAME}/`)[1],
         );
         await supabase.storage.from(BUCKET_NAME).remove(oldFilePaths);
-        await prisma.highlightImage.deleteMany({
+        await prisma.eventImage.deleteMany({
           where: { id: { in: imagesToDelete } },
         });
       }

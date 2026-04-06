@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Read(//f/Projetos/adetur/adetur-gestao/**)",
-      "Bash(npx prisma:*)"
+      "Bash(npx prisma:*)",
+      "Bash(npm ls:*)",
+      "Bash(xargs grep:*)",
+      "Bash(npm install:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(cd:*)"
     ]
   }
 }
