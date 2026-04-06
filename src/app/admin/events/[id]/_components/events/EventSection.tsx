@@ -44,18 +44,20 @@ export function EventsSection({ municipalityId }: EventSectionProps) {
       await deleteEvent(selectedEvent.id);
       setIsDeleteOpen(false);
     } catch (error) {
+      console.error("Erro ao excluir evento:", error);
       // O erro já é tratado no hook, não é necessário um toast aqui.
     }
   };
 
   const handleSubmit = async (
     data: EventFormValues,
-    imageFile: File | null
+    imageFile: File | null,
   ) => {
     try {
       await processEventData(data, imageFile, selectedEvent);
       setIsFormOpen(false); // Fecha o diálogo em caso de sucesso
     } catch (error) {
+      console.error("Erro ao processar evento:", error);
       // O erro já é tratado no hook.
     }
   };

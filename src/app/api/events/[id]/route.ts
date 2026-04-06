@@ -18,7 +18,7 @@ function sanitizeTitle(name: string): string {
 // GET: Lista todos os eventos de um município
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const id = (await params).id;
@@ -41,9 +41,10 @@ export async function GET(
     });
     return NextResponse.json(events);
   } catch (error) {
+    console.error("Erro ao buscar eventos:", error);
     return NextResponse.json(
       { error: "Erro ao buscar eventos." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -51,7 +52,7 @@ export async function GET(
 // PUT: Atualiza um evento existente
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { userId } = await auth();
@@ -75,7 +76,7 @@ export async function PUT(
     if (!existingEvent) {
       return NextResponse.json(
         { message: "Evento não encontrado." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -87,7 +88,7 @@ export async function PUT(
           where: { id: { in: imagesToDelete } },
         });
         const oldFilePaths = imagesData.map(
-          (img) => img.url.split(`${BUCKET_NAME}/`)[1]
+          (img) => img.url.split(`${BUCKET_NAME}/`)[1],
         );
         await supabase.storage.from(BUCKET_NAME).remove(oldFilePaths);
         await prisma.highlightImage.deleteMany({
@@ -121,7 +122,7 @@ export async function PUT(
 
         if (uploadError)
           throw new Error(
-            `Erro no upload para Supabase: ${uploadError.message}`
+            `Erro no upload para Supabase: ${uploadError.message}`,
           );
 
         const { data: publicUrlData } = supabase.storage
@@ -151,7 +152,7 @@ export async function PUT(
     console.error("Erro ao atualizar destaque:", error);
     return NextResponse.json(
       { message: "Erro ao atualizar destaque." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -174,15 +175,16 @@ export async function DELETE(req: NextRequest) {
     if (!event) {
       return NextResponse.json(
         { error: "Evento não encontrado." },
-        { status: 404 }
+        { status: 404 },
       );
     }
     await prisma.event.delete({ where: { id } });
     return NextResponse.json({ message: "Evento removido com sucesso." });
   } catch (error) {
+    console.error("Erro ao remover evento:", error);
     return NextResponse.json(
       { error: "Erro ao remover evento." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

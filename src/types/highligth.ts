@@ -3,10 +3,10 @@ import { z } from "zod";
 export interface Highlight {
   id: string;
   title: string;
-  image: string | null;
+  image?: string | null;
   description: string | null;
   municipalityId: string;
-  municipality: {
+  municipality?: {
     name: string;
   } | null;
   latitude: number | null;
@@ -20,6 +20,7 @@ export interface HighlightWithImages{
   url: string;
   highlightId: string;
   createdAt: Date;
+  updatedAt?: Date;
 }
 
 // Estados de loading

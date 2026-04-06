@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { Users, Maximize, User, Smile, Fingerprint } from "lucide-react";
+import { Users, Maximize, User, Fingerprint } from "lucide-react";
 import { Metadata } from "next";
 
 import { PublicImageGallery } from "./_components/PublicImageGallery"; // Será a galeria principal
@@ -45,7 +45,7 @@ async function getMunicipalityGeoJson(ibgeCode: string | null | undefined) {
   if (!ibgeCode) return null;
   try {
     const response = await fetch(
-      `https://servicodados.ibge.gov.br/api/v3/malhas/municipios/${ibgeCode}?formato=application/vnd.geo+json`
+      `https://servicodados.ibge.gov.br/api/v3/malhas/municipios/${ibgeCode}?formato=application/vnd.geo+json`,
     );
     if (!response.ok) return null;
     return await response.json();
@@ -62,18 +62,22 @@ async function getMunicipalityDetails(ibgeCode: string | null | undefined) {
   try {
     // Busca de metadados (incluindo área)
     const metaPromise = fetch(
-      `https://servicodados.ibge.gov.br/api/v3/malhas/municipios/${ibgeCode}/metadados`
+      `https://servicodados.ibge.gov.br/api/v3/malhas/municipios/${ibgeCode}/metadados`,
     ).then((res) => (res.ok ? res.json() : null));
 
     // Busca de estimativa de população
     const popPromise = fetch(
-      `https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-4/variaveis/9324?localidades=N6[${ibgeCode}]`
+      `https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-4/variaveis/9324?localidades=N6[${ibgeCode}]`,
     ).then((res) => (res.ok ? res.json() : null));
 
-    const [metaResult, popResult] = await Promise.all([metaPromise, popPromise]);
+    const [metaResult, popResult] = await Promise.all([
+      metaPromise,
+      popPromise,
+    ]);
 
     const area = metaResult?.[0]?.area?.dimensao ?? null;
-    const population = popResult?.[0]?.resultados?.[0]?.series?.[0]?.serie?.['2021'] ?? null;
+    const population =
+      popResult?.[0]?.resultados?.[0]?.series?.[0]?.serie?.["2021"] ?? null;
 
     return { area, population };
   } catch (error) {
@@ -151,28 +155,39 @@ export default async function MunicipioPage({ params }: PageProps) {
                 {/* Lista de Informações Adicionais */}
                 <div className="mt-10 border-t border-slate-200 pt-6">
                   <ul className="space-y-4 text-slate-600 grid grid-cols-2 gap-4">
-                     {municipality.prefeito && (
+                    {municipality.prefeito && (
                       <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
                         <User className="h-5 w-5 flex-shrink-0 mt-0.5 text-purple-600" />
-                        <span><strong>Prefeito(a):</strong> {municipality.prefeito}</span>
+                        <span>
+                          <strong>Prefeito(a):</strong> {municipality.prefeito}
+                        </span>
                       </li>
                     )}
                     {details.population && (
-                       <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
+                      <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
                         <Users className="h-5 w-5 flex-shrink-0 mt-0.5 text-blue-600" />
-                        <span><strong>População:</strong> {Number(details.population).toLocaleString("pt-BR")} (Est. 2021)</span>
+                        <span>
+                          <strong>População:</strong>{" "}
+                          {Number(details.population).toLocaleString("pt-BR")}{" "}
+                          (Est. 2021)
+                        </span>
                       </li>
                     )}
                     {details.area && (
-                       <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
+                      <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
                         <Maximize className="h-5 w-5 flex-shrink-0 mt-0.5 text-green-600" />
-                        <span><strong>Área Territorial:</strong> {Number(details.area).toLocaleString("pt-BR")} km²</span>
+                        <span>
+                          <strong>Área Territorial:</strong>{" "}
+                          {Number(details.area).toLocaleString("pt-BR")} km²
+                        </span>
                       </li>
-                    )}                   
+                    )}
                     {municipality.gentilic && (
-                       <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4 h-[56px]">
+                      <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4 h-[56px]">
                         <Fingerprint className="h-5 w-5 flex-shrink-0 mt-0.5 text-yellow-600" />
-                        <span><strong>Gentílico:</strong> {municipality.gentilic}</span>
+                        <span>
+                          <strong>Gentílico:</strong> {municipality.gentilic}
+                        </span>
                       </li>
                     )}
                   </ul>
@@ -186,7 +201,7 @@ export default async function MunicipioPage({ params }: PageProps) {
               </h2>
               <PublicImageGallery
                 images={displayImages}
-                municipalityName={municipality.name}                
+                municipalityName={municipality.name}
               />
             </div>
           </div>
@@ -216,7 +231,7 @@ export default async function MunicipioPage({ params }: PageProps) {
             </div>
             {/* Coluna de Destaques */}
             <div className="lg:col-span-1 h-full lg:max-h-[70vh] lg:min-h-[600px]">
-              <HighlightsSection  highlights={municipality.highlights} />
+              <HighlightsSection highlights={municipality.highlights} />
             </div>
           </div>
         </div>

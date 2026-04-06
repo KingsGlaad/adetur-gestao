@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -15,7 +14,6 @@ export default function EventPage() {
   const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
   const [loading, setLoading] = useState(true);
 
-  
   const fetchEvents = async () => {
     setLoading(true);
     try {
@@ -34,6 +32,7 @@ export default function EventPage() {
       const res = await axios.get("/api/cities");
       setMunicipalities(res.data);
     } catch (error) {
+      console.error("Erro ao buscar municípios:", error);
       toast.error("Erro ao carregar municípios.");
     }
   };
@@ -45,7 +44,7 @@ export default function EventPage() {
 
   const memoizedColumns = useMemo(
     () => columns(fetchEvents, municipalities),
-    [municipalities]
+    [municipalities],
   );
 
   if (loading) {

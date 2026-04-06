@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import { Post } from "@/types/post"; 
+import { Post } from "@/types/post";
 import { PostCard } from "@/components/cards/PostCard";
 import Image from "next/image";
-import NotFound from "@/app/not-found";
 
 export default function NewsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -45,7 +44,13 @@ export default function NewsPage() {
             ))}
           </div>
         ) : (
-          <Image src={"/404.png"} alt="404 - não ha nada" width={500} height={500} className="mx-auto"/>
+          <Image
+            src={"/404.png"}
+            alt="404 - não ha nada"
+            width={500}
+            height={500}
+            className="mx-auto"
+          />
         )}
       </div>
     </main>

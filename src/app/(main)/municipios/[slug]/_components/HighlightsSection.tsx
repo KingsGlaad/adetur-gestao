@@ -8,13 +8,10 @@ import Link from "next/link";
 
 interface HighlightsSectionProps {
   highlights: Highlight[];
-  onHighlightSelect: (id: string) => void;
+  onHighlightSelect?: (id: string) => void;
 }
 
-export function HighlightsSection({
-  highlights,
-  onHighlightSelect,
-}: HighlightsSectionProps) {
+export function HighlightsSection({ highlights }: HighlightsSectionProps) {
   if (highlights.length === 0) {
     return (
       <div className="flex flex-col h-full">

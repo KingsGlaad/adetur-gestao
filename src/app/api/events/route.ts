@@ -5,7 +5,7 @@ import sharp from "sharp";
 import { auth } from "@clerk/nextjs/server";
 
 // GET: Lista todos os eventos de um município
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const events = await prisma.event.findMany({
       orderBy: { date: "asc" }, // Ordena por data do evento
@@ -25,9 +25,10 @@ export async function GET(req: NextRequest) {
     });
     return NextResponse.json(events);
   } catch (error) {
+    console.error("Erro ao buscar eventos:", error);
     return NextResponse.json(
       { error: "Erro ao buscar eventos." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -49,10 +50,10 @@ function sanitizeTitle(name: string): string {
 export async function POST(req: NextRequest) {
   try {
     const { userId } = await auth();
-    
-        if (!userId) {
-          return new NextResponse("Unauthorized", { status: 401 });
-        }
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const formData = await req.formData();
 
     const title = formData.get("title") as string;
@@ -98,7 +99,7 @@ export async function POST(req: NextRequest) {
       if (uploadError) {
         return NextResponse.json(
           { error: "Erro no upload para Supabase." },
-          { status: 500 }
+          { status: 500 },
         );
       }
 
@@ -117,9 +118,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ...newEvent, image: imageUrl }, { status: 201 });
   } catch (error) {
+    console.error("Erro ao criar evento:", error);
     return NextResponse.json(
       { error: "Erro ao criar evento." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

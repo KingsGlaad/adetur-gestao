@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm, Controller, useWatch } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -28,9 +28,9 @@ const postSchema = z.object({
     .string()
     .refine(
       (value) => value.replace(/<p><\/p>/g, "").trim().length > 0,
-      "O conteúdo é obrigatório."
+      "O conteúdo é obrigatório.",
     ),
-  published: z.boolean().default(false),
+  published: z.boolean(),
 });
 
 type PostFormValues = z.infer<typeof postSchema>;
@@ -43,7 +43,7 @@ export function PostForm({ initialData }: PostFormProps) {
   const router = useRouter();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [existingImage, setExistingImage] = useState<string | null>(
-    initialData?.coverImage || null
+    initialData?.coverImage || null,
   );
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -84,8 +84,6 @@ export function PostForm({ initialData }: PostFormProps) {
     },
   });
 
-  const contentValue = useWatch({ control, name: "content" });
-
   useEffect(() => {
     // Limpa a URL do objeto de preview para evitar vazamento de memória
     return () => {
@@ -123,6 +121,7 @@ export function PostForm({ initialData }: PostFormProps) {
       router.push("/admin/posts");
       router.refresh(); // Atualiza os dados da tabela na página de listagem
     } catch (error) {
+      console.error("Erro ao salvar a notícia:", error);
       toast.error("Ocorreu um erro ao salvar a notícia.");
     } finally {
       setIsSubmitting(false);
@@ -138,7 +137,7 @@ export function PostForm({ initialData }: PostFormProps) {
       setExistingImage(null);
     }
   };
- 
+
   const currentImage = imagePreview || existingImage;
 
   return (
@@ -168,18 +167,26 @@ export function PostForm({ initialData }: PostFormProps) {
           <Label>Créditos da imagem</Label>
           <Input {...register("altText")} className="mt-1" />
           {errors.altText && (
-            <p className="text-sm text-red-500 mt-1">{errors.altText.message}</p>
+            <p className="text-sm text-red-500 mt-1">
+              {errors.altText.message}
+            </p>
           )}
         </div>
         <div>
           <Label>Título</Label>
           <Input {...register("title")} className="mt-1" />
-          {errors.title && <p className="text-sm text-red-500 mt-1">{errors.title.message}</p>}
+          {errors.title && (
+            <p className="text-sm text-red-500 mt-1">{errors.title.message}</p>
+          )}
         </div>
         <div>
           <Label>Subtítulo</Label>
           <Input {...register("subtitle")} className="mt-1" />
-          {errors.subtitle && <p className="text-sm text-red-500 mt-1">{errors.subtitle.message}</p>}
+          {errors.subtitle && (
+            <p className="text-sm text-red-500 mt-1">
+              {errors.subtitle.message}
+            </p>
+          )}
         </div>
         <div>
           <Label>Conteúdo</Label>
@@ -188,7 +195,9 @@ export function PostForm({ initialData }: PostFormProps) {
             <EditorContent editor={editor} />
           </div>
           {errors.content && (
-            <p className="text-sm text-red-500 mt-1">{errors.content.message}</p>
+            <p className="text-sm text-red-500 mt-1">
+              {errors.content.message}
+            </p>
           )}
         </div>
         <div className="flex items-center space-x-2">
@@ -196,14 +205,28 @@ export function PostForm({ initialData }: PostFormProps) {
             name="published"
             control={control}
             render={({ field }) => (
-              <Switch id="published" checked={field.value} onCheckedChange={field.onChange} />
+              <Switch
+                id="published"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
             )}
           />
 
-          <Label htmlFor="published">Publicar notícia?</Label>          
+          <Label htmlFor="published">Publicar notícia?</Label>
         </div>
-        <Button type="submit" disabled={isSubmitting} className="w-full md:w-auto">
-          {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Salvando...</> : action}
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full md:w-auto"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Salvando...
+            </>
+          ) : (
+            action
+          )}
         </Button>
       </form>
     </div>

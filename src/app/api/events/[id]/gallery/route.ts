@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
-import path from "path";
 import { auth } from "@clerk/nextjs/server";
 
 const BUCKET_NAME = "adetur-bucket";
@@ -9,7 +8,7 @@ const BUCKET_NAME = "adetur-bucket";
 // GET: Busca todas as imagens da galeria de um evento
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const eventId = (await params).id;
@@ -19,9 +18,10 @@ export async function GET(
     });
     return NextResponse.json(images);
   } catch (error) {
+    console.error("Erro ao buscar imagens da galeria do evento:", error);
     return NextResponse.json(
       { error: "Erro ao buscar imagens da galeria do evento." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -29,22 +29,21 @@ export async function GET(
 // POST: Faz o upload de novas imagens para a galeria do evento
 export async function POST(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-
     const { userId } = await auth();
-    
-        if (!userId) {
-          return new NextResponse("Unauthorized", { status: 401 });
-        }
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const event = await prisma.event.findUnique({
       where: { id: (await params).id },
     });
     if (!event) {
       return NextResponse.json(
         { error: "Evento não encontrado." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -69,14 +68,15 @@ export async function POST(
             url: publicUrlData.publicUrl,
           },
         });
-      })
+      }),
     );
 
     return NextResponse.json(uploadResults, { status: 201 });
   } catch (error) {
+    console.error("Erro no upload da galeria do evento:", error);
     return NextResponse.json(
       { error: "Erro no upload da galeria do evento." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -96,7 +96,7 @@ export async function DELETE(req: NextRequest) {
 
     if (image) {
       const urlParts = image.url.split(
-        `/storage/v1/object/public/${BUCKET_NAME}/`
+        `/storage/v1/object/public/${BUCKET_NAME}/`,
       );
       if (urlParts[1]) {
         await supabase.storage.from(BUCKET_NAME).remove([urlParts[1]]);
@@ -106,9 +106,10 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ message: "Imagem removida com sucesso!" });
   } catch (error) {
+    console.error("Erro ao remover imagem da galeria:", error);
     return NextResponse.json(
       { error: "Erro ao remover imagem da galeria." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

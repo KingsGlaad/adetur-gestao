@@ -13,7 +13,6 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { Post } from "@/types/post";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -33,7 +32,6 @@ interface CellActionProps {
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data, onUpdate }) => {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const onDelete = async () => {
@@ -43,6 +41,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data, onUpdate }) => {
       toast.success("Notícia excluída.");
       onUpdate(); // Chama a função para recarregar os dados da tabela
     } catch (error) {
+      console.error("Erro ao excluir a notícia:", error);
       toast.error("Ocorreu um erro ao excluir a notícia.");
     } finally {
       setLoading(false);
@@ -61,13 +60,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data, onUpdate }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Ações</DropdownMenuLabel>
           <Link href={`/admin/posts/${data.id}`}>
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()} variant="default">
+            <DropdownMenuItem
+              onSelect={(e) => e.preventDefault()}
+              variant="default"
+            >
               <Edit className="mr-2 h-4 w-4" /> Editar
             </DropdownMenuItem>
           </Link>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <DropdownMenuItem variant="destructive" onSelect={(e) => e.preventDefault()}>
+              <DropdownMenuItem
+                variant="destructive"
+                onSelect={(e) => e.preventDefault()}
+              >
                 {loading ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
@@ -80,12 +85,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data, onUpdate }) => {
               <AlertDialogHeader>
                 <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Esta ação não pode ser desfeita e excluirá permanentemente a notícia.
+                  Esta ação não pode ser desfeita e excluirá permanentemente a
+                  notícia.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={onDelete}>Excluir</AlertDialogAction>
+                <AlertDialogAction onClick={onDelete}>
+                  Excluir
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

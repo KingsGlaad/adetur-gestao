@@ -18,29 +18,30 @@ function sanitizeTitle(name: string): string {
 // GET: Buscar um destaque específico
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const id  = (await params).id;
+    const id = (await params).id;
     const highlight = await prisma.highlight.findUnique({
       where: { id },
-      include:{
-        galleryImages: true
-      }
+      include: {
+        galleryImages: true,
+      },
     });
 
     if (!highlight) {
       return NextResponse.json(
         { message: "Destaque não encontrado." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     return NextResponse.json(highlight);
   } catch (error) {
+    console.error("Erro ao buscar destaque:", error);
     return NextResponse.json(
       { message: "Erro ao buscar destaque." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -48,14 +49,14 @@ export async function GET(
 // PUT: Atualizar um destaque
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { userId } = await auth();
-    
-        if (!userId) {
-          return new NextResponse("Unauthorized", { status: 401 });
-        }
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const id = (await params).id;
     const formData = await req.formData();
 
@@ -73,7 +74,7 @@ export async function PUT(
     if (!existingHighlight) {
       return NextResponse.json(
         { message: "Destaque não encontrado." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -85,7 +86,7 @@ export async function PUT(
           where: { id: { in: imagesToDelete } },
         });
         const oldFilePaths = imagesData.map(
-          (img) => img.url.split(`${BUCKET_NAME}/`)[1]
+          (img) => img.url.split(`${BUCKET_NAME}/`)[1],
         );
         await supabase.storage.from(BUCKET_NAME).remove(oldFilePaths);
         await prisma.highlightImage.deleteMany({
@@ -119,7 +120,7 @@ export async function PUT(
 
         if (uploadError)
           throw new Error(
-            `Erro no upload para Supabase: ${uploadError.message}`
+            `Erro no upload para Supabase: ${uploadError.message}`,
           );
 
         const { data: publicUrlData } = supabase.storage
@@ -150,7 +151,7 @@ export async function PUT(
     console.error("Erro ao atualizar destaque:", error);
     return NextResponse.json(
       { message: "Erro ao atualizar destaque." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -158,7 +159,7 @@ export async function PUT(
 // DELETE: Excluir um destaque
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const { userId } = await auth();
@@ -172,7 +173,7 @@ export async function DELETE(
     if (!highlight) {
       return NextResponse.json(
         { message: "Destaque não encontrado." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -183,7 +184,7 @@ export async function DELETE(
     console.error("Erro ao excluir destaque:", error);
     return NextResponse.json(
       { message: "Erro ao excluir destaque." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

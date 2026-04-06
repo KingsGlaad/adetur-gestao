@@ -32,8 +32,8 @@ import { Highlight } from "@/types/highligth";
 const highlightSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
   description: z.string().optional(),
-  latitude: z.coerce.number().optional(),
-  longitude: z.coerce.number().optional(),
+  latitude: z.coerce.number().optional().nullable(),
+  longitude: z.coerce.number().optional().nullable(),
   municipalityId: z.string().min(1, "Selecione um município."),
 });
 
@@ -81,13 +81,13 @@ export function HighlightFormDialog({
     control,
     reset,
     formState: { errors },
-  } = useForm<HighlightFormValues>({
+  } = useForm({
     resolver: zodResolver(highlightSchema),
     defaultValues: {
       title: initialData?.title || "",
       description: initialData?.description || "",
-      latitude: initialData?.latitude || undefined,
-      longitude: initialData?.longitude || undefined,
+      latitude: initialData?.latitude ?? undefined,
+      longitude: initialData?.longitude ?? undefined,
       municipalityId: initialData?.municipalityId || "",
     },
   });
@@ -109,7 +109,7 @@ export function HighlightFormDialog({
         (initialData.galleryImages || []).map((img, idx) => ({
           id: img.id ?? String(idx),
           url: img.url,
-        }))
+        })),
       );
     } else {
       reset({
@@ -138,7 +138,7 @@ export function HighlightFormDialog({
     const totalImages = existingImages.length + imageFiles.length;
     if (totalImages === 0) {
       toast.error(
-        "Pelo menos uma imagem é obrigatória para criar um destaque."
+        "Pelo menos uma imagem é obrigatória para criar um destaque.",
       );
       return;
     }
@@ -176,6 +176,7 @@ export function HighlightFormDialog({
       onUpdate();
       onOpenChange(false);
     } catch (error) {
+      console.error("Erro ao salvar destaque:", error);
       toast.error("Ocorreu um erro ao salvar o destaque.");
     } finally {
       setIsSubmitting(false);

@@ -1,4 +1,4 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { DashboardStats } from "./_components/dashboard-stats";
 import { prisma } from "@/lib/prisma";
@@ -11,8 +11,6 @@ export default async function Dashboard() {
   if (!userId) {
     redirect("/login");
   }
-
-  const user = await currentUser();
 
   const [municipalities, events, highlights, guides] = await Promise.all([
     prisma.municipality.findMany({

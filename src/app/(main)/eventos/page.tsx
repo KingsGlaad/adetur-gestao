@@ -1,13 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 import Image from "next/image";
-import {
-  isFuture,
-  isPast,
-  isSameMonth,
-  startOfMonth,
-  endOfMonth,
-} from "date-fns";
+import { isFuture, isPast, isSameMonth } from "date-fns";
 import { EventCard } from "@/components/cards/EventCard";
 import { EventWithRelations } from "@/types/events";
 
@@ -28,9 +22,6 @@ async function getEvents() {
       },
       galleryImages: {
         take: 1,
-        select: {
-          url: true,
-        },
       },
     },
     orderBy: {
@@ -72,11 +63,15 @@ export default async function EventosPage() {
   const now = new Date();
 
   const thisMonthEvents = allEvents.filter((event) =>
-    isSameMonth(new Date(event.date), now)
+    isSameMonth(new Date(event.date), now),
   );
 
   const upcomingEvents = allEvents
-    .filter((event) => isFuture(new Date(event.date)) && !isSameMonth(new Date(event.date), now))
+    .filter(
+      (event) =>
+        isFuture(new Date(event.date)) &&
+        !isSameMonth(new Date(event.date), now),
+    )
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()); // Ordena do mais próximo para o mais distante
 
   const pastEvents = allEvents.filter((event) => isPast(new Date(event.date)));

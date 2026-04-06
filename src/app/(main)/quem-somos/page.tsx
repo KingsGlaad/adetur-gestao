@@ -27,7 +27,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  type CarouselApi,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 export default function Page() {
@@ -145,8 +144,8 @@ export default function Page() {
                   <p className="text-sm text-neutral-300">
                     Ocorre uma reunião de trabalho em Cajuru, com a pauta
                     incluindo a inserção de cidades no Mapa do Turismo
-                    (SISMAPA), discussões sobre um novo site e a participação
-                    na feira da AVIRP (Associação das Agências de Viagem de
+                    (SISMAPA), discussões sobre um novo site e a participação na
+                    feira da AVIRP (Associação das Agências de Viagem de
                     Ribeirão Preto e Região).
                   </p>
                 </div>
@@ -223,7 +222,11 @@ export default function Page() {
               Array.from({ length: 6 }).map((_, idx) => (
                 <MunicipalitiesCardSkeleton key={idx} /> // Usando o novo esqueleto
               ))}
-            {error && <div className="text-red-500 bg-white p-4 rounded-lg text-center">{error}</div>}
+            {error && (
+              <div className="text-red-500 bg-white p-4 rounded-lg text-center">
+                {error}
+              </div>
+            )}
             {!isLoading &&
               !error &&
               municipalities.map((municipality) => (

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -17,7 +16,7 @@ export default function PostsPage() {
     setLoading(true);
     try {
       const res = await axios.get("/api/posts");
-        setPosts(res.data);
+      setPosts(res.data);
     } catch (error) {
       console.error("Erro ao buscar notícias:", error);
       toast.error("Erro ao carregar as notícias.");
@@ -41,7 +40,6 @@ export default function PostsPage() {
         <h2 className="text-3xl font-bold tracking-tight">
           Gerenciamento de Notícias
         </h2>
-        
       </div>
       <DataTable columns={columns(fetchPosts)} data={posts} />
     </div>

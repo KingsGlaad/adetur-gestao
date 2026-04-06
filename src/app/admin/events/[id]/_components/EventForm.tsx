@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import Image from "next/image";
@@ -8,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon, Loader2, Trash2 } from "lucide-react";
 import { Event } from "@/generated";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import {
   Select,
   SelectContent,
@@ -196,7 +197,7 @@ export function EventForm({ event, onSubmit, isSubmitting }: EventFormProps) {
                   variant={"outline"}
                   className={cn(
                     "w-full justify-start text-left font-normal mt-1",
-                    !field.value && "text-muted-foreground"
+                    !field.value && "text-muted-foreground",
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />

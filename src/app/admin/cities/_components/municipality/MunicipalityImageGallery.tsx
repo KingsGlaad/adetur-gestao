@@ -2,6 +2,7 @@ import { X, ImageIcon, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { MunicipalityImage } from "@/generated";
+import Image from "next/image";
 
 interface MunicipalityImageGalleryProps {
   images: MunicipalityImage[];
@@ -27,7 +28,7 @@ export function MunicipalityImageGallery({
         {/* Usa a variável segura imageList para o map */}
         {imageList.map((image) => (
           <div key={image.id} className="relative aspect-square group">
-            <img
+            <Image
               src={image.url}
               alt="Imagem da galeria"
               className="w-full h-full object-cover rounded-md border"

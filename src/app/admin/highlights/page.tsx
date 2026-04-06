@@ -38,6 +38,7 @@ export default function HighlightsPage() {
       const res = await axios.get("/api/cities");
       setMunicipalities(res.data);
     } catch (error) {
+      console.error("Erro ao buscar municípios:", error);
       toast.error("Erro ao carregar municípios.");
     }
   };
@@ -49,7 +50,7 @@ export default function HighlightsPage() {
 
   const memoizedColumns = useMemo(
     () => columns(fetchHighlights, municipalities),
-    [municipalities]
+    [municipalities],
   );
 
   if (loading) {

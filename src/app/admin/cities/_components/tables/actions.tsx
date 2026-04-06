@@ -14,7 +14,17 @@ import { useState } from "react";
 import { MunicipalityRefined } from "@/types/municipality";
 import axios from "axios";
 import { toast } from "sonner";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface MunicipioActionsProps {
   municipio: MunicipalityRefined;
@@ -33,7 +43,7 @@ export function MunicipioActions({ municipio }: MunicipioActionsProps) {
     router.push(`/admin/cities/${municipio.slug}`);
   };
 
-   const onDelete = async () => {
+  const onDelete = async () => {
     try {
       setLoading(true);
       await axios.delete(`/api/cities/${municipio.slug}`);
@@ -41,6 +51,7 @@ export function MunicipioActions({ municipio }: MunicipioActionsProps) {
       router.refresh(); // Recarrega a página atual para refletir as mudanças
     } catch (error) {
       toast.error("Ocorreu um erro ao excluir o município.");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -84,11 +95,19 @@ export function MunicipioActions({ municipio }: MunicipioActionsProps) {
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
-                <AlertDialogDescription>Esta ação não pode ser desfeita e excluirá permanentemente o município e todos os seus dados associados.</AlertDialogDescription>
+                <AlertDialogDescription>
+                  Esta ação não pode ser desfeita e excluirá permanentemente o
+                  município e todos os seus dados associados.
+                </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={onDelete} className="bg-red-500 hover:bg-red-400 cursor-pointer">Excluir</AlertDialogAction>
+                <AlertDialogAction
+                  onClick={onDelete}
+                  className="bg-red-500 hover:bg-red-400 cursor-pointer"
+                >
+                  Excluir
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

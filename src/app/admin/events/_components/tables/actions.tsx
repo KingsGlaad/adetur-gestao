@@ -36,6 +36,7 @@ export const CellAction: React.FC<CellActionProps> = ({
       toast.success("Destaque excluído.");
       onUpdate();
     } catch (error) {
+      console.error("Erro ao excluir destaque:", error);
       toast.error("Ocorreu um erro ao excluir o destaque.");
     } finally {
       setLoading(false);

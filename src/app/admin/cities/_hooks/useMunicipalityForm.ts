@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { z } from "zod";
 import axios from "axios";
@@ -21,7 +22,7 @@ const municipalitySchema = z.object({
   latitude: z.number().optional(),
   longitude: z.number().optional(),
   id: z.string().optional(),
-  active: z.boolean().default(false),
+  active: z.boolean(),
   prefeito: z.string().min(1, "O nome do prefeito é obrigatório"),
   gentilic: z.string().min(1, "O gentílico é obrigatório"),
 });
@@ -34,7 +35,7 @@ export function useMunicipalityForm(municipio: MunicipalityRefined | null) {
   // Estados para as imagens
   const [coatOfArmsFile, setCoatOfArmsFile] = useState<File | null>(null);
   const [coatOfArmsPreview, setCoatOfArmsPreview] = useState<string | null>(
-    municipio?.coatOfArms || null
+    municipio?.coatOfArms || null,
   );
   const [galleryImages, setGalleryImages] = useState<MunicipalityImage[]>([]);
   const [isGalleryLoading, setIsGalleryLoading] = useState(true);
@@ -75,7 +76,7 @@ export function useMunicipalityForm(municipio: MunicipalityRefined | null) {
     setIsGalleryLoading(true);
     try {
       const res = await axios.get(
-        `/api/cities/${municipio.slug}/${municipio.id}/gallery`
+        `/api/cities/${municipio.slug}/${municipio.id}/gallery`,
       );
       setGalleryImages(res.data);
     } catch {
@@ -99,7 +100,7 @@ export function useMunicipalityForm(municipio: MunicipalityRefined | null) {
     try {
       await axios.post(
         `/api/cities/${municipio.slug}/${municipio.id}/gallery`,
-        formData
+        formData,
       );
       toast.success("Imagens adicionadas à galeria!");
       await fetchGallery();
@@ -116,7 +117,7 @@ export function useMunicipalityForm(municipio: MunicipalityRefined | null) {
         `/api/cities/${municipio.slug}/${municipio.id}/gallery`,
         {
           data: { imageId },
-        }
+        },
       );
       toast.success("Imagem removida da galeria!");
       setGalleryImages((prev) => prev.filter((img) => img.id !== imageId));
@@ -149,16 +150,17 @@ export function useMunicipalityForm(municipio: MunicipalityRefined | null) {
         // A rota de upload precisa ser ajustada para receber o ID
         await axios.put(
           `/api/cities/${savedMunicipality.slug}/${savedMunicipality.id}/coatofarms`,
-          formData
+          formData,
         );
       }
 
       toast.success(
-        `Município ${isCreating ? "criado" : "atualizado"} com sucesso!`
+        `Município ${isCreating ? "criado" : "atualizado"} com sucesso!`,
       );
       router.push("/admin/cities");
       router.refresh();
     } catch (error) {
+      console.error("Erro ao atualizar o município:", error);
       toast.error("Erro ao atualizar o município.");
     }
   };

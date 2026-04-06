@@ -4,12 +4,11 @@ import { Highlight } from "@/types/highligth";
 import MunicipioMap from "./MunicipioMap";
 
 interface MapSectionProps {
-  // Usando os tipos diretamente do Prisma, pois a página já os busca
   municipality: MunicipalityRefined;
   highlights: Highlight[];
   geoJsonData: any;
-  focusedHighlightId: string | null;
-  onHighlightSelect: (id: string | null) => void;
+  focusedHighlightId?: string | null;
+  onHighlightSelect?: (id: string | null) => void;
 }
 
 export function MapSection({

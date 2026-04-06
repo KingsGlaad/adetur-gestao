@@ -25,6 +25,4 @@ export interface EventWithImages {
 
 export type EventWithRelations = Event & {
   municipality: Pick<Municipality, "name" | "slug">;
-  image: Pick<Event, "image">;
-  galleryImages?: EventWithImages[] | null;
 };
