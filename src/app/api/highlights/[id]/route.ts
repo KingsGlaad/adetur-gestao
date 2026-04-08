@@ -152,7 +152,7 @@ export async function PUT(
 // DELETE: Excluir um destaque
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await auth();
@@ -160,7 +160,7 @@ export async function DELETE(
     if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const { id } = params;
+    const id = (await params).id;
     const highlight = await prisma.highlight.findUnique({ where: { id } });
 
     if (!highlight) {

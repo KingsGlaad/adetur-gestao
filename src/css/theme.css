@@ -50,6 +50,8 @@
   --gray: #F7F9FC;
   --gray-2: #EFF4FB;
   --gray-dark: #1A222C;
+  --dark: #1A222C;
+  --red: #FB4848;
 }
 
 .dark {
@@ -116,6 +118,8 @@
   --color-gray: var(--gray);
   --color-gray-2: var(--gray-2);
   --color-gray-dark: var(--gray-dark);
+  --color-dark: var(--dark);
+  --color-red: var(--red);
 
   /* Precise spacing for style.css legacy classes */
   --spacing-7.5: 1.875rem;
