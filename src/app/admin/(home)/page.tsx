@@ -15,10 +15,10 @@ export default async function Dashboard() {
   const [municipalities, events, highlights, guides] = await Promise.all([
     prisma.municipality.findMany({
       include: {
-        users: true,
-        highlights: true,
-        events: true,
-        guides: true,
+        User: true,
+        Highlight: true,
+        Event: true,
+        Guide: true,
       },
       orderBy: {
         name: "asc",
@@ -43,6 +43,7 @@ export default async function Dashboard() {
       take: 5,
     }),
   ]);
+
   const stats = [
     {
       title: "Municípios",
@@ -69,6 +70,7 @@ export default async function Dashboard() {
       description: "Guias turísticos cadastrados",
     },
   ];
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold tracking-tight">Visão Geral</h1>
@@ -81,7 +83,15 @@ export default async function Dashboard() {
         </div>
         <h1 className="text-3xl font-bold tracking-tight">Saiba mais</h1>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-          <MunicipalityList municipalities={municipalities} />
+          <MunicipalityList
+            municipalities={municipalities.map((m) => ({
+              ...m,
+              users: m.User,
+              highlights: m.Highlight,
+              events: m.Event,
+              guides: m.Guide,
+            }))}
+          />
           <RecentEvents events={events} />
         </div>
       </div>
