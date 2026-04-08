@@ -106,7 +106,7 @@ export default function Signin() {
       <div className="mb-4.5">
         <button
           type="submit"
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-primary/90"
           disabled={loading}
         >
           Entrar

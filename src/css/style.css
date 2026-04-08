@@ -390,7 +390,7 @@ span.flatpickr-weekday,
 }
 
 .data-table-common .datatable-table > tbody > tr {
-  @apply hover:bg-primary hover:bg-opacity-5;
+  @apply hover:bg-primary/5;
 }
 
 .data-table-one .datatable-table > tbody > tr > td:first-child {
