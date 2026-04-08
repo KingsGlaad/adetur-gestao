@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma"; // ajuste o path se for diferente
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
+import { slugify } from "@/lib/utils";
 
 export async function GET() {
   try {
@@ -51,23 +52,15 @@ async function fetchIbgeCode(municipalityName: string): Promise<string | null> {
   }
 }
 
-function slugify(text: string): string {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-") // Substitui espaços por -
-    .replace(/[^\w\-]+/g, "") // Remove caracteres não alfanuméricos (exceto -)
-    .replace(/\-\-+/g, "-"); // Substitui múltiplos - por um único -
-}
+
 
 export async function PUT(req: NextRequest) {
 
-  const { userId } = await auth();
-  
-      if (!userId) {
-        return new NextResponse("Unauthorized", { status: 401 });
-      }
+  const session = await auth();
+
+  if (!session) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
   const data = await req.json();
 
   // Busca automaticamente o código do IBGE com base no nome do município
@@ -94,11 +87,11 @@ export async function PUT(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth();
-    
-        if (!userId) {
-          return new NextResponse("Unauthorized", { status: 401 });
-        }
+    const session = await auth();
+
+    if (!session) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const data = await req.json();
 
     // Busca automaticamente o código do IBGE com base no nome do município

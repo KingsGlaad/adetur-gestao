@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
 import path from "path";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
+import { slugify } from "@/lib/utils";
 
 const BUCKET_NAME = "adetur-bucket";
 
@@ -11,9 +12,9 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const eventId = (await params).id;
@@ -38,7 +39,7 @@ export async function POST(
     const formData = await req.formData();
     const file = formData.get("file") as File;
 
-    const sanitizedTitle = event.title.toLowerCase().replace(/\s+/g, "-");
+    const sanitizedTitle = slugify(event.title);
     const filePath = `cities/${
       event.municipalityId
     }/events/${eventId}/${sanitizedTitle}${path.extname(file.name)}`;

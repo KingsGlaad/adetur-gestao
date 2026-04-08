@@ -1,8 +1,19 @@
 import "@/css/style.css";
 
-import { Sidebar } from "@/components/Layouts/sidebar";
-
-import { Header } from "@/components/Layouts/header";
+import { AppSidebar } from "@/components/admin/sidebar/app-sidebar";
+import {
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import { Providers } from "./providers";
@@ -16,24 +27,36 @@ export const metadata: Metadata = {
     "Sistema de Gestão da ADETUR - Agencia de Desenvolvimento do Turismo",
 };
 
-export default function RootLayout({ children }: PropsWithChildren) {
+export default function AdminLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="pt-Br" suppressHydrationWarning>
-      <body>
-        <Providers>
-          <div className="flex min-h-screen">
-            <Sidebar />
-
-            <div className="w-full bg-gray-20000 dark:bg-[#020d1a]">
-              <Header />
-
-              <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
-                {children}
-              </main>
+    <Providers>
+      <div className="dark flex min-h-screen w-full bg-background text-foreground">
+        <AppSidebar />
+        <SidebarInset className="bg-background">
+          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b px-4">
+            <div className="flex items-center gap-2">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 h-4" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem className="hidden md:block">
+                    <BreadcrumbLink href="/admin">
+                      ADETUR
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
             </div>
-          </div>
-        </Providers>
-      </body>
-    </html>
+          </header>
+          <main className="p-4 md:p-6 lg:p-10 flex flex-1 flex-col gap-4">
+            {children}
+          </main>
+        </SidebarInset>
+      </div>
+    </Providers>
   );
 }

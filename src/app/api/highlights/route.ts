@@ -3,7 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
 import { z } from "zod";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
+import { slugify } from "@/lib/utils";
 
 const highlightSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
@@ -14,15 +15,6 @@ const highlightSchema = z.object({
 });
 
 const BUCKET_NAME = "adetur-bucket";
-
-function sanitizeTitle(name: string): string {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
 
 // GET: Buscar todos os destaques
 export async function GET() {
@@ -56,12 +48,11 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await auth();
 
-    const { userId } = await auth();
-    
-        if (!userId) {
-          return new NextResponse("Unauthorized", { status: 401 });
-        }
+    if (!session) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const formData = await req.formData();
 
     const title = formData.get("title") as string;
@@ -109,8 +100,9 @@ export async function POST(req: NextRequest) {
           .webp({ quality: 80 })
           .toBuffer();
 
-        const sanitizedTitle = sanitizeTitle(file.name.split(".")[0]);
-        const fileName = `${Date.now()}-${sanitizedTitle}.webp`;
+        const baseName = file.name.split(".").slice(0, -1).join(".");
+        const sanitizedFileName = slugify(baseName);
+        const fileName = `${Date.now()}-${sanitizedFileName}.webp`;
         const filePath = `cities/${municipalityId}/highlights/${newHighlight.id}/${fileName}`;
 
         const { error: uploadError } = await supabase.storage

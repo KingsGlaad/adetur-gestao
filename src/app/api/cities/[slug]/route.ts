@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -29,9 +29,9 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { userId } = await auth();
+  const session = await auth();
 
-  if (!userId) {
+  if (!session) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
@@ -101,9 +101,9 @@ export async function DELETE(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const slug = (await params).slug;

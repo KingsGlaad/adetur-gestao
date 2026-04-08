@@ -2,21 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
+import { slugify } from "@/lib/utils";
 
 const BUCKET_NAME = "adetur-bucket";
-
-/**
- * Sanitiza o nome do município para gerar nomes de arquivos seguros
- */
-function sanitizeMunicipalityName(name: string): string {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // remove acentos
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
 
 /**
  * PUT - Upload de brasão (cria ou substitui)
@@ -26,11 +15,11 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId } = await auth();
-    
-        if (!userId) {
-          return new NextResponse("Unauthorized", { status: 401 });
-        }
+    const session = await auth();
+
+    if (!session) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const { id: municipalityId } = await params;
 
     if (!municipalityId) {
@@ -86,8 +75,8 @@ export async function PUT(
       .webp({ quality: 80 }) // qualidade entre 0-100
       .toBuffer();
 
-    const sanitizedName = sanitizeMunicipalityName(municipality.name);
-    const fileName = `${sanitizedName}-coat-of-arms.webp`;
+    const sanitizedName = slugify(municipality.name);
+    const fileName = `${sanitizedName}-brasao.webp`;
     const filePath = `cities/${municipalityId}/${fileName}`;
 
     // Faz upload no Supabase Storage
@@ -134,9 +123,9 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const { id: municipalityId } = await params;

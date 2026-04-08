@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
+import { slugify } from "@/lib/utils";
 
 const BUCKET_NAME = "adetur-bucket";
 
@@ -32,9 +33,9 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const event = await prisma.event.findUnique({
@@ -52,7 +53,8 @@ export async function POST(
 
     const uploadResults = await Promise.all(
       files.map(async (file) => {
-        const sanitizedFileName = file.name.toLowerCase().replace(/\s+/g, "-");
+        const baseName = file.name.split(".").slice(0, -1).join(".");
+        const sanitizedFileName = slugify(baseName);
         const filePath = `cities/${event.municipalityId}/events/${
           event.id
         }/gallery/${Date.now()}-${sanitizedFileName}`;
@@ -84,9 +86,9 @@ export async function POST(
 // DELETE: Remove uma imagem da galeria
 export async function DELETE(req: NextRequest) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const { imageId } = await req.json();

@@ -218,7 +218,7 @@ export function HighlightFormDialog({
   if (!isMounted) return null;
 
   const content = (
-    <DialogContent className="max-w-2xl">
+    <DialogContent className="sm:max-w-2xl">
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
       </DialogHeader>

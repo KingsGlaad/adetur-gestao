@@ -1,19 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 import sharp from "sharp";
 import { supabase } from "@/lib/supabase";
+import { slugify } from "@/lib/utils";
 
 const BUCKET_NAME = "adetur-bucket";
 
-function sanitizeTitle(name: string): string {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
 
 // GET: Lista todos os eventos de um município
 export async function GET(
@@ -55,9 +48,9 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const id = (await params).id;
@@ -109,9 +102,9 @@ export async function PUT(
           .webp({ quality: 80 })
           .toBuffer();
 
-        const sanitizedFileName = sanitizeTitle(file.name.split(".")[0]);
+        const sanitizedFileName = slugify(file.name.split(".")[0]);
         const fileName = `${Date.now()}-${sanitizedFileName}.webp`;
-        const filePath = `cities/${municipalityId}/highlights/${id}/${fileName}`;
+        const filePath = `cities/${municipalityId}/events/${id}/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
           .from(BUCKET_NAME)
@@ -142,7 +135,7 @@ export async function PUT(
       data: {
         title,
         description,
-        date,
+        date: new Date(date),
         municipalityId,
       },
     });
@@ -158,14 +151,17 @@ export async function PUT(
 }
 
 // DELETE: Remove um evento
-export async function DELETE(req: NextRequest) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const { id } = await req.json();
+    const id = (await params).id;
     // Lógica para remover a imagem do Supabase antes de apagar o registo
     const event = await prisma.event.findUnique({ where: { id } });
     const images = await prisma.eventImage.findMany({ where: { eventId: id } });

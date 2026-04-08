@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AccessibilityIcon, Contrast, Minus, Plus } from "lucide-react";
+import { Accessibility, Contrast, Minus, Plus } from "lucide-react";
+
 import Link from "next/link";
 
 export function AccessibilityControls() {
@@ -88,7 +89,8 @@ export function AccessibilityControls() {
           className="hover:bg-black/10 dark:hover:bg-white/10"
         >
           <span className="sr-only">Acessibilidade</span>
-          <AccessibilityIcon className="h-5 w-5" />
+          <Accessibility className="h-5 w-5" />
+
         </Button>
       </Link>
     </div>

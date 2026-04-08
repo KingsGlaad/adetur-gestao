@@ -2,18 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
+import { slugify } from "@/lib/utils";
 
 const BUCKET_NAME = "adetur-bucket";
-
-function sanitizeTitle(name: string): string {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
 
 // GET: Buscar um destaque específico
 export async function GET(
@@ -52,9 +44,9 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const id = (await params).id;
@@ -107,7 +99,8 @@ export async function PUT(
           .webp({ quality: 80 })
           .toBuffer();
 
-        const sanitizedFileName = sanitizeTitle(file.name.split(".")[0]);
+        const baseName = file.name.split(".").slice(0, -1).join(".");
+        const sanitizedFileName = slugify(baseName);
         const fileName = `${Date.now()}-${sanitizedFileName}.webp`;
         const filePath = `cities/${municipalityId}/highlights/${id}/${fileName}`;
 
@@ -162,9 +155,9 @@ export async function DELETE(
   { params }: { params: { id: string } },
 ) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const { id } = params;

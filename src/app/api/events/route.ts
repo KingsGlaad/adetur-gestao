@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 
 // GET: Lista todos os eventos de um município
 export async function GET() {
   try {
     const events = await prisma.event.findMany({
-      orderBy: { date: "asc" }, // Ordena por data do evento
+      orderBy: { date: "desc" }, // Ordena por data do evento
       include: {
         galleryImages: {
           select: {
@@ -49,9 +49,9 @@ function sanitizeTitle(name: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth();
+    const session = await auth();
 
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const formData = await req.formData();
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const date = formData.get("date") as string;
-    const municipalityId = formData.get("municipalitie") as string;
+    const municipalityId = formData.get("municipalityId") as string;
     const file = formData.get("image") as File | null;
 
     // Cria o evento no banco

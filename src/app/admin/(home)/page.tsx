@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { DashboardStats } from "./_components/dashboard-stats";
 import { prisma } from "@/lib/prisma";
@@ -7,8 +7,8 @@ import { MunicipalityList } from "./_components/municipality-list";
 import { RecentEvents } from "./_components/recent-events";
 
 export default async function Dashboard() {
-  const { userId } = await auth();
-  if (!userId) {
+  const session = await auth();
+  if (!session) {
     redirect("/login");
   }
 

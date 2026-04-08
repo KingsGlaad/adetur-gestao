@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
@@ -22,10 +22,9 @@ export async function PATCH(
   { params }: { params: { postId: string } }
 ) {
   try {
-    const { userId } = auth();
-    const user = await currentUser();
+    const session = await auth();
 
-    if (!userId || user?.publicMetadata.role !== "admin") {
+    if (!session) {
       return new NextResponse("Não autorizado", { status: 403 });
     }
 

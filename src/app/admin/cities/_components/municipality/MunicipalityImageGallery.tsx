@@ -3,6 +3,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { MunicipalityImage } from "@/generated";
 import Image from "next/image";
+import { useState } from "react";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
 
 interface MunicipalityImageGalleryProps {
   images: MunicipalityImage[];
@@ -17,6 +19,20 @@ export function MunicipalityImageGallery({
   onRemoveImage,
   isUploading,
 }: MunicipalityImageGalleryProps) {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
+
+  const onRemoveClick = (imageId: string) => {
+    setSelectedImageId(imageId);
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirm = () => {
+    if (selectedImageId) {
+      onRemoveImage(selectedImageId);
+    }
+    setIsConfirmOpen(false);
+  };
   // FIX: Garante que `images` é sempre um array antes de chamar .map()
   // Se a prop 'images' não for um array, imageList será um array vazio.
   const imageList = Array.isArray(images) ? images : [];
@@ -40,12 +56,19 @@ export function MunicipalityImageGallery({
               variant="destructive"
               size="icon"
               className="absolute -top-2 -right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100"
-              onClick={() => onRemoveImage(image.id)}
+              onClick={() => onRemoveClick(image.id)}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
         ))}
+        
+        <ConfirmModal
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={handleConfirm}
+          loading={isUploading}
+        />
         <Label
           htmlFor="gallery-file-input"
           className="aspect-square border-2 border-dashed rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-accent"

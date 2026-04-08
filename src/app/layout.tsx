@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { ClerkProvider } from "@clerk/nextjs";
+import { NextAuthProvider } from "@/providers/session-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
-  }
+  },
 };
 
 export default function RootLayout({
@@ -23,15 +23,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="pt-BR">
-        <body className={`${inter.className}`}>
-          <ThemeProvider attribute="class" defaultTheme="ligth">
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={`${inter.className}`}>
+        <NextAuthProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <Toaster />
             {children}
           </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </NextAuthProvider>
+      </body>
+    </html>
   );
 }

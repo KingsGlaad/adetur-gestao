@@ -39,7 +39,7 @@ const eventSchema = z.object({
     .refine((val) => /^\d{2}\/\d{2}\/\d{4}$/.test(val), {
       message: "Data inválida. Use o formato DD/MM/AAAA.",
     }),
-  municipalitie: z.string().min(1, "Selecione um município."),
+  municipalityId: z.string().min(1, "Selecione um município."),
 });
 
 type EventFormValues = z.infer<typeof eventSchema>;
@@ -89,7 +89,7 @@ export function EventFormDialog({
     defaultValues: {
       title: initialData?.title || "",
       description: initialData?.description || "",
-      municipalitie: initialData?.municipalityId || "",
+      municipalityId: initialData?.municipalityId || "",
       date: initialData?.date
         ? format(new Date(initialData.date), "dd/MM/yyyy")
         : "",
@@ -103,9 +103,9 @@ export function EventFormDialog({
   useEffect(() => {
     if (initialData) {
       reset({
-        title: initialData.title,
+        title: initialData.title ?? "",
         description: initialData.description ?? "",
-        municipalitie: initialData.municipalityId,
+        municipalityId: initialData.municipalityId ?? "",
         date: initialData.date
           ? format(new Date(initialData.date), "dd/MM/yyyy")
           : "",
@@ -121,7 +121,7 @@ export function EventFormDialog({
         title: "",
         description: "",
         date: "",
-        municipalitie: "",
+        municipalityId: "",
       });
       setExistingImages([]);
     }
@@ -161,7 +161,7 @@ export function EventFormDialog({
       formData.append("title", data.title);
       formData.append("description", data.description || "");
       formData.append("date", dateObj.toISOString());
-      formData.append("municipalitie", data.municipalitie);
+      formData.append("municipalityId", data.municipalityId);
       imageFiles.forEach((file) => {
         formData.append("images", file);
       });
@@ -246,7 +246,7 @@ export function EventFormDialog({
   if (!isMounted) return null;
 
   const content = (
-    <DialogContent className="max-w-2xl">
+    <DialogContent className="sm:max-w-2xl">
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
       </DialogHeader>
@@ -320,7 +320,7 @@ export function EventFormDialog({
             <Label>Município</Label>
             <Controller
               control={control}
-              name="municipalitie"
+              name="municipalityId"
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full mt-1">
@@ -336,9 +336,9 @@ export function EventFormDialog({
                 </Select>
               )}
             />
-            {errors.municipalitie && (
+            {errors.municipalityId && (
               <p className="text-sm text-red-500 mt-1">
-                {errors.municipalitie.message}
+                {errors.municipalityId.message}
               </p>
             )}
           </div>

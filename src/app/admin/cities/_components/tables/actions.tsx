@@ -7,24 +7,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit, Eye, Loader2, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { MunicipioDrawer } from "./municipality-drawer";
 import { useState } from "react";
 import { MunicipalityRefined } from "@/types/municipality";
 import axios from "axios";
 import { toast } from "sonner";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
 
 interface MunicipioActionsProps {
   municipio: MunicipalityRefined;
@@ -33,6 +23,7 @@ interface MunicipioActionsProps {
 export function MunicipioActions({ municipio }: MunicipioActionsProps) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const router = useRouter(); // adicionado
 
   const handleView = () => {
@@ -48,7 +39,8 @@ export function MunicipioActions({ municipio }: MunicipioActionsProps) {
       setLoading(true);
       await axios.delete(`/api/cities/${municipio.slug}`);
       toast.success("Município excluído.");
-      router.refresh(); // Recarrega a página atual para refletir as mudanças
+      router.refresh();
+      setIsDeleteOpen(false);
     } catch (error) {
       toast.error("Ocorreu um erro ao excluir o município.");
       console.error(error);
@@ -59,6 +51,13 @@ export function MunicipioActions({ municipio }: MunicipioActionsProps) {
 
   return (
     <>
+      <ConfirmModal
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        onConfirm={onDelete}
+        loading={loading}
+        description="Esta ação não pode ser desfeita e excluirá permanentemente o município e todos os seus dados associados."
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -78,39 +77,14 @@ export function MunicipioActions({ municipio }: MunicipioActionsProps) {
             Editar
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <DropdownMenuItem
-                className="text-destructive focus:text-destructive hover:bg-destructive/10"
-                onSelect={(e) => e.preventDefault()}
-              >
-                {loading ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Trash className="mr-2 h-4 w-4 text-destructive" />
-                )}
-                Excluir
-              </DropdownMenuItem>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Esta ação não pode ser desfeita e excluirá permanentemente o
-                  município e todos os seus dados associados.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={onDelete}
-                  className="bg-red-500 hover:bg-red-400 cursor-pointer"
-                >
-                  Excluir
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <DropdownMenuItem
+            className="text-destructive focus:text-destructive hover:bg-destructive/10"
+            onClick={() => setIsDeleteOpen(true)}
+            disabled={loading}
+          >
+            <Trash className="mr-2 h-4 w-4 text-destructive" />
+            Excluir
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 

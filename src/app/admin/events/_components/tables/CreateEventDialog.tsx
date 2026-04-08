@@ -39,7 +39,7 @@ const eventSchema = z.object({
     .refine((val) => /^\d{2}\/\d{2}\/\d{4}$/.test(val), {
       message: "Data inválida. Use o formato DD/MM/AAAA.",
     }),
-  municipalitie: z.string().min(1, "Selecione um município."),
+  municipalityId: z.string().min(1, "Selecione um município."),
 });
 
 // Usamos z.input para obter os tipos antes da transformação do Zod
@@ -64,7 +64,7 @@ export function CreateEventDialog() {
       title: "",
       description: "",
       date: "",
-      municipalitie: "",
+      municipalityId: "",
     },
   });
 
@@ -88,7 +88,7 @@ export function CreateEventDialog() {
       const formData = new FormData();
       formData.append("title", validatedData.title);
       formData.append("description", validatedData.description);
-      formData.append("municipalitie", validatedData.municipalitie);
+      formData.append("municipalityId", validatedData.municipalityId);
       formData.append("date", dateObj.toISOString());
       if (imageFile) {
         formData.append("image", imageFile);
@@ -153,7 +153,7 @@ export function CreateEventDialog() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Novo Evento</DialogTitle>
         </DialogHeader>
@@ -193,7 +193,7 @@ export function CreateEventDialog() {
               <Label>Município</Label>
               <Controller
                 control={control}
-                name="municipalitie"
+                name="municipalityId"
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="w-full mt-1">
@@ -209,9 +209,9 @@ export function CreateEventDialog() {
                   </Select>
                 )}
               />
-              {errors.municipalitie && (
+              {errors.municipalityId && (
                 <p className="text-sm text-red-500 mt-1">
-                  {errors.municipalitie.message}
+                  {errors.municipalityId.message}
                 </p>
               )}
             </div>

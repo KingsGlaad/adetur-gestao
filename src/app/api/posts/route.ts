@@ -1,24 +1,15 @@
 import { NextResponse } from "next/server";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import sharp from "sharp";
 
+import { slugify } from "@/lib/utils";
+
 const BUCKET_NAME = "adetur-bucket";
 
-function generateSlug(title: string): string {
-  return title
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
-}
-
 async function createUniqueSlug(title: string): Promise<string> {
-  const slug = generateSlug(title);
+  const slug = slugify(title);
   let uniqueSlug = slug;
   let counter = 1;
 
@@ -53,17 +44,12 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth();
-    const user = await currentUser();
+    const session = await auth();
 
-
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if(user?.publicMetadata.role !== "admin") {
-      return new NextResponse("Forbidden", { status: 403 });
-    }
 
     const formData = await req.formData();
     const title = formData.get("title") as string;
@@ -106,7 +92,7 @@ export async function POST(req: Request) {
       .webp({ quality: 80 }) // Converte para WebP com 80% de qualidade
       .toBuffer();
 
-    const sanitizedFileName = generateSlug(title) + ".webp";
+    const sanitizedFileName = slugify(title) + ".webp";
     const filePath = `posts/${newPost.id}/${sanitizedFileName}`;
 
     const { error: uploadError } = await supabase.storage

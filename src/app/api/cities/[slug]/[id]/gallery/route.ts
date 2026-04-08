@@ -2,30 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
 import sharp from "sharp";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
+import { slugify } from "@/lib/utils";
 
 const BUCKET_NAME = "adetur-bucket";
-
-/**
- * Sanitiza nomes de arquivos, removendo acentos, caracteres especiais
- * e garantindo que a extensão original seja preservada.
- */
-function sanitizeFileName(fileName: string): string {
-  const extension = fileName.split(".").pop() || "";
-  const baseName = fileName.replace(/\.[^/.]+$/, "");
-
-  const sanitizedBase = baseName
-    .normalize("NFD") // separa acentos
-    .replace(/[\u0300-\u036f]/g, "") // remove acentos
-    .replace(/[^a-zA-Z0-9\-_]/g, "-") // só letras, números, "-" e "_"
-    .replace(/-+/g, "-") // evita múltiplos "-"
-    .replace(/^-|-$/g, "") // remove "-" no início/fim
-    .toLowerCase();
-
-  return extension
-    ? `${sanitizedBase}.${extension.toLowerCase()}`
-    : sanitizedBase;
-}
 
 /**
  * GET - Lista imagens de um município
@@ -61,11 +41,11 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId } = await auth();
-    
-        if (!userId) {
-          return new NextResponse("Unauthorized", { status: 401 });
-        }
+    const session = await auth();
+
+    if (!session) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     const municipalityId = (await params).id;
     const formData = await req.formData();
     const files = formData.getAll("files") as File[];
@@ -88,10 +68,8 @@ export async function POST(
           .webp({ quality: 80 }) // qualidade entre 0-100
           .toBuffer();
 
-        const sanitizedFileName = sanitizeFileName(file.name).replace(
-          /\.[^/.]+$/,
-          ".webp"
-        );
+        const baseName = file.name.split(".").slice(0, -1).join(".");
+        const sanitizedFileName = slugify(baseName);
         const filePath = `cities/${municipalityId}/gallery/${Date.now()}-${sanitizedFileName}`;
 
         const { error: uploadError } = await supabase.storage
@@ -130,10 +108,9 @@ export async function POST(
  */
 export async function DELETE(req: NextRequest) {
   try {
+    const session = await auth();
 
-    const { userId } = await auth();
-
-    if (!userId) {
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const { imageId } = await req.json();
