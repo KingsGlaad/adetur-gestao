@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -9,43 +9,43 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Attraction {
-  id             String       @id
+  id             String       @id @default(cuid())
   name           String
   description    String
   image          String?
   municipalityId String
   createdAt      DateTime     @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime     @updatedAt
   Municipality   Municipality @relation(fields: [municipalityId], references: [id])
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Event {
-  id             String       @id
+  id             String       @id @default(cuid())
   title          String
   description    String
   date           DateTime
   image          String?
   municipalityId String
   createdAt      DateTime     @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime     @updatedAt
   Municipality   Municipality @relation(fields: [municipalityId], references: [id])
   EventImage     EventImage[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model EventImage {
-  id        String   @id
+  id        String   @id @default(cuid())
   url       String
   eventId   String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
   Event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Guide {
-  id             String       @id
+  id             String       @id @default(cuid())
   name           String
   phone          String
   languages      String[]
@@ -54,38 +54,38 @@ model Guide {
   email          String?
   municipalityId String
   createdAt      DateTime     @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime     @updatedAt
   active         Boolean      @default(false)
   Municipality   Municipality @relation(fields: [municipalityId], references: [id])
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Highlight {
-  id             String           @id
+  id             String           @id @default(cuid())
   title          String
   description    String?
-  image          String?
   latitude       Float?
   longitude      Float?
   municipalityId String
   createdAt      DateTime         @default(now())
+  image          String?
   Municipality   Municipality     @relation(fields: [municipalityId], references: [id])
   HighlightImage HighlightImage[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model HighlightImage {
-  id          String    @id
+  id          String    @id @default(cuid())
   url         String
   highlightId String
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime  @updatedAt
   Highlight   Highlight @relation(fields: [highlightId], references: [id], onDelete: Cascade)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Municipality {
-  id                String              @id
+  id                String              @id @default(cuid())
   name              String
   description       String?
   coatOfArms        String?
@@ -95,7 +95,7 @@ model Municipality {
   slug              String?             @unique
   ibgeCode          String?             @unique
   createdAt         DateTime            @default(now())
-  updatedAt         DateTime
+  updatedAt         DateTime            @updatedAt
   active            Boolean             @default(false)
   prefeito          String?
   gentilic          String?
@@ -109,11 +109,11 @@ model Municipality {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model MunicipalityImage {
-  id             String       @id
+  id             String       @id @default(cuid())
   url            String
   municipalityId String
   createdAt      DateTime     @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime     @updatedAt
   Municipality   Municipality @relation(fields: [municipalityId], references: [id], onDelete: Cascade)
 }
 
@@ -133,7 +133,7 @@ model Post {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model User {
-  id             String        @id
+  id             String        @id @default(cuid())
   clerkId        String?       @unique
   name           String?
   email          String        @unique
@@ -142,6 +142,17 @@ model User {
   image          String?       @default("/images/default-profile.png")
   municipalityId String?
   createdAt      DateTime      @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime      @updatedAt
   Municipality   Municipality? @relation(fields: [municipalityId], references: [id])
+}
+
+model Transparency {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  fileUrl     String
+  category    String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

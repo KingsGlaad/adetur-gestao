@@ -19,9 +19,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Ignora arquivos estáticos e internos do Next.js
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Sempre roda para API routes
-    "/(api|trpc)(.*)",
+    "/admin/:path*",
+    "/dashboard/:path*",
   ],
 };

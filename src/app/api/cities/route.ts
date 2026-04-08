@@ -11,14 +11,14 @@ export async function GET() {
         active: true,
       },
       include: {
-        highlights: {
+        Highlight: {
           select: {
             title: true,
-            galleryImages: { select: { url: true } },
+            HighlightImage: { select: { url: true } },
           },
         },
-        events: { select: { title: true } },
-        images: {
+        Event: { select: { title: true } },
+        MunicipalityImage: {
           select: { url: true },
         },
       },
@@ -29,7 +29,7 @@ export async function GET() {
     return NextResponse.json(municipalities);
   } catch (error) {
     console.error("Erro ao buscar municípios:", error);
-    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
+    return NextResponse.json({ error: "Erro interno", details: error instanceof Error ? error.message : "Erro desconhecido" }, { status: 500 });
   }
 }
 

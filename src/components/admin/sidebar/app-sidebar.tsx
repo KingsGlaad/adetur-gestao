@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Calendar, FileText, Home, MapPin, Star } from "lucide-react";
+import { Calendar, FileText, FolderOpen, Home, MapPin, Star } from "lucide-react";
 
 import { NavMain } from "@/components/admin/sidebar/nav-main";
 import { NavUser } from "@/components/admin/sidebar/nav-user";
@@ -54,6 +54,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           icon: Star,
         },
       ],
+    },
+    {
+      title: "Transparência",
+      url: "/admin/transparency",
+      icon: FolderOpen,
     },
   ];
 
