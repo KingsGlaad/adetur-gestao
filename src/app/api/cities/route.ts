@@ -11,14 +11,14 @@ export async function GET() {
         active: true,
       },
       include: {
-        Highlight: {
+        highlights: {
           select: {
             title: true,
-            HighlightImage: { select: { url: true } },
+            galleryImages: { select: { url: true } },
           },
         },
-        Event: { select: { title: true } },
-        MunicipalityImage: {
+        events: { select: { title: true } },
+        images: {
           select: { url: true },
         },
       },

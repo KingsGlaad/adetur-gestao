@@ -30,7 +30,7 @@ model Event {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   Municipality   Municipality @relation(fields: [municipalityId], references: [id])
-  EventImage     EventImage[]
+  galleryImages  EventImage[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -70,7 +70,7 @@ model Highlight {
   createdAt      DateTime         @default(now())
   image          String?
   Municipality   Municipality     @relation(fields: [municipalityId], references: [id])
-  HighlightImage HighlightImage[]
+  galleryImages  HighlightImage[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -99,12 +99,12 @@ model Municipality {
   active            Boolean             @default(false)
   prefeito          String?
   gentilic          String?
-  Attraction        Attraction[]
-  Event             Event[]
-  Guide             Guide[]
-  Highlight         Highlight[]
-  MunicipalityImage MunicipalityImage[]
-  User              User[]
+  attractions       Attraction[]
+  events            Event[]
+  guides            Guide[]
+  highlights        Highlight[]
+  images            MunicipalityImage[]
+  users             User[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.

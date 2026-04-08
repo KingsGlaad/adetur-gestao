@@ -5,6 +5,8 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { NextAuthProvider } from "@/providers/session-provider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +29,8 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         <NextAuthProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <SpeedInsights />
+            <Analytics />
             <Toaster />
             {children}
           </ThemeProvider>
