@@ -12,7 +12,7 @@ const BUCKET_NAME = "adetur-bucket";
  */
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string; id: string }> }
 ) {
   try {
     const session = await auth();
@@ -120,7 +120,7 @@ export async function PUT(
  */
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ slug: string; id: string }> }
 ) {
   try {
     const session = await auth();

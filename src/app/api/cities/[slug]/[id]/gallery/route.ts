@@ -12,7 +12,7 @@ const BUCKET_NAME = "adetur-bucket";
  */
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string; id: string }> }
 ) {
   try {
     const municipalityId = (await params).id;
@@ -38,7 +38,7 @@ export async function GET(
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string; id: string }> }
 ) {
   try {
     const session = await auth();
