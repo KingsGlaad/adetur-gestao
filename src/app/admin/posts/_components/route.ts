@@ -19,17 +19,18 @@ function generateSlug(title: string): string {
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> },
 ) {
   try {
     const session = await auth();
+    const { postId } = await params;
 
     if (!session) {
       return new NextResponse("Não autorizado", { status: 403 });
     }
 
     const post = await prisma.post.findUnique({
-      where: { id: params.postId },
+      where: { id: postId },
     });
 
     if (!post) {

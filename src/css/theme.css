@@ -122,9 +122,13 @@
   --color-red: var(--red);
 
   /* Precise spacing for style.css legacy classes */
+  --spacing-4.5: 1.125rem;
+  --spacing-5.5: 1.375rem;
+  --spacing-6.5: 1.625rem;
   --spacing-7.5: 1.875rem;
   --spacing-11.5: 2.875rem;
   --spacing-12.5: 3.125rem;
+  --spacing-13: 3.25rem;
   --spacing-100: 25rem;
 
   /* Breakpoints */
@@ -136,10 +140,15 @@
   --text-body-xs: 0.75rem;
 
   /* Shadow definitions */
+  --shadow-1: 0px 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-2: 0px 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-card-2: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24);
   --shadow-3: 0px 1px 1px rgba(0, 0, 0, 0.1), 0px 2px 5px rgba(0, 0, 0, 0.2);
   --shadow-card: 0px 8px 13px -3px rgba(0, 0, 0, 0.07);
   --shadow-datepicker: 0px 5px 15px rgba(0, 0, 0, 0.35);
+
+  /* Drop Shadow definitions */
+  --drop-shadow-card: 0px 4px 6px rgba(0, 0, 0, 0.12);
 
   /* Custom Sidebar mapping */
   --color-sidebar: hsl(var(--sidebar-background));
