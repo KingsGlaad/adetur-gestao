@@ -1,7 +1,7 @@
 import { X, ImageIcon, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { EventImage } from "@/generated";
+import { EventImage } from "@/generated/prisma";
 import Image from "next/image";
 
 interface EventImageGalleryProps {

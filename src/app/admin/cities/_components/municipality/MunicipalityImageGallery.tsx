@@ -1,7 +1,7 @@
 import { X, ImageIcon, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { MunicipalityImage } from "@/generated";
+import { MunicipalityImage } from "@/generated/prisma";
 import Image from "next/image";
 import { useState } from "react";
 import { ConfirmModal } from "@/components/modals/confirm-modal";

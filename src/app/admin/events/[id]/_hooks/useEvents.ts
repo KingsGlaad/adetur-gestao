@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useCallback } from "react";
-import { Event } from "@/generated";
+import { Event } from "@/generated/prisma";
 import { toast } from "sonner";
 
 export type EventFormValues = {

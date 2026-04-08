@@ -5,7 +5,7 @@ import { Star } from 'lucide-react'
 type Highlight = {
   id: string
   title: string
-  municipality: {
+  Municipality: {
     name: string
   }
   galleryImages: {
@@ -34,7 +34,7 @@ export function HighlightCard({ highlight }: HighlightCardProps) {
         <div>
           <h3 className="text-lg font-bold text-gray-800">{highlight.title}</h3>
           <p className="mt-1 text-sm text-gray-500">
-            {highlight.municipality.name}
+            {highlight.Municipality.name}
           </p>
         </div>
         {/* Fictional Rating */}

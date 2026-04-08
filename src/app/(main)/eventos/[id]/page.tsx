@@ -42,7 +42,7 @@ export default async function EventoDetailPage({ params }: PageProps) {
   const event = await prisma.event.findUnique({
     where: { id },
     include: {
-      municipality: {
+      Municipality: {
         select: {
           name: true,
           slug: true,
@@ -84,10 +84,10 @@ export default async function EventoDetailPage({ params }: PageProps) {
               {formatEventDate(event.date)}
             </p>
             <Link
-              href={`/municipios/${event.municipality.slug}`}
+              href={`/municipios/${event.Municipality.slug}`}
               className="flex items-center justify-center gap-2 hover:text-accent transition-colors"
             >
-              <MapPin className="w-5 h-5" /> {event.municipality.name}
+              <MapPin className="w-5 h-5" /> {event.Municipality.name}
             </Link>
           </div>
         </div>

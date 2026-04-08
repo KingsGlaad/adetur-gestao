@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 async function getEvents() {
   const events = await prisma.event.findMany({
     include: {
-      municipality: {
+      Municipality: {
         select: {
           name: true,
           slug: true,

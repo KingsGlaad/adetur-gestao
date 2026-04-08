@@ -23,7 +23,7 @@ export async function GET() {
         latitude: true,
         longitude: true,
         galleryImages: { select: { url: true } },
-        municipality: {
+        Municipality: {
           select: { id: true, name: true, slug: true },
         },
       },

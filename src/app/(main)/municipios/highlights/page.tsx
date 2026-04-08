@@ -18,7 +18,7 @@ export default async function HighlightsPage() {
       createdAt: 'desc',
     },
     include: {
-      municipality: {
+      Municipality: {
         select: {
           name: true,
         },

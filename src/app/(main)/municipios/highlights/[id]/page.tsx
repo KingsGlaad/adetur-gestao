@@ -20,7 +20,7 @@ export async function generateMetadata({
   const highlight = await prisma.highlight.findUnique({
     where: { id },
     include:{
-        municipality: true
+        Municipality: true
     }
   });
 
@@ -31,7 +31,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${highlight.title} | ${highlight.municipality.name} | ADETUR`,
+    title: `${highlight.title} | ${highlight.Municipality.name} | ADETUR`,
     description:
       highlight.description?.substring(0, 150) ||
       `Detalhes sobre o destaque ${highlight.title}.`,
@@ -44,7 +44,7 @@ export default async function DestaqueDetailPage({ params }: PageProps) {
   const highlight = await prisma.highlight.findUnique({
     where: { id },
     include: {
-      municipality: {
+      Municipality: {
         select: {
           name: true,
           slug: true,
@@ -111,11 +111,11 @@ export default async function DestaqueDetailPage({ params }: PageProps) {
 
               {/* Location */}
               <Link
-                href={`/municipios/${highlight.municipality.slug}`}
+                href={`/municipios/${highlight.Municipality.slug}`}
                 className="flex items-center gap-2 transition-colors hover:text-white"
               >
                 <MapPin className="h-5 w-5" />
-                <span>{highlight.municipality.name}</span>
+                <span>{highlight.Municipality.name}</span>
               </Link>
             </div>
           </div>
@@ -195,7 +195,7 @@ export default async function DestaqueDetailPage({ params }: PageProps) {
                   <div>
                     <p className="text-sm text-gray-500">Localização</p>
                     <p className="font-semibold text-gray-800">
-                      {highlight.municipality.name}
+                      {highlight.Municipality.name}
                     </p>
                   </div>
                 </div>

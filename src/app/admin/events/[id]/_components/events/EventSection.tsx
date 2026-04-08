@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Event } from "@/generated";
+import { Event } from "@/generated/prisma";
 import { Button } from "@/components/ui/button";
 import { Plus, Loader2 } from "lucide-react";
 import {

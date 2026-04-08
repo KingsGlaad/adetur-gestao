@@ -24,7 +24,7 @@ export async function GET() {
         createdAt: "desc",
       },
       include: {
-        municipality: {
+        Municipality: {
           select: {
             name: true,
             id: true,

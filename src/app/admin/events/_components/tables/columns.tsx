@@ -1,14 +1,14 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { EventWithRelations } from "@/types/event";
+import { EventWithRelations } from "@/types/events";
 import { CellAction } from "./actions";
 import { Municipality } from "@/types/municipality";
 
 // Definição das colunas da tabela
 export const columns = (
   onUpdate: () => void,
-  municipalities: Municipality[]
+  municipalities: Municipality[],
 ): ColumnDef<EventWithRelations>[] => [
   {
     accessorKey: "title",
@@ -26,7 +26,7 @@ export const columns = (
     accessorKey: "municipalityId",
     header: "Município",
     cell: ({ row }) => {
-      const municipality = row.original.municipality?.name as string;
+      const municipality = row.original.Municipality?.name as string;
       return (
         <div className="flex items-center">
           <span>{municipality}</span>

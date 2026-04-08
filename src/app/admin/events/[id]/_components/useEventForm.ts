@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Event } from "@/generated";
+import { Event } from "@/generated/prisma";
 import { useState } from "react";
 
 // Esquema de validação com Zod

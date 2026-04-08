@@ -34,7 +34,7 @@ export function EventCard({ event }: EventCardProps) {
               <Calendar className="w-4 h-4 text-accent" /> {formatEventDate(event.date)}
             </p>
             <p className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-accent" /> {event.municipality.name}
+              <MapPin className="w-4 h-4 text-accent" /> {event.Municipality.name}
             </p>
           </div>
         </div>

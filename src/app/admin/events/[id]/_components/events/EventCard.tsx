@@ -1,4 +1,4 @@
-import { Event } from "@/generated";
+import { Event } from "@/generated/prisma";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2, Calendar } from "lucide-react";

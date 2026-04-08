@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon, Loader2, Trash2 } from "lucide-react";
-import { Event } from "@/generated";
 import { Controller } from "react-hook-form";
 import {
   Select,
@@ -29,7 +28,7 @@ import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { useEventForm, EventFormValues } from "./useEventForm";
 import { toast } from "sonner";
-import { Municipality } from "@/types/municipality";
+import { Event, Municipality } from "@/generated/prisma";
 
 interface EventFormProps {
   event: Event | null;

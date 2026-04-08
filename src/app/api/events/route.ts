@@ -16,7 +16,7 @@ export async function GET() {
             url: true,
           },
         },
-        municipality: {
+        Municipality: {
           select: {
             name: true,
           },

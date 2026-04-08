@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 import { MunicipalityRefined } from "@/types/municipality";
-import { MunicipalityImage } from "@/generated";
+import { MunicipalityImage } from "@/generated/prisma";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEditor } from "@tiptap/react";

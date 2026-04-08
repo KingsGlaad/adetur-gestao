@@ -15,10 +15,10 @@ export default async function Dashboard() {
   const [municipalities, events, highlights, guides] = await Promise.all([
     prisma.municipality.findMany({
       include: {
-        User: true,
-        Highlight: true,
-        Event: true,
-        Guide: true,
+        users: true,
+        highlights: true,
+        events: true,
+        guides: true,
       },
       orderBy: {
         name: "asc",
@@ -86,10 +86,6 @@ export default async function Dashboard() {
           <MunicipalityList
             municipalities={municipalities.map((m) => ({
               ...m,
-              users: m.User,
-              highlights: m.Highlight,
-              events: m.Event,
-              guides: m.Guide,
             }))}
           />
           <RecentEvents events={events} />
