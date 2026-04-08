@@ -1,0 +1,172 @@
+/* Variante para modo escuro */
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Tourism-inspired Brazilian color palette */
+  --background: 0 0% 100%;
+  --foreground: 225 15% 15%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 225 15% 15%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 225 15% 15%;
+
+  /* Forest green - Brazilian nature */
+  --primary: 142 76% 36%;
+  --primary-foreground: 0 0% 98%;
+  --primary-light: 142 76% 45%;
+  --primary-dark: 142 76% 28%;
+
+  /* Ocean blue accent */
+  --secondary: 202 85% 58%;
+  --secondary-foreground: 0 0% 98%;
+
+  /* Warm sand tones */
+  --muted: 42 40% 96%;
+  --muted-foreground: 225 15% 45%;
+
+  /* Golden sunset accent */
+  --accent: 43 89% 62%;
+  --accent-foreground: 225 25% 15%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 225 20% 90%;
+  --input: 225 20% 90%;
+  --ring: 142 76% 36%;
+
+  --radius: 0.75rem;
+
+  /* Tourism gradients */
+  --gradient-hero: linear-gradient(
+    135deg,
+    hsl(var(--primary)),
+    hsl(var(--secondary))
+  );
+  --gradient-sunset: linear-gradient(
+    135deg,
+    hsl(var(--accent)),
+    hsl(43 89% 72%)
+  );
+  --gradient-ocean: linear-gradient(
+    135deg,
+    hsl(var(--secondary)),
+    hsl(202 85% 68%)
+  );
+  --gradient-forest: linear-gradient(
+    135deg,
+    hsl(var(--primary-dark)),
+    hsl(var(--primary-light))
+  );
+
+  /* Tourism shadows */
+  --shadow-tourism: 0 20px 60px -10px hsl(var(--primary) / 0.2);
+  --shadow-card: 0 8px 30px -8px hsl(225 15% 15% / 0.1);
+  --shadow-glow: 0 0 30px hsl(var(--accent) / 0.3);
+
+  /* Smooth animations */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Sidebar */
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+  --sidebar: hsl(0 0% 98%);
+}
+
+.dark {
+  --background: 230 40% 4%;
+  --foreground: 210 40% 98%;
+
+  --card: 230 40% 6%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 230 40% 4%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 142 76% 50%;
+  --primary-foreground: 230 40% 4%;
+
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 230 40% 12%;
+  --muted-foreground: 215 20.2% 65.1%;
+
+  --accent: 43 89% 62%;
+  --accent-foreground: 230 40% 4%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 230 30% 15%;
+  --input: 230 30% 15%;
+  --ring: 142 76% 50%;
+
+  /* Sidebar */
+  --sidebar-background: 230 40% 4%;
+  --sidebar-foreground: 240 4.8% 95.9%;
+  --sidebar-primary: 142 76% 50%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 230 40% 10%;
+  --sidebar-accent-foreground: 240 4.8% 95.9%;
+  --sidebar-border: 230 30% 15%;
+  --sidebar-ring: 142 76% 50%;
+  --sidebar: hsl(230 40% 4%);
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar: hsl(var(--sidebar));
+
+  --color-chart-5: hsl(var(--chart-5));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-1: hsl(var(--chart-1));
+
+  --color-ring: hsl(var(--ring));
+  --color-input: hsl(var(--input));
+  --color-border: hsl(var(--border));
+  --color-destructive: hsl(var(--destructive));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card: hsl(var(--card));
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Custom shadows and transitions for style.css compatibility */
+  --shadow-card-2: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-3: 0px 1px 1px rgba(0, 0, 0, 0.1), 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
