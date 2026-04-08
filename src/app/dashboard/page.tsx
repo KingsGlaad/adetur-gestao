@@ -1,9 +1,7 @@
 import { AppSidebar } from "@/components/admin/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-export const iframeHeight = "800px";
-
- // Descrição: A sidebar with a header and a search form.
+// Descrição: A sidebar with a header and a search form.
 
 export default function Page() {
   return (
