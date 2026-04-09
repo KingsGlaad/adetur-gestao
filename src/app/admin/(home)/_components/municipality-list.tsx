@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -29,9 +35,9 @@ interface MunicipalityListProps {
 
 export function MunicipalityList({ municipalities }: MunicipalityListProps) {
   return (
-    <Card className="col-span-1">
+    <Card className="col-span-1 border-b border-primary/20 bg-primary/5">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 p-4 text-lg">
           <Building2 className="h-5 w-5 text-primary" />
           Municípios
         </CardTitle>
@@ -45,7 +51,7 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
             {municipalities.map((municipality) => (
               <div
                 key={municipality.id}
-                className="group flex flex-col gap-3 rounded-lg border border-transparent p-2 transition-colors hover:bg-muted/50"
+                className="group flex flex-col gap-3 rounded-lg p-2 transition-colors hover:bg-primary/20"
               >
                 <div className="flex items-center gap-4">
                   <Avatar className="h-12 w-12 rounded-lg border border-border shadow-sm">
@@ -63,9 +69,13 @@ export function MunicipalityList({ municipalities }: MunicipalityListProps) {
                   </Avatar>
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center justify-between">
-                      <p className="font-semibold leading-none">{municipality.name}</p>
+                      <p className="font-semibold leading-none">
+                        {municipality.name}
+                      </p>
                       <Badge variant="secondary" className="font-normal">
-                        {municipality.highlights.length + municipality.events.length} Atv.
+                        {municipality.highlights.length +
+                          municipality.events.length}{" "}
+                        Atv.
                       </Badge>
                     </div>
                     {municipality.description && (

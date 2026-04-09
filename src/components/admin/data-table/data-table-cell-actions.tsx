@@ -35,27 +35,27 @@ export function DataTableCellActions({
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="border-primary/20">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
-        
+
         {onView && (
           <DropdownMenuItem onClick={onView}>
             <Eye className="mr-2 h-4 w-4" /> Visualizar
           </DropdownMenuItem>
         )}
-        
+
         {children}
-        
+
         {onEdit && (
           <DropdownMenuItem onClick={onEdit}>
             <Edit className="mr-2 h-4 w-4" /> Editar
           </DropdownMenuItem>
         )}
-        
+
         {onDelete && (
-          <DropdownMenuItem 
-            onClick={onDelete} 
-            disabled={loading} 
+          <DropdownMenuItem
+            onClick={onDelete}
+            disabled={loading}
             variant="destructive"
           >
             <Trash className="mr-2 h-4 w-4" /> Excluir

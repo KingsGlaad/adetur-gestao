@@ -47,19 +47,74 @@ export default function MunicipalityMap({
   mapCenter,
   selectedMunicipality,
 }: MunicipalityMapProps) {
-  const [geoJsonAdetur, setGeoJsonAdetur] =
-    useState<GeoJsonFeatureCollection | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [meshes, setMeshes] = useState<
+    Record<string, GeoJsonFeatureCollection>
+  >({});
+
   useEffect(() => {
-    setIsLoading(true);
-    Promise.all([fetch("/adetur.geojson").then((r) => r.json())])
-      .then(([adetur]) => {
-        setGeoJsonAdetur(adetur);
-      })
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
-  }, []);
+    if (!municipalities || municipalities.length === 0) {
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchMeshes = async () => {
+      setIsLoading(true);
+      const newMeshes: Record<string, GeoJsonFeatureCollection> = {};
+
+      try {
+        const promises = municipalities
+          .filter((m) => m.ibgeCode)
+          .map(async (m) => {
+            const cleanCode = m.ibgeCode?.trim();
+            try {
+              const res = await fetch(
+                `https://servicodados.ibge.gov.br/api/v3/malhas/municipios/${cleanCode}?formato=application/vnd.geo+json`,
+              );
+
+              if (!res.ok) {
+                console.warn(
+                  `Erro na API do IBGE para ${m.name} (${cleanCode}): ${res.status}`,
+                );
+                return;
+              }
+
+              const data = await res.json();
+
+              if (!data || !data.features || data.features.length === 0) {
+                console.warn(
+                  `O município ${m.name} (${cleanCode}) não retornou geometria válida.`,
+                );
+                return;
+              }
+
+              newMeshes[m.id] = data;
+              console.log(
+                `Malha carregada com sucesso para ${m.name} (${cleanCode})`,
+              );
+            } catch (err) {
+              console.error(
+                `Falha na requisição para ${m.name} (${cleanCode}):`,
+                err,
+              );
+            }
+          });
+
+        await Promise.all(promises);
+        setMeshes(newMeshes);
+        console.log(
+          `Total de malhas carregadas: ${Object.keys(newMeshes).length}`,
+        );
+      } catch (error) {
+        console.error("Erro geral ao buscar malhas do IBGE:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMeshes();
+  }, [municipalities]);
 
   const geoJsonStyleAdetur = {
     color: "#007BFF",
@@ -101,9 +156,24 @@ export default function MunicipalityMap({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {geoJsonAdetur && (
-        <GeoJSON data={geoJsonAdetur} style={geoJsonStyleAdetur} />
-      )}
+      {Object.entries(meshes).map(([id, mesh]) => (
+        <GeoJSON
+          key={id}
+          data={mesh}
+          style={geoJsonStyleAdetur}
+          onEachFeature={(feature, layer) => {
+            layer.on({
+              click: () => {
+                const municipality = municipalities.find((m) => m.id === id);
+                if (municipality) {
+                  // Aqui você pode adicionar a lógica de seleção
+                  console.log("Município clicado:", municipality.name);
+                }
+              },
+            });
+          }}
+        />
+      ))}
 
       {municipalities.map((municipality) => {
         if (

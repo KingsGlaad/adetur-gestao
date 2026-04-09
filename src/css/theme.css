@@ -2,6 +2,32 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Tourism-inspired Brazilian color palette */
+  --background: 0 0% 100%;
+  --foreground: 225 15% 15%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 225 15% 15%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 225 15% 15%;
+
+  /* Forest green - Brazilian nature */
+  --primary: 142 76% 36%;
+  --primary-foreground: 0 0% 98%;
+
+  /* Ocean blue accent */
+  --secondary: 202 85% 58%;
+  --secondary-foreground: 0 0% 98%;
+
+  /* Warm sand tones */
+  --muted: 42 40% 96%;
+  --muted-foreground: 225 15% 45%;
+
+  /* Golden sunset accent */
+  --accent: 43 89% 62%;
+  --accent-foreground: 225 25% 15%;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

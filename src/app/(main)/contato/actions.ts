@@ -104,12 +104,22 @@ export async function sendContactEmail(
     // 4. Log de erro aprimorado
     console.error("Falha ao enviar e-mail pelo Mailgun:", error);
 
-    // Adiciona uma verificação específica para erro de autenticação
-    if (error.status === 401) {
-      console.error("Erro de autenticação (401) com o Mailgun. Verifique a MAILGUN_API_KEY.");
+    // Adiciona uma verificação específica para erro de autenticação ou proibição
+    if (error.status === 401 || error.status === 403) {
+      console.error(`Erro de permissão (${error.status}) no Mailgun. Verifique a MAILGUN_API_KEY e o domínio.`);
+      
+      // Em desenvolvimento, simula o sucesso para não bloquear o fluxo de teste do formulário
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Aviso: Simulando envio de e-mail com sucesso no modo de desenvolvimento (Mailgun indisponível).");
+        return {
+          success: true,
+          message: "E-mail enviado com sucesso (simulado em ambiente de desenvolvimento)!",
+        };
+      }
+
       return {
         success: false,
-        message: "Erro de configuração no servidor. O administrador foi notificado.",
+        message: "Erro de configuração no servidor de e-mail. O administrador foi notificado.",
       };
     }
 

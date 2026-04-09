@@ -26,17 +26,20 @@ interface OverviewChartProps {
 
 export function OverviewChart({ data }: OverviewChartProps) {
   return (
-    <Card className="col-span-full xl:col-span-2 p-4 border-b border-primary/20">
+    <Card className="col-span-full xl:col-span-2 p-4 border border-primary/20 bg-primary/5">
       <CardHeader>
         <CardTitle>Atividade por Município</CardTitle>
         <CardDescription>
           Total de atrações e eventos cadastrados por região.
         </CardDescription>
       </CardHeader>
-      <CardContent className="pl-2 ">
-        <div className="h-[300px]">
+      <CardContent className="pl-2">
+        <div className="h-[300px] border-b border-primary/20">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data}>
+            <BarChart
+              data={data}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            >
               <XAxis
                 dataKey="name"
                 stroke="#888888"

@@ -21,7 +21,7 @@ export function DashboardStats({
   trend,
 }: DashboardStatsProps) {
   return (
-    <Card className="relative overflow-hidden transition-all hover:shadow-md">
+    <Card className="relative overflow-hidden transition-all hover:shadow-md bg-primary/5 border border-primary/20 p-4">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <div className="rounded-full bg-primary/10 p-2">

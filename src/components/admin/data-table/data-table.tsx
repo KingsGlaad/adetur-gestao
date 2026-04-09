@@ -45,7 +45,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <Card className="shadow-lg">
+    <Card className="shadow-lg border-primary/20">
       <CardContent className="p-0 sm:p-6">
         <div className="p-4 sm:p-0">
           <DataTableToolbar
@@ -82,11 +82,14 @@ export function DataTable<TData, TValue>({
           />
         </div>
 
-        <div className="rounded-md border overflow-hidden mx-4 sm:mx-0">
+        <div className="rounded-md border border-primary/20 overflow-hidden mx-4 sm:mx-0">
           <Table>
             <TableHeader className="bg-muted/50">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
+                <TableRow
+                  key={headerGroup.id}
+                  className="border-b border-primary/20"
+                >
                   {headerGroup.headers.map((header) => {
                     return (
                       <TableHead key={header.id}>
@@ -94,7 +97,7 @@ export function DataTable<TData, TValue>({
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext()
+                              header.getContext(),
                             )}
                       </TableHead>
                     );
@@ -108,13 +111,13 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    className="hover:bg-muted/50 transition-colors"
+                    className="hover:bg-muted/50 transition-colors border-b border-primary/20"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     ))}

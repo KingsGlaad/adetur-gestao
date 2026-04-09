@@ -125,13 +125,40 @@ export default async function Dashboard() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/admin/cities">Municípios</Link>
+          <Button
+            size="sm"
+            className="gap-2 bg-amber-200 hover:bg-amber-300"
+            asChild
+          >
+            <Link href="/admin/cities">
+              <Plus className="h-4 w-4" />
+              Municípios
+            </Link>
           </Button>
-          <Button size="sm" className="gap-2" asChild>
+          <Button
+            size="sm"
+            className="gap-2 bg-blue-200 hover:bg-blue-300"
+            asChild
+          >
             <Link href="/admin/events">
               <Plus className="h-4 w-4" />
               Novo Evento
+            </Link>
+          </Button>
+          <Button
+            size="sm"
+            className="gap-2 bg-green-200 hover:bg-green-300"
+            asChild
+          >
+            <Link href="/admin/highlights">
+              <Plus className="h-4 w-4" />
+              Nova Atração
+            </Link>
+          </Button>
+          <Button size="sm" className="gap-2" asChild>
+            <Link href="/admin/posts/new">
+              <Plus className="h-4 w-4" />
+              Novo Post
             </Link>
           </Button>
         </div>
