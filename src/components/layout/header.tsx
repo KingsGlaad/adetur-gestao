@@ -62,6 +62,7 @@ export function Header() {
                   alt="Logo da ADETUR"
                   width={80}
                   height={80}
+                  priority
                 />
               </div>
               <div className="flex flex-col">
@@ -77,24 +78,37 @@ export function Header() {
                 <NavigationMenuList>
                   {navigation.map((item) =>
                     item.name === "Municípios" ? (
-                      <NavigationMenuItem key={item.name} >
+                      <NavigationMenuItem key={item.name}>
                         <NavigationMenuTrigger className="bg-transparent hover:text-white text-sm font-medium">
                           {item.name}
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent  className="bg-white border-0 ">
+                        <NavigationMenuContent className="bg-white border-0 ">
                           <ul className="grid w-[200px] gap-3 p-4 ">
                             <li className="hover:text-white">
                               <NavigationMenuLink asChild>
-                                <Link href="/municipios" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                                  <div className="text-sm font-medium leading-none">Ver todos</div>
+                                <Link
+                                  href="/municipios"
+                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                >
+                                  <div className="text-sm font-medium leading-none">
+                                    Ver todos
+                                  </div>
                                 </Link>
                               </NavigationMenuLink>
                             </li>
                             {municipalities.map((municipality) => (
-                              <li key={municipality.id} className="hover:text-white">
+                              <li
+                                key={municipality.id}
+                                className="hover:text-white"
+                              >
                                 <NavigationMenuLink asChild>
-                                  <Link href={`/municipios/${municipality.slug}`} className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                                    <div className="text-sm font-medium leading-none">{municipality.name}</div>
+                                  <Link
+                                    href={`/municipios/${municipality.slug}`}
+                                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                  >
+                                    <div className="text-sm font-medium leading-none">
+                                      {municipality.name}
+                                    </div>
                                   </Link>
                                 </NavigationMenuLink>
                               </li>
@@ -104,11 +118,14 @@ export function Header() {
                       </NavigationMenuItem>
                     ) : (
                       <NavigationMenuItem key={item.name}>
-                          <NavigationMenuLink href={item.href} className="bg-transparent hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                            {item.name}
-                          </NavigationMenuLink>
+                        <NavigationMenuLink
+                          href={item.href}
+                          className="bg-transparent hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                        >
+                          {item.name}
+                        </NavigationMenuLink>
                       </NavigationMenuItem>
-                    )
+                    ),
                   )}
                 </NavigationMenuList>
               </NavigationMenu>
@@ -148,15 +165,29 @@ export function Header() {
                     collapsible
                     className="w-full"
                   >
-                    <AccordionItem value="municipalities" className="border-b-0">
+                    <AccordionItem
+                      value="municipalities"
+                      className="border-b-0"
+                    >
                       <AccordionTrigger className="hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:bg-white/10 hover:no-underline">
                         {item.name}
                       </AccordionTrigger>
                       <AccordionContent className="pl-6 pr-2 pb-0">
                         <div className="flex flex-col space-y-1">
-                          <Link href="/municipios" className="block px-3 py-2 rounded-md text-sm font-medium hover:bg-white/10" onClick={() => setMobileMenuOpen(false)}>Ver todos</Link>
+                          <Link
+                            href="/municipios"
+                            className="block px-3 py-2 rounded-md text-sm font-medium hover:bg-white/10"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            Ver todos
+                          </Link>
                           {municipalities.map((municipality) => (
-                            <Link key={municipality.id} href={`/municipios/${municipality.slug}`} className="block px-3 py-2 rounded-md text-sm font-medium hover:bg-white/10" onClick={() => setMobileMenuOpen(false)}>
+                            <Link
+                              key={municipality.id}
+                              href={`/municipios/${municipality.slug}`}
+                              className="block px-3 py-2 rounded-md text-sm font-medium hover:bg-white/10"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
                               {municipality.name}
                             </Link>
                           ))}
@@ -173,9 +204,9 @@ export function Header() {
                   >
                     {item.name}
                   </Link>
-                )
+                ),
               )}
-               {/* Controles de Acessibilidade para Mobile */}
+              {/* Controles de Acessibilidade para Mobile */}
               <div className="border-t border-slate-300/50 dark:border-white/20 mt-4 pt-4 flex justify-center">
                 <AccessibilityControls />
               </div>

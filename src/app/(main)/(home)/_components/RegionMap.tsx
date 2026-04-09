@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import {
@@ -9,20 +8,18 @@ import {
   useMap,
   GeoJSON,
 } from "react-leaflet";
-import { LatLngTuple, divIcon, GeoJSON as GeoJSONType } from "leaflet";
+import { LatLngTuple, divIcon } from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Municipality } from "@/types/municipality";
 import { useEffect, useState } from "react";
-import "leaflet/dist/leaflet.css";
-import { Loader2, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import Image from "next/image";
 import { MunicipalityRefined } from "@/types/municipality";
-import { set } from "zod";
+import "leaflet/dist/leaflet.css";
 
 const ZOOM = 10;
 // Ícone personalizado para os destaques
 const iconMarkup = renderToStaticMarkup(
-  <MapPin size={32} className="text-red-600 fill-red-500 drop-shadow-lg" />
+  <MapPin size={32} className="text-red-600 fill-red-500 drop-shadow-lg" />,
 );
 const customIcon = divIcon({
   html: iconMarkup,
@@ -50,27 +47,62 @@ export default function RegionMap({
   municipalities,
   selectedMunicipality,
 }: MunicipalityMapProps) {
-  const [geoJsonAdetur, setGeoJsonAdetur] =
-    useState<GeoJsonFeatureCollection | null>(null);
-  const [geoJsonAltamogiana, setGeoJsonAltamogiana] =
-    useState<GeoJsonFeatureCollection | null>(null);
+  const [meshes, setMeshes] = useState<Record<string, GeoJsonFeatureCollection>>({});
   const [isLoading, setIsLoading] = useState(true);
 
   const mapCenter: LatLngTuple = [-21.110773, -47.440252];
 
   useEffect(() => {
-    setIsLoading(true);
-    Promise.all([
-      fetch("/adetur.geojson").then((r) => r.json()),
-      fetch("/altamogiana.geojson").then((r) => r.json()),
-    ])
-      .then(([adetur, altamogiana]) => {
-        setGeoJsonAdetur(adetur);
-        setGeoJsonAltamogiana(altamogiana);
-      })
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
-  }, []);
+    if (!municipalities || municipalities.length === 0) {
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchMeshes = async () => {
+      setIsLoading(true);
+      const newMeshes: Record<string, GeoJsonFeatureCollection> = {};
+      
+      try {
+        const promises = municipalities
+          .filter((m) => m.ibgeCode)
+          .map(async (m) => {
+            const cleanCode = m.ibgeCode?.trim();
+            try {
+              const res = await fetch(
+                `https://servicodados.ibge.gov.br/api/v3/malhas/municipios/${cleanCode}?formato=application/vnd.geo+json`,
+              );
+              
+              if (!res.ok) {
+                console.warn(`Erro na API do IBGE para ${m.name} (${cleanCode}): ${res.status}`);
+                return;
+              }
+
+              const data = await res.json();
+              
+              if (!data || !data.features || data.features.length === 0) {
+                console.warn(`O município ${m.name} (${cleanCode}) não retornou geometria válida.`);
+                return;
+              }
+
+              newMeshes[m.id] = data;
+              console.log(`Malha carregada com sucesso para ${m.name} (${cleanCode})`);
+            } catch (err) {
+              console.error(`Falha na requisição para ${m.name} (${cleanCode}):`, err);
+            }
+          });
+
+        await Promise.all(promises);
+        setMeshes(newMeshes);
+        console.log(`Total de malhas carregadas: ${Object.keys(newMeshes).length}`);
+      } catch (error) {
+        console.error("Erro geral ao buscar malhas do IBGE:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMeshes();
+  }, [municipalities]);
 
   const selectedCenter: LatLngTuple =
     selectedMunicipality &&
@@ -83,13 +115,6 @@ export default function RegionMap({
     color: "#007BFF",
     weight: 2,
     fillColor: "#87CEEB",
-    fillOpacity: 0.4,
-  };
-
-  const geoJsonStyleAlta = {
-    color: "#FFD700",
-    weight: 2,
-    fillColor: "#EDE332",
     fillOpacity: 0.4,
   };
 
@@ -109,6 +134,7 @@ export default function RegionMap({
           <Image
             src="/logo.png"
             alt="Adetur Logo"
+            priority
             width={30}
             height={30}
             className="animate-pulse"
@@ -121,11 +147,14 @@ export default function RegionMap({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {/* Malha dos municípios (GeoJSON) */}
-      {/* {geoJsonAltamogiana && <GeoJSON data={geoJsonAltamogiana} style={geoJsonStyleAlta} />} */}
-      {geoJsonAdetur && (
-        <GeoJSON data={geoJsonAdetur} style={geoJsonStyleAdetur} />
-      )}
+      {/* Malhas dos municípios vindas do IBGE */}
+      {Object.entries(meshes).map(([municipalityId, geoData]) => (
+        <GeoJSON
+          key={`geojson-${municipalityId}`}
+          data={geoData}
+          style={geoJsonStyleAdetur}
+        />
+      ))}
 
       {/* Pins dos municípios */}
       {municipalities.map((municipality) => {

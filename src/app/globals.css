@@ -15,14 +15,6 @@
   }
 }
 
-/* =========================
-   ESTILOS ADICIONAIS
-========================= */
-.parallax-bg-trilhos {
-  position: relative;
-  background-color: #f0f2f5;
-}
-
 /* --- Alto Contraste (Escala de Cinza) --- */
 main.high-contrast {
   filter: grayscale(100%);

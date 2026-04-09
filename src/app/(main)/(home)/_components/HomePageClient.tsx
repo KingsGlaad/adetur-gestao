@@ -94,7 +94,8 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
                         <Image
                           src={municipality.coatOfArms || ""}
                           alt={municipality.name}
-                          fill
+                          width={100}
+                          height={100}
                           className="object-cover w-full h-full"
                         />
                       </div>
@@ -146,10 +147,10 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
                 feature.icon === "MapPin"
                   ? MapPin
                   : feature.icon === "Users"
-                  ? Users
-                  : feature.icon === "Calendar"
-                  ? Calendar
-                  : Building2;
+                    ? Users
+                    : feature.icon === "Calendar"
+                      ? Calendar
+                      : Building2;
               return (
                 <div
                   key={feature.title}
@@ -218,16 +219,16 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
                 segment.name === "Turismo Rural"
                   ? Trees
                   : segment.name === "Turismo de Aventura"
-                  ? Mountain
-                  : segment.name === "Turismo Cultural"
-                  ? Globe
-                  : segment.name === "Turismo Ecológico"
-                  ? Leaf
-                  : segment.name === "Pesca"
-                  ? Fish
-                  : segment.name === "Lazer"
-                  ? Calendar
-                  : Church;
+                    ? Mountain
+                    : segment.name === "Turismo Cultural"
+                      ? Globe
+                      : segment.name === "Turismo Ecológico"
+                        ? Leaf
+                        : segment.name === "Pesca"
+                          ? Fish
+                          : segment.name === "Lazer"
+                            ? Calendar
+                            : Church;
               return (
                 <div
                   key={segment.name}

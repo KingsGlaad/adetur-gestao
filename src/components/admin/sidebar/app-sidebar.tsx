@@ -1,7 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { Calendar, FileText, FolderOpen, Home, MapPin, Star } from "lucide-react";
+import {
+  Calendar,
+  FileText,
+  FolderOpen,
+  Home,
+  MapPin,
+  Star,
+} from "lucide-react";
 
 import { NavMain } from "@/components/admin/sidebar/nav-main";
 import { NavUser } from "@/components/admin/sidebar/nav-user";
@@ -70,7 +77,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <a href="/admin">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <Image src="/logo.png" alt="ADETUR" width={50} height={50} />
+                  <Image
+                    src="/logo.png"
+                    alt="ADETUR"
+                    width={50}
+                    height={50}
+                    priority
+                  />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">ADETUR</span>

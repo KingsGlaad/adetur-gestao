@@ -70,7 +70,7 @@ export function TiptapToolbar({ editor }: Props) {
         <Strikethrough className="h-4 w-4" />
       </Toggle>
 
-      <div className="mx-1 h-6 w-px bg-slate-300" />
+      <div className="mx-1 h-6 w-px bg-border" />
 
       <Toggle
         size="sm"
@@ -100,7 +100,7 @@ export function TiptapToolbar({ editor }: Props) {
         <Heading4 className="h-4 w-4" />
       </Toggle>
 
-      <div className="mx-1 h-6 w-px bg-slate-300" />
+      <div className="mx-1 h-6 w-px bg-border" />
 
       <Toggle
         size="sm"
@@ -117,7 +117,7 @@ export function TiptapToolbar({ editor }: Props) {
         <ListOrdered className="h-4 w-4" />
       </Toggle>
 
-      <div className="mx-1 h-6 w-px bg-slate-300" />
+      <div className="mx-1 h-6 w-px bg-border" />
 
       <Toggle
         size="sm"

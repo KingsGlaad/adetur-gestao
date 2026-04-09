@@ -29,7 +29,7 @@ export function Checkbox({
         htmlFor={id}
         className={cn(
           "flex cursor-pointer select-none items-center",
-          !minimal && "text-body-sm font-medium"
+          !minimal && "text-sm font-medium text-foreground"
         )}
       >
         <div className="relative">
@@ -43,11 +43,11 @@ export function Checkbox({
 
           <div
             className={cn(
-              "mr-2 flex size-5 items-center justify-center rounded border border-dark-5 peer-checked:border-primary dark:border-dark-6 peer-checked:[&>*]:block",
+              "mr-2 flex size-5 items-center justify-center rounded border border-input peer-checked:border-primary peer-checked:[&>*]:block",
               withBg
-                ? "peer-checked:bg-primary [&>*]:text-white"
-                : "peer-checked:bg-gray-200 dark:peer-checked:bg-transparent",
-              minimal && "mr-3 border-stroke dark:border-dark-3",
+                ? "peer-checked:bg-primary [&>*]:text-primary-foreground"
+                : "peer-checked:bg-background",
+              minimal && "mr-3",
               radius === "md" && "rounded-md"
             )}
           >

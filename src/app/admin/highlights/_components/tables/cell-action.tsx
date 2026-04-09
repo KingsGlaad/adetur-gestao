@@ -1,13 +1,5 @@
 "use client";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Trash, Edit } from "lucide-react";
+
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
@@ -15,6 +7,7 @@ import { HighlightFormDialog } from "./HighlightFormDialog";
 import { Municipality } from "@/types/municipality";
 import { Highlight } from "@/types/highligth";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
+import { DataTableCellActions } from "@/components/admin/data-table/data-table-cell-actions";
 
 interface CellActionProps {
   data: Highlight;
@@ -61,23 +54,11 @@ export const CellAction: React.FC<CellActionProps> = ({
         onConfirm={onDelete}
         loading={loading}
       />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Abrir menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Ações</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
-            <Edit className="mr-2 h-4 w-4" /> Editar
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setIsDeleteOpen(true)} disabled={loading}>
-            <Trash className="mr-2 h-4 w-4" /> Excluir
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <DataTableCellActions
+        onEdit={() => setIsEditOpen(true)}
+        onDelete={() => setIsDeleteOpen(true)}
+        loading={loading}
+      />
     </>
   );
 };

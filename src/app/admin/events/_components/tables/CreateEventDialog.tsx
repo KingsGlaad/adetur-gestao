@@ -168,7 +168,7 @@ export function CreateEventDialog() {
                 alt="Preview"
                 width={100}
                 height={100}
-                className="object-cover rounded-md bg-slate-100"
+                className="object-cover rounded-md bg-muted"
               />
               <Input
                 type="file"

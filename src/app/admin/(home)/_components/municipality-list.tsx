@@ -1,6 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { MapPin, Building2, Users, Star } from "lucide-react";
 
 interface MunicipalityListProps {
   municipalities: {
@@ -27,39 +29,70 @@ interface MunicipalityListProps {
 
 export function MunicipalityList({ municipalities }: MunicipalityListProps) {
   return (
-    <Card>
+    <Card className="col-span-1">
       <CardHeader>
-        <CardTitle>Municípios</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Building2 className="h-5 w-5 text-primary" />
+          Municípios
+        </CardTitle>
+        <CardDescription>
+          Gerencie os municípios e suas atrações.
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {municipalities.map((municipality) => (
-            <div key={municipality.id} className="flex items-center gap-4">
-              {municipality.coatOfArms && (
-                <Image
-                  src={municipality.coatOfArms}
-                  alt={`Brasão de ${municipality.name}`}
-                  className="h-12 w-12 rounded-lg object-cover"
-                  width={100}
-                  height={100}
-                />
-              )}
-              <div className="flex-1">
-                <p className="font-medium">{municipality.name}</p>
-                <div className="flex gap-4 text-sm text-muted-foreground">
-                  <span>{municipality.highlights.length} atrações</span>
-                  <span>{municipality.events.length} eventos</span>
-                  <span>{municipality.guides.length} guias</span>
+        <ScrollArea className="h-[400px] pr-4">
+          <div className="space-y-6">
+            {municipalities.map((municipality) => (
+              <div
+                key={municipality.id}
+                className="group flex flex-col gap-3 rounded-lg border border-transparent p-2 transition-colors hover:bg-muted/50"
+              >
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-12 w-12 rounded-lg border border-border shadow-sm">
+                    {municipality.coatOfArms ? (
+                      <AvatarImage
+                        src={municipality.coatOfArms}
+                        alt={municipality.name}
+                        className="object-cover"
+                      />
+                    ) : (
+                      <AvatarFallback className="rounded-lg">
+                        {municipality.name.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    )}
+                  </Avatar>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <p className="font-semibold leading-none">{municipality.name}</p>
+                      <Badge variant="secondary" className="font-normal">
+                        {municipality.highlights.length + municipality.events.length} Atv.
+                      </Badge>
+                    </div>
+                    {municipality.description && (
+                      <p className="text-xs text-muted-foreground line-clamp-1">
+                        {municipality.description}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                {municipality.description && (
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {municipality.description}
-                  </p>
-                )}
+                <div className="flex flex-wrap gap-2 pl-16">
+                  <div className="flex items-center gap-1 text-[10px] text-muted-foreground bg-muted p-1 px-2 rounded-full">
+                    <Star className="h-3 w-3 text-amber-500 fill-amber-500" />
+                    {municipality.highlights.length} Atrações
+                  </div>
+                  <div className="flex items-center gap-1 text-[10px] text-muted-foreground bg-muted p-1 px-2 rounded-full">
+                    <MapPin className="h-3 w-3 text-sky-500" />
+                    {municipality.events.length} Eventos
+                  </div>
+                  <div className="flex items-center gap-1 text-[10px] text-muted-foreground bg-muted p-1 px-2 rounded-full">
+                    <Users className="h-3 w-3 text-emerald-500" />
+                    {municipality.guides.length} Guias
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );

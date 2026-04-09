@@ -18,7 +18,7 @@ import Image from "next/image";
 
 const ZOOM = 9;
 const iconMarkup = renderToStaticMarkup(
-  <MapPin size={32} className="text-red-600 fill-red-500 drop-shadow-lg" />
+  <MapPin size={32} className="text-red-600 fill-red-500 drop-shadow-lg" />,
 );
 const customIcon = divIcon({
   html: iconMarkup,
@@ -89,6 +89,7 @@ export default function MunicipalityMap({
         <div className="absolute inset-0 z-[1000] flex items-center justify-center bg-gray-200/50 backdrop-blur-sm">
           <Image
             src="/logo.png"
+            priority
             alt="Adetur Logo"
             width={30}
             height={30}

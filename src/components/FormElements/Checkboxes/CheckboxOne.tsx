@@ -7,7 +7,7 @@ const CheckboxOne = () => {
     <div>
       <label
         htmlFor="checkboxLabelOne"
-        className="flex cursor-pointer select-none items-center text-body-sm font-medium"
+        className="flex cursor-pointer select-none items-center text-sm font-medium text-foreground"
       >
         <div className="relative">
           <input
@@ -21,12 +21,12 @@ const CheckboxOne = () => {
           <div
             className={`mr-2 flex h-5 w-5 items-center justify-center rounded border ${
               isChecked
-                ? "border-primary bg-gray-200 dark:bg-transparent"
-                : "border-dark-5 dark:border-dark-6"
+                ? "border-primary bg-primary"
+                : "border-input"
             }`}
           >
             <span
-              className={`h-2.5 w-2.5 rounded-sm ${isChecked && "bg-primary"}`}
+              className={`h-2.5 w-2.5 rounded-sm ${isChecked && "bg-primary-foreground"}`}
             ></span>
           </div>
         </div>

@@ -53,7 +53,7 @@ export const ConfirmModal = ({
           <AlertDialogAction
             disabled={loading}
             onClick={onConfirm}
-            className="bg-red-600 hover:bg-red-700 text-white focus:ring-red-600 border-none"
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90 focus:ring-destructive border-none"
           >
             {loading ? "Excluindo..." : "Excluir"}
           </AlertDialogAction>

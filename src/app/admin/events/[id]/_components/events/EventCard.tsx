@@ -12,7 +12,7 @@ interface EventCardProps {
 
 export function EventCard({ event, onEdit, onDelete }: EventCardProps) {
   return (
-    <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col bg-white">
+    <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col bg-card">
       {/* Header com a Imagem do Evento */}
       <div className="relative w-full aspect-[16/9]">
         <Image
@@ -25,24 +25,24 @@ export function EventCard({ event, onEdit, onDelete }: EventCardProps) {
 
       <div className="p-4 flex flex-col flex-grow">
         {/* Data do Evento */}
-        <div className="flex items-center gap-2 text-sm text-blue-600 font-semibold mb-2">
+        <div className="flex items-center gap-2 text-sm text-primary font-semibold mb-2">
           <Calendar className="h-4 w-4" />
           <span>{formatEventDate(event.date)}</span>
         </div>
 
         {/* Título e Descrição */}
-        <h3 className="font-bold text-lg text-slate-800 leading-tight">
+        <h3 className="font-bold text-lg text-foreground leading-tight">
           {event.title}
         </h3>
         {event.description && (
-          <p className="mt-2 text-sm text-slate-600 line-clamp-3 flex-grow">
+          <p className="mt-2 text-sm text-muted-foreground line-clamp-3 flex-grow">
             {event.description}
           </p>
         )}
       </div>
 
       {/* Rodapé com Ações */}
-      <div className="p-2 flex justify-end gap-2 bg-slate-50 border-t">
+      <div className="p-2 flex justify-end gap-2 bg-muted/50 border-t">
         <Button type="button" variant="outline" size="sm" onClick={onEdit}>
           <Edit className="mr-2 h-3 w-3" />
           Editar

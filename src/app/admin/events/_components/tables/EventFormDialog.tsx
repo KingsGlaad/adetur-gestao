@@ -269,7 +269,7 @@ export function EventFormDialog({
                     alt="Imagem existente"
                     width={100}
                     height={100}
-                    className="object-cover rounded-md bg-slate-100"
+                    className="object-cover rounded-md bg-muted"
                   />
                   <Button
                     type="button"
@@ -289,7 +289,7 @@ export function EventFormDialog({
                     alt={`Preview ${index + 1}`}
                     width={100}
                     height={100}
-                    className="object-cover rounded-md bg-slate-100"
+                    className="object-cover rounded-md bg-muted"
                   />
                   <Button
                     type="button"

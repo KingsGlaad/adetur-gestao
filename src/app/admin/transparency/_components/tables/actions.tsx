@@ -1,30 +1,21 @@
 "use client";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Trash, Edit, Download } from "lucide-react";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import { Download } from "lucide-react";
 import { Transparency } from "@/types/transparency";
-import { TransparencyFormDialog } from "./TransparencyFormDialog";
+import { TransparencyFormDialog } from "../TransparencyFormDialog";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
+import { DataTableCellActions } from "@/components/admin/data-table/data-table-cell-actions";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface CellActionProps {
   data: Transparency;
   onUpdate: () => void;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({
-  data,
-  onUpdate,
-}) => {
+export const CellAction: React.FC<CellActionProps> = ({ data, onUpdate }) => {
   const [loading, setLoading] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -64,30 +55,15 @@ export const CellAction: React.FC<CellActionProps> = ({
         onConfirm={onDelete}
         loading={loading}
       />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0 cursor-pointer">
-            <span className="sr-only">Abrir menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Ações</DropdownMenuLabel>
-          <DropdownMenuItem onClick={onDownload} className="cursor-pointer">
-            <Download className="mr-2 h-4 w-4" /> Download
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setIsEditOpen(true)} className="cursor-pointer">
-            <Edit className="mr-2 h-4 w-4" /> Editar
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={() => setIsDeleteOpen(true)} 
-            disabled={loading}
-            className="cursor-pointer text-red-600 focus:text-red-600"
-          >
-            <Trash className="mr-2 h-4 w-4" /> Excluir
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <DataTableCellActions
+        onEdit={() => setIsEditOpen(true)}
+        onDelete={() => setIsDeleteOpen(true)}
+        loading={loading}
+      >
+        <DropdownMenuItem onClick={onDownload} className="cursor-pointer">
+          <Download className="mr-2 h-4 w-4" /> Download
+        </DropdownMenuItem>
+      </DataTableCellActions>
     </>
   );
 };

@@ -43,7 +43,7 @@ export function MunicipalityForm({ municipio }: MunicipalityFormProps) {
             alt="Pré-visualização do Brasão"
             width={100}
             height={100}
-            className="object-contain rounded-md bg-slate-100"
+            className="object-contain rounded-md bg-muted"
           />
           <Input
             type="file"

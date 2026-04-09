@@ -9,6 +9,7 @@ export default function HeroSection() {
             src={"/logo-cmf.png"}
             width={150} // tamanho maior
             height={150}
+            priority
             alt="Logo Companhia Mogiana de Estradas de Ferro"
             className="mx-auto"
           />

@@ -9,12 +9,11 @@ export function Logo() {
         height={100}
         alt="ADETUR Logo"
         quality={100}
+        priority
       />
       <div className="flex flex-col">
         <span className="text-xl font-bold">ADETUR</span>
-        <span className="text-sm text-secondary">
-          Alta Mogiana
-        </span>
+        <span className="text-sm text-secondary">Alta Mogiana</span>
       </div>
     </div>
   );

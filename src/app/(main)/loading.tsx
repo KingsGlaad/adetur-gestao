@@ -6,6 +6,7 @@ export default function Loading() {
       <Image
         src="/logo.png"
         alt="Logo"
+        priority
         width={100}
         height={100}
         className="animate-pulse"

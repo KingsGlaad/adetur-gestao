@@ -44,6 +44,7 @@ export default function PostPage() {
       <div className="flex justify-center items-center min-h-[calc(100vh-15rem)]">
         <Image
           src="/logo.png"
+          priority
           alt="Adetur Logo"
           width={100}
           height={100}

@@ -77,14 +77,29 @@ const quickLinks = [
 ];
 
 const contactInfo = [
-  { Icon: MailIcon, text: "contato@adeturaltamogiana.com.br", href: "mailto:contato@adeturaltamogiana.com.br" },
+  {
+    Icon: MailIcon,
+    text: "contato@adeturaltamogiana.com.br",
+    href: "mailto:contato@adeturaltamogiana.com.br",
+  },
   { Icon: PhoneIcon, text: "(16) 3984-2949", href: "tel:+551639842949" },
-  { Icon: MapPinIcon, text: "Rua Deodoro da Fonseca, 1040, sala 5, Centro, São Simão/SP, CEP 14.200-000" },
+  {
+    Icon: MapPinIcon,
+    text: "Rua Deodoro da Fonseca, 1040, sala 5, Centro, São Simão/SP, CEP 14.200-000",
+  },
 ];
 
 const socialLinks = [
-  { href: "https://www.facebook.com/circuitoturisticoaltamogiana", label: "Facebook", Icon: FacebookIcon },
-  { href: "https://www.instagram.com/adeturturismoaltamogiana/", label: "Instagram", Icon: InstagramIcon },
+  {
+    href: "https://www.facebook.com/circuitoturisticoaltamogiana",
+    label: "Facebook",
+    Icon: FacebookIcon,
+  },
+  {
+    href: "https://www.instagram.com/adeturturismoaltamogiana/",
+    label: "Instagram",
+    Icon: InstagramIcon,
+  },
 ];
 
 export function Footer() {
@@ -101,6 +116,7 @@ export function Footer() {
                 width={40}
                 height={40}
                 className="rounded-lg"
+                priority
               />
               <span className="text-xl font-bold">ADETUR</span>
             </div>
@@ -130,7 +146,10 @@ export function Footer() {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-neutral-300 hover:text-white transition-colors">
+                  <Link
+                    href={link.href}
+                    className="text-neutral-300 hover:text-white transition-colors"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -146,7 +165,16 @@ export function Footer() {
                 {contactInfo.map(({ Icon, text, href }) => (
                   <li key={text} className="flex items-start gap-3">
                     <Icon className="w-5 h-5 flex-shrink-0 mt-1" />
-                    {href ? <a href={href} className="hover:text-white transition-colors">{text}</a> : <span>{text}</span>}
+                    {href ? (
+                      <a
+                        href={href}
+                        className="hover:text-white transition-colors"
+                      >
+                        {text}
+                      </a>
+                    ) : (
+                      <span>{text}</span>
+                    )}
                   </li>
                 ))}
               </ul>

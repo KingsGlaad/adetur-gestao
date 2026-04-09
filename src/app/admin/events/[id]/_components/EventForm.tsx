@@ -92,7 +92,7 @@ export function EventForm({ event, onSubmit, isSubmitting }: EventFormProps) {
             alt="Pré-visualização da imagem do evento"
             width={128}
             height={128}
-            className="h-32 w-32 object-cover rounded-md bg-slate-100"
+            className="h-32 w-32 object-cover rounded-md bg-muted"
           />
           <div className="flex flex-col gap-y-2">
             <Button

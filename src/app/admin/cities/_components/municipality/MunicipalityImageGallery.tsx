@@ -71,7 +71,7 @@ export function MunicipalityImageGallery({
         />
         <Label
           htmlFor="gallery-file-input"
-          className="aspect-square border-2 border-dashed rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-accent"
+          className="aspect-square border border-dashed border-border rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-accent bg-muted/30 transition-colors"
         >
           {isUploading ? (
             <Loader2 className="h-8 w-8 animate-spin" />
