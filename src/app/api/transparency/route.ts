@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
+import { slugify } from "@/lib/utils";
 
 const BUCKET_NAME = "adetur-bucket";
 
@@ -49,7 +50,14 @@ export async function POST(req: Request) {
 
     // 2. Upload do PDF
     const buffer = Buffer.from(await file.arrayBuffer());
-    const filePath = `transparency/${item.id}/${file.name}`;
+    
+    // Sanitizar o nome do arquivo, preservando a extensão
+    const lastDotIndex = file.name.lastIndexOf('.');
+    const fileExt = lastDotIndex !== -1 ? file.name.slice(lastDotIndex) : '';
+    const nameWithoutExt = lastDotIndex !== -1 ? file.name.slice(0, lastDotIndex) : file.name;
+    const safeFileName = `${slugify(nameWithoutExt)}${fileExt}`;
+    
+    const filePath = `transparency/${item.id}/${safeFileName}`;
 
     const { error: uploadError } = await supabase.storage
       .from(BUCKET_NAME)

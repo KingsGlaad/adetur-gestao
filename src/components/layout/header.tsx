@@ -80,7 +80,7 @@ export function Header() {
           className={cn(
             "pointer-events-auto transition-all duration-500 flex items-center justify-between relative",
             scrolled
-              ? "w-[96%] max-w-7xl mt-4 bg-background/80 backdrop-blur-xl border border-border rounded-full px-6 py-3"
+              ? "w-[98%] max-w-8xl mt-4 bg-background/80 backdrop-blur-xl border border-border rounded-full px-6 py-3"
               : "w-full bg-background/60 backdrop-blur border-b border-border px-10 py-4",
           )}
         >
