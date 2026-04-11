@@ -37,17 +37,20 @@ export const features = [
   {
     icon: "MapPin",
     title: "Municípios Integrados",
-    description: "Mais de 20 municípios conectados em uma única plataforma",
+    description: "São 11 municípios conectados em uma única plataforma",
+    url: "/municipios",
   },
   {
     icon: "Calendar",
     title: "Eventos",
     description: "Promoção e organização de eventos turísticos",
+    url: "#"
   },
   {
     icon: "Building2",
     title: "Pontos Turísticos",
     description: "Catálogo completo de atrações e pontos turísticos",
+    url: "/municipios/highlights",
   },
 ];
 
