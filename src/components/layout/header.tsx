@@ -81,8 +81,8 @@ export function Header() {
           className={cn(
             "pointer-events-auto transition-all duration-500 flex items-center justify-between relative",
             scrolled
-              ? "w-[98%] max-w-8xl mt-4 bg-background/80 backdrop-blur-xl border border-border rounded-full px-6 py-3"
-              : "w-full bg-background/60 backdrop-blur border-b border-border px-10 py-4",
+              ? "w-full xl:w-[98%] max-w-[1600px] xl:mt-4 bg-background/80 backdrop-blur-xl border-b xl:border border-border xl:rounded-full px-6 py-3"
+              : "w-full bg-background/60 backdrop-blur border-b border-border px-6 xl:px-10 py-4",
           )}
         >
           {/* LOGO */}
@@ -101,7 +101,7 @@ export function Header() {
 
           {/* DESKTOP NAV */}
           <nav className="hidden xl:flex absolute left-1/2 -translate-x-1/2">
-            <ul className="flex items-center gap-2 p-1 rounded-full bg-muted/30 border">
+            <ul className="flex items-center gap-1 xl:gap-2 p-1 rounded-full bg-muted/30 border whitespace-nowrap">
               {navigation.map((item) => {
                 if (item.name === "Municípios") {
                   return (
@@ -120,7 +120,7 @@ export function Header() {
 
                       {/* MEGA MENU */}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
-                        <div className="w-[700px] bg-background border rounded-xl shadow-xl">
+                        <div className="w-[880px] bg-background border rounded-xl shadow-xl">
                           <div className="flex items-center justify-between p-6 border-b">
                             <div>
                               <h3 className="font-semibold text-lg">
