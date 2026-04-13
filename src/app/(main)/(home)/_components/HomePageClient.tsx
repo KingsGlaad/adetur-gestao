@@ -152,7 +152,8 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
                       ? Calendar
                       : Building2;
               return (
-                <div
+                <Link
+                  href={feature.link}
                   key={feature.title}
                   className="bg-blue-900 rounded-lg shadow-md p-8 flex flex-col items-center text-center text-white transition-transform hover:scale-105 w-full sm:w-auto md:w-[calc(33.333%-1.5rem)] lg:w-[calc(25%-1.5rem)]"
                 >
@@ -161,7 +162,7 @@ export function HomePageClient({ municipalities }: HomePageClientProps) {
                     {feature.title}
                   </h3>
                   <p className="text-blue-300">{feature.description}</p>
-                </div>
+                </Link>
               );
             })}
           </div>

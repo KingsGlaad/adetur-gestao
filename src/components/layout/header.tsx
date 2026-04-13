@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, MapPin, MoveRight } from "lucide-react";
+import { Menu, X, ChevronDown, MoveRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { AccessibilityControls } from "./AccessibilityControls";
@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 const navigation = [
   { name: "Quem Somos", href: "/quem-somos" },
   { name: "Municípios", href: "/municipios" },
+  { name: "Atrações", href: "/atracoes" },
   { name: "Notícias", href: "/noticias" },
   { name: "História", href: "/historia" },
   { name: "Faça parte", href: "/contato" },

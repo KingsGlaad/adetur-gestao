@@ -85,26 +85,26 @@ model HighlightImage {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Municipality {
-  id                String              @id @default(cuid())
-  name              String
-  description       String?
-  coatOfArms        String?
-  latitude          Float?
-  longitude         Float?
-  about             String?
-  slug              String?             @unique
-  ibgeCode          String?             @unique
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  active            Boolean             @default(false)
-  prefeito          String?
-  gentilic          String?
-  attractions       Attraction[]
-  events            Event[]
-  guides            Guide[]
-  highlights        Highlight[]
-  images            MunicipalityImage[]
-  users             User[]
+  id          String              @id @default(cuid())
+  name        String
+  description String?
+  coatOfArms  String?
+  latitude    Float?
+  longitude   Float?
+  about       String?
+  slug        String?             @unique
+  ibgeCode    String?             @unique
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  active      Boolean             @default(false)
+  prefeito    String?
+  gentilic    String?
+  attractions Attraction[]
+  events      Event[]
+  guides      Guide[]
+  highlights  Highlight[]
+  images      MunicipalityImage[]
+  users       User[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -147,12 +147,13 @@ model User {
 }
 
 model Transparency {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   description String?
   fileUrl     String
   category    String?
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  date        DateTime?
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

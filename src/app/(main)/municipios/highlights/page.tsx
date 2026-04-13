@@ -10,26 +10,35 @@ export const metadata: Metadata = {
 }
 
 export default async function HighlightsPage() {
-  const highlights = await prisma.highlight.findMany({
-    // Fictional "most viewed" logic: ordering by newest.
-    // In the future, you could add a `views` count to the model
-    // and sort by it: orderBy: { views: 'desc' }
-    orderBy: {
-      createdAt: 'desc',
+  const municipalitiesWithHighlights = await prisma.municipality.findMany({
+    where: {
+      highlights: {
+        some: {}
+      }
     },
     include: {
-      Municipality: {
-        select: {
-          name: true,
+      highlights: {
+        orderBy: {
+          createdAt: 'desc',
         },
-      },
-      galleryImages: {
-        take: 1, // We only need the first image for the card
-        select: {
-          url: true,
+        include: {
+          Municipality: {
+            select: {
+              name: true,
+            },
+          },
+          galleryImages: {
+            take: 1, // We only need the first image for the card
+            select: {
+              url: true,
+            },
+          },
         },
-      },
+      }
     },
+    orderBy: {
+      name: 'asc'
+    }
   })
 
   return (
@@ -42,11 +51,20 @@ export default async function HighlightsPage() {
         </p>
       </div>
 
-      {/* Highlights Grid */}
-      {highlights.length > 0 ? (
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-          {highlights.map((highlight) => (
-            <HighlightCard key={highlight.id} highlight={highlight} />
+      {/* Highlights by Municipality */}
+      {municipalitiesWithHighlights.length > 0 ? (
+        <div className="space-y-16">
+          {municipalitiesWithHighlights.map((municipality) => (
+            <section key={municipality.id}>
+              <h2 className="mb-6 border-b pb-2 text-2xl font-bold tracking-tight text-gray-900">
+                {municipality.name}
+              </h2>
+              <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                {municipality.highlights.map((highlight) => (
+                  <HighlightCard key={highlight.id} highlight={highlight} />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       ) : (
