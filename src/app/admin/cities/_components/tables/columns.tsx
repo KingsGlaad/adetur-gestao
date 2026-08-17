@@ -1,6 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
+import { dataTableFeatures } from "@/components/admin/data-table/data-table";
 import { MunicipioActions } from "./actions";
 import { Municipality } from "@/types/municipality";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +30,7 @@ export const getBadgeColor = (regiao: string) => {
 };
 
 // Definição das colunas da tabela
-export const columns: ColumnDef<Municipality>[] = [
+export const columns: ColumnDef<typeof dataTableFeatures, Municipality, unknown>[] = [
   {
     accessorKey: "name",
     header: "Nome",

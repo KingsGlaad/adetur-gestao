@@ -16,8 +16,7 @@ export function EventsSection({ events }: EventsSectionProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const galleryImages = events
-    .map((e) => e.galleryImages?.[0]?.url)
-    .filter((url): url is string => !!url);
+    .map((e) => e.image ?? "/images/no-image.jpeg");
 
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index);
@@ -44,7 +43,7 @@ export function EventsSection({ events }: EventsSectionProps) {
             onClick={() => openLightbox(index)}
           >
             <Image
-              src={event.image ?? "/placeholder.png"}
+              src={event.image ?? "/images/no-image.jpeg"}
               alt={event.title || "Evento"}
               width={600}
               height={400}

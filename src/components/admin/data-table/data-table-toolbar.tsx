@@ -1,25 +1,27 @@
 "use client";
 
 import { Search, X } from "lucide-react";
-import { Table } from "@tanstack/react-table";
+import { Table, RowData } from "@tanstack/react-table";
+import { dataTableFeatures } from "./data-table";
+
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-interface DataTableToolbarProps<TData> {
-  table: Table<TData>;
+interface DataTableToolbarProps<TData extends RowData> {
+  table: Table<typeof dataTableFeatures, TData>;
   searchKey: string;
   placeholder?: string;
   renderExtra?: React.ReactNode;
 }
 
-export function DataTableToolbar<TData>({
+export function DataTableToolbar<TData extends RowData>({
   table,
   searchKey,
   placeholder = "Filtrar...",
   renderExtra,
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const isFiltered = table.store.state.columnFilters.length > 0;
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">

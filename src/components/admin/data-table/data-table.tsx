@@ -5,13 +5,19 @@ import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
-  VisibilityState,
+  ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
+  useTable,
+  tableFeatures,
+  columnFilteringFeature,
+  rowSortingFeature,
+  columnVisibilityFeature,
+  rowSelectionFeature,
+  rowPaginationFeature,
+  createFilteredRowModel,
+  createSortedRowModel,
+  createPaginatedRowModel,
+  RowData,
 } from "@tanstack/react-table";
 
 import {
@@ -26,8 +32,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+export const dataTableFeatures = tableFeatures({
+  columnFilteringFeature,
+  rowSortingFeature,
+  columnVisibilityFeature,
+  rowSelectionFeature,
+  rowPaginationFeature,
+  filteredRowModel: createFilteredRowModel(),
+  sortedRowModel: createSortedRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+});
+
+type Features = typeof dataTableFeatures;
+
+interface DataTableProps<TData extends RowData> {
+  columns: ColumnDef<Features, TData, any>[];
   data: TData[];
   searchKey: string;
   searchPlaceholder?: string;
@@ -35,31 +54,28 @@ interface DataTableProps<TData, TValue> {
   actionButton?: React.ReactNode;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   searchKey,
   searchPlaceholder,
   entityName,
   actionButton,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<ColumnVisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {

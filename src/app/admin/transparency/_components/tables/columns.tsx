@@ -1,13 +1,14 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { dataTableFeatures } from "@/components/admin/data-table/data-table";
 import { Transparency } from "@/types/transparency";
 import { CellAction } from "./actions";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { FileText } from "lucide-react";
 
-export const columns = (onUpdate: () => void): ColumnDef<Transparency>[] => [
+export const columns = (onUpdate: () => void): ColumnDef<typeof dataTableFeatures, Transparency, unknown>[] => [
   {
     accessorKey: "title",
     header: "Título",

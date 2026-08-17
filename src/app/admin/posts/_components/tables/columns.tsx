@@ -1,13 +1,14 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { dataTableFeatures } from "@/components/admin/data-table/data-table";
 import { Post } from "@/types/post";
 import { Badge } from "@/components/ui/badge";
 import { CellAction } from "./cell-action";
 
 export const columns = (
   onUpdate: () => void
-): ColumnDef<Post>[] => [
+): ColumnDef<typeof dataTableFeatures, Post, unknown>[] => [
   {
     accessorKey: "title",
     header: "Título",

@@ -109,7 +109,7 @@ export default function PostPage() {
         </div>
       )}
       <div
-        className="prose prose-lg max-w-none"
+        className="prose dark:prose-invert max-w-none prose-sm sm:prose-base"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
     </article>

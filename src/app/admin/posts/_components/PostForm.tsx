@@ -15,10 +15,11 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Post } from "@/types/post";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import { EditorToolbar } from "./TiptapEditor";
+import Editor from "./Editor";
+import editorJsHtml from "editorjs-html";
+import { OutputData } from "@editorjs/editorjs";
+
+const edjsParser = editorJsHtml();
 
 const postSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
@@ -69,20 +70,21 @@ export function PostForm({ initialData }: PostFormProps) {
     },
   });
 
-  const editor = useEditor({
-    extensions: [StarterKit, Underline],
-    immediatelyRender: false,
-    content: initialData?.content || "",
-    editorProps: {
-      attributes: {
-        class:
-          "prose dark:prose-invert max-w-none prose-sm sm:prose-base focus:outline-none min-h-[300px] p-4",
-      },
-    },
-    onUpdate: ({ editor }) => {
-      setValue("content", editor.getHTML(), { shouldValidate: true });
-    },
-  });
+  const handleEditorChange = (data: OutputData) => {
+    // Verifica se há blocos, caso contrário, limpa o conteúdo
+    if (!data.blocks || data.blocks.length === 0) {
+      setValue("content", "", { shouldValidate: true });
+      return;
+    }
+    
+    try {
+      const htmlArray = edjsParser.parse(data);
+      const htmlString = Array.isArray(htmlArray) ? htmlArray.join("") : htmlArray as unknown as string;
+      setValue("content", htmlString, { shouldValidate: true });
+    } catch (e) {
+      console.error("Erro ao converter Editor.js JSON para HTML:", e);
+    }
+  };
 
   useEffect(() => {
     // Limpa a URL do objeto de preview para evitar vazamento de memória
@@ -90,13 +92,6 @@ export function PostForm({ initialData }: PostFormProps) {
       if (imagePreview) URL.revokeObjectURL(imagePreview);
     };
   }, [imagePreview]);
-
-  useEffect(() => {
-    // Desliga o editor quando o componente é desmontado
-    return () => {
-      editor?.destroy();
-    };
-  }, [editor]);
 
   const onSubmit = async (data: PostFormValues) => {
     setIsSubmitting(true);
@@ -190,9 +185,11 @@ export function PostForm({ initialData }: PostFormProps) {
         </div>
         <div>
           <Label>Conteúdo</Label>
-          <div className="mt-1 rounded-md border border-input bg-transparent">
-            <EditorToolbar editor={editor} />
-            <EditorContent editor={editor} />
+          <div className="mt-1 rounded-md border border-input bg-background overflow-hidden p-2">
+            <Editor 
+              value={initialData?.content || null} 
+              onChange={handleEditorChange} 
+            />
           </div>
           {errors.content && (
             <p className="text-sm text-red-500 mt-1">

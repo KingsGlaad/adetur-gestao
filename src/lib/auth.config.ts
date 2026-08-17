@@ -1,6 +1,7 @@
 import type { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
+  secret: process.env.AUTH_SECRET,
   providers: [], // Providers alimentados no auth.ts para evitar deps de banco no middleware
   pages: {
     signIn: "/login",

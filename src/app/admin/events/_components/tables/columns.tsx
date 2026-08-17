@@ -1,6 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
+import { dataTableFeatures } from "@/components/admin/data-table/data-table";
 import { EventWithRelations } from "@/types/events";
 import { CellAction } from "./actions";
 import { Municipality } from "@/types/municipality";
@@ -9,7 +10,7 @@ import { Municipality } from "@/types/municipality";
 export const columns = (
   onUpdate: () => void,
   municipalities: Municipality[],
-): ColumnDef<EventWithRelations>[] => [
+): ColumnDef<typeof dataTableFeatures, EventWithRelations, unknown>[] => [
   {
     accessorKey: "title",
     header: "Nome",

@@ -212,7 +212,6 @@ export function EventForm({ event, onSubmit, isSubmitting }: EventFormProps) {
                   mode="single"
                   selected={field.value}
                   onSelect={field.onChange}
-                  initialFocus
                   locale={ptBR}
                 />
               </PopoverContent>
