@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "prisma generate",
-    "build": "node --no-warnings --experimental-wasm-modules node_modules/next/dist/bin/next build"
+    "build": "prisma generate && node --no-warnings --experimental-wasm-modules node_modules/next/dist/bin/next build --webpack"
   },
   "dependencies": {
     "@editorjs/code": "^2.9.4",
