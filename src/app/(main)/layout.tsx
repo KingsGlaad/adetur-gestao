@@ -3,6 +3,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { VLibrasWidget } from "@/components/layout/VLibrasWidget";
+import { AppDownloadModal } from "@/components/modals/AppDownloadModal";
 
 export default function MainLayout({
   children,
@@ -16,7 +17,9 @@ export default function MainLayout({
         {children}
         <Footer />
       </main>
+      <AppDownloadModal />
       <VLibrasWidget /> {/* Movido para fora do main para não ser afetado pelo filtro */}
     </div>
   );
 }
+

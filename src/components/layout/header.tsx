@@ -24,6 +24,7 @@ const navigation = [
   { name: "Atrações", href: "/atracoes" },
   { name: "Notícias", href: "/noticias" },
   { name: "História", href: "/historia" },
+  { name: "Aplicativo", href: "/aplicativo" },
   { name: "Faça parte", href: "/contato" },
   { name: "Transparência", href: "/transparencia" },
 ];

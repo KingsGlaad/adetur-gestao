@@ -72,6 +72,7 @@ const quickLinks = [
   { href: "#blog", label: "Notícias" },
   { href: "/municipios", label: "Municípios" },
   { href: "/historia", label: "História" },
+  { href: "/aplicativo", label: "Baixar Aplicativo" },
   { href: "/contato", label: "Faça parte" },
   { href: "/politica", label: "Política de Privacidade" },
 ];
