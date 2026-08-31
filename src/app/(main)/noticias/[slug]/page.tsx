@@ -1,117 +1,190 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import Image from "next/image";
-import { Calendar, ChevronLeft } from "lucide-react";
-import { Post } from "@/types/post";
+import Link from "next/link";
+import { Calendar, ChevronLeft, ArrowRight, Share2, Tag, Newspaper } from "lucide-react";
 import { formatEventDate } from "@/lib/date-formater";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
-export default function PostPage() {
-  const params = useParams();
-  const slug = params.slug as string;
+interface PageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
 
-  const [post, setPost] = useState<Post | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await prisma.post.findUnique({
+    where: { slug },
+    select: { title: true, subtitle: true, coverImage: true },
+  });
 
-  useEffect(() => {
-    if (!slug) return;
-
-    async function fetchPost() {
-      try {
-        const response = await fetch(`/api/post/${slug}`);
-        if (!response.ok) {
-          throw new Error("Falha ao carregar a notícia.");
-        }
-        const data = await response.json();
-        setPost(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchPost();
-  }, [slug]);
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[calc(100vh-15rem)]">
-        <Image
-          src="/logo.png"
-          priority
-          alt="Adetur Logo"
-          width={100}
-          height={100}
-          className="animate-pulse"
-        />
-      </div>
-    );
+  if (!post) {
+    return {
+      title: "Notícia não encontrada | ADETUR",
+    };
   }
 
-  if (error || !post) {
-    return (
-      <div className="flex flex-col justify-center items-center min-h-[calc(100vh-15rem)] space-y-6">
-        <Image
-          src={"/404.png"}
-          alt="404 - não ha nada"
-          width={500}
-          height={500}
-          className="mx-auto"
-        />
-        <p className="text-gray-600 text-lg">
-          Não foi possível carregar esta notícia.
-        </p>
-        <Link href="/noticias">
-          <Button
-            variant="outline"
-            className="flex items-center mb-8 cursor-pointer hover:bg-primary"
-          >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            Voltar para todas as notícias
-          </Button>
-        </Link>
-      </div>
-    );
+  return {
+    title: `${post.title} | ADETUR Alta Mogiana`,
+    description:
+      post.subtitle?.substring(0, 160) ||
+      `Leia a matéria completa: ${post.title}.`,
+    openGraph: {
+      title: post.title,
+      description: post.subtitle || undefined,
+      images: post.coverImage ? [post.coverImage] : [],
+    },
+  };
+}
+
+export const revalidate = 60;
+
+export default async function PostDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+
+  const post = await prisma.post.findUnique({
+    where: { slug },
+  });
+
+  if (!post || !post.published) {
+    return notFound();
   }
+
+  // Notícias relacionadas / recentes
+  const recentPosts = await prisma.post.findMany({
+    where: {
+      published: true,
+      id: {
+        not: post.id,
+      },
+    },
+    take: 3,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return (
-    <article className="container mx-auto max-w-4xl py-12 px-4">
-      <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-        {post.title}
-      </h1>
-      <p className="text-lg md:text-xl text-gray-600 mb-6">{post.subtitle}</p>
-      <div className="flex items-center text-sm text-gray-500 mb-8">
-        <Calendar className="w-4 h-4 mr-2" />
-        <span>Publicado em {formatEventDate(post.createdAt)}</span>
-      </div>
-      {post.coverImage && (
-        <div className="mb-8">
-          <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              layout="fill"
-              className="object-cover"
-              priority
-            />
+    <div className="min-h-screen bg-background text-foreground pb-20">
+      {/* HEADER HERO DA NOTÍCIA */}
+      <section className="relative py-12 md:py-16 bg-gradient-to-b from-muted/60 via-background to-background border-b border-border/50">
+        <div className="container mx-auto max-w-4xl px-4 sm:px-6">
+          <div className="space-y-6">
+            {/* Link Voltar */}
+            <Link
+              href="/noticias"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors py-1 px-3 rounded-full bg-muted/60 border border-border/60"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span>Voltar para todas as notícias</span>
+            </Link>
+
+            {/* Metadados do Post */}
+            <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+              <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary font-bold">
+                Notícia Oficial
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-primary" />
+                <span>Publicado em {formatEventDate(new Date(post.createdAt))}</span>
+              </span>
+            </div>
+
+            {/* Título Principal */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tight leading-tight">
+              {post.title}
+            </h1>
+
+            {/* Subtítulo */}
+            {post.subtitle && (
+              <p className="text-base sm:text-xl text-muted-foreground leading-relaxed">
+                {post.subtitle}
+              </p>
+            )}
           </div>
-          {post.altText && (
-            <p className="text-center text-sm text-gray-500 italic mt-2">
-              Crédito: {post.altText}
-            </p>
-          )}
         </div>
-      )}
-      <div
-        className="prose dark:prose-invert max-w-none prose-sm sm:prose-base"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
-    </article>
+      </section>
+
+      {/* IMAGEM DE CAPA E CONTEÚDO */}
+      <div className="container mx-auto max-w-4xl px-4 sm:px-6 py-8">
+        {/* Imagem de Capa */}
+        {post.coverImage && (
+          <div className="mb-10 space-y-2">
+            <div className="relative w-full h-[320px] sm:h-[460px] rounded-3xl overflow-hidden shadow-xl border border-border/80 bg-muted">
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                fill
+                priority
+                className="object-cover"
+              />
+            </div>
+            {post.altText && (
+              <p className="text-center text-xs text-muted-foreground italic pt-1">
+                Foto / Crédito: {post.altText}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Corpo do Artigo com Tipografia Rica */}
+        <article className="bg-card border border-border/70 rounded-3xl p-6 sm:p-10 shadow-sm">
+          <div
+            className="prose dark:prose-invert max-w-none text-card-foreground leading-relaxed prose-headings:font-bold prose-a:text-primary prose-img:rounded-2xl"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        </article>
+
+        {/* SEÇÃO DE MATÉRIAS RELACIONADAS */}
+        {recentPosts.length > 0 && (
+          <div className="mt-16 pt-12 border-t border-border space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-bold text-foreground">
+                Outras Notícias Recentes
+              </h3>
+              <Link
+                href="/noticias"
+                className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
+              >
+                <span>Ver todas</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {recentPosts.map((recent) => (
+                <Link
+                  key={recent.id}
+                  href={`/noticias/${recent.slug}`}
+                  className="group flex flex-col rounded-2xl bg-card border border-border/70 overflow-hidden shadow-sm hover:shadow-md hover:border-primary/40 transition-all"
+                >
+                  <div className="relative h-36 w-full bg-muted">
+                    <Image
+                      src={recent.coverImage || "/images/no-image.jpeg"}
+                      alt={recent.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform"
+                    />
+                  </div>
+                  <div className="p-4 flex flex-col justify-between flex-1 space-y-2">
+                    <h4 className="font-bold text-sm text-card-foreground group-hover:text-primary transition-colors line-clamp-2">
+                      {recent.title}
+                    </h4>
+                    <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-primary" />
+                      {formatEventDate(new Date(recent.createdAt))}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
