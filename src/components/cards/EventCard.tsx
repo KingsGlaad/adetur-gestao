@@ -12,12 +12,9 @@ export function EventCard({ event }: EventCardProps) {
   const imageUrl = event.galleryImages?.[0]?.url || "/images/no-image.jpeg";
 
   return (
-    <Link
-      href={`/eventos/${event.id}`}
-      className="group block"
-    >
-      <div className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow duration-300 hover:shadow-xl h-full flex flex-col">
-        <div className="relative h-48 w-full">
+    <Link href={`/eventos/${event.id}`} className="group block h-full">
+      <div className="overflow-hidden rounded-2xl bg-card border border-border/70 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-amber-500/40 h-full flex flex-col">
+        <div className="relative h-48 w-full bg-muted overflow-hidden">
           <Image
             src={imageUrl}
             alt={event.title || "Imagem do evento"}
@@ -25,16 +22,18 @@ export function EventCard({ event }: EventCardProps) {
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </div>
-        <div className="p-4 flex flex-col flex-grow">
-          <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 group-hover:text-blue-600">
+        <div className="p-5 flex flex-col flex-grow justify-between space-y-3">
+          <h3 className="text-lg font-bold text-card-foreground line-clamp-2 group-hover:text-amber-500 transition-colors">
             {event.title}
           </h3>
-          <div className="mt-2 space-y-1 text-sm text-gray-600">
-            <p className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-accent" /> {formatEventDate(event.date)}
+          <div className="pt-3 border-t border-border/60 space-y-1.5 text-xs text-muted-foreground">
+            <p className="flex items-center gap-1.5 font-medium">
+              <Calendar className="w-3.5 h-3.5 text-amber-500" />{" "}
+              {formatEventDate(event.date)}
             </p>
-            <p className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-accent" /> {event.Municipality.name}
+            <p className="flex items-center gap-1.5 font-medium">
+              <MapPin className="w-3.5 h-3.5 text-primary" />{" "}
+              {event.Municipality.name}
             </p>
           </div>
         </div>

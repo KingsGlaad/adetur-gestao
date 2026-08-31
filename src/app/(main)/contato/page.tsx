@@ -67,19 +67,22 @@ export default function ContatoPage() {
 
   return (
     <>
-      {/* Contêiner para a imagem de fundo */}
+      {/* Contêiner para a imagem de fundo com overlay adaptativo */}
       <div
         className="fixed inset-0 -z-10 bg-cover bg-center"
         style={{ backgroundImage: "url('/bg/bg-municipios1.png')" }}
-      />
-      <main className="container mx-auto px-4 py-12 md:py-24">
+      >
+        <div className="absolute inset-0 bg-background/85 dark:bg-background/92 backdrop-blur-sm" />
+      </div>
+      <main className="container mx-auto px-4 py-12 md:py-24 relative z-10">
         <div className="max-w-2xl mx-auto">
-          <Card>
-            <CardHeader className="text-center">
-              <CardTitle className="text-3xl font-bold tracking-tight">
+          <Card className="bg-card text-card-foreground border-border/80 shadow-2xl rounded-3xl backdrop-blur-md">
+            <CardHeader className="text-center space-y-2 pb-6">
+              <span className="text-xs uppercase tracking-wider font-bold text-primary">Atendimento & Suporte</span>
+              <CardTitle className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
                 Entre em Contato
               </CardTitle>
-              <CardDescription className="text-lg">
+              <CardDescription className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
                 Tem alguma dúvida ou sugestão? Preencha o formulário abaixo e
                 nossa equipe responderá o mais breve possível.
               </CardDescription>

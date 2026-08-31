@@ -39,16 +39,16 @@ const EventListSection = ({
   events: EventWithRelations[];
 }) => {
   if (events.length === 0) {
-    return null; // Não renderiza a seção se não houver eventos
+    return null;
   }
 
   return (
-    <section className="py-12 sm:py-16">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+    <section className="py-12 sm:py-16 border-b border-border/60">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-8 text-foreground tracking-tight">
           {title}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
           {events.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
@@ -72,26 +72,27 @@ export default async function EventosPage() {
         isFuture(new Date(event.date)) &&
         !isSameMonth(new Date(event.date), now),
     )
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()); // Ordena do mais próximo para o mais distante
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   const pastEvents = allEvents.filter((event) => isPast(new Date(event.date)));
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-background text-foreground min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[300px] sm:h-[400px] w-full bg-blue-900">
+      <section className="relative h-[300px] sm:h-[400px] w-full bg-slate-950 overflow-hidden">
         <Image
-          src="/bg/bg-eventos.jpg" // **IMPORTANTE:** Adicione uma imagem de fundo para eventos
+          src="/bg/bg-eventos.jpg"
           alt="Multidão em um festival de música"
           fill
-          className="object-cover opacity-30"
+          className="object-cover opacity-40"
         />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/40 to-black/60 flex flex-col items-center justify-center text-center px-4">
+          <span className="text-xs uppercase tracking-wider font-bold text-emerald-400 mb-2">Programação Regional</span>
+          <h1 className="text-3xl sm:text-5xl font-black text-white mb-3 leading-tight drop-shadow-md tracking-tight">
             Agenda de Eventos
           </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl">
-            Descubra o que está acontecendo na região da Alta Mogiana.
+          <p className="text-base sm:text-lg text-white/80 max-w-2xl font-light">
+            Descubra festivais, feiras culturais e celebrações na região da Alta Mogiana.
           </p>
         </div>
       </section>
@@ -99,7 +100,7 @@ export default async function EventosPage() {
       {/* Seções de Eventos */}
       <EventListSection title="Eventos deste Mês" events={thisMonthEvents} />
       <EventListSection title="Próximos Eventos" events={upcomingEvents} />
-      <EventListSection title="Eventos Passados" events={pastEvents} />
+      <EventListSection title="Eventos Anteriores" events={pastEvents} />
     </div>
   );
 }

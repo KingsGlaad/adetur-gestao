@@ -9,9 +9,9 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <Link href={`/noticias/${post.slug}`} className="group block">
-      <div className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow duration-300 hover:shadow-xl h-full flex flex-col">
-        <div className="relative h-48 w-full">
+    <Link href={`/noticias/${post.slug}`} className="group block h-full">
+      <div className="overflow-hidden rounded-2xl bg-card border border-border/80 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-emerald-500/40 h-full flex flex-col">
+        <div className="relative h-48 w-full bg-muted overflow-hidden">
           <Image
             src={post.coverImage || "/images/no-image.jpeg"}
             alt={post.title}
@@ -19,14 +19,18 @@ export function PostCard({ post }: PostCardProps) {
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </div>
-        <div className="p-4 flex flex-col flex-grow">
-          <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 group-hover:text-blue-600">
-            {post.title}
-          </h3>
-          <p className="mt-2 text-sm text-gray-600 line-clamp-3 flex-grow">
-            {post.subtitle}
-          </p>
-          <p className="mt-4 text-xs text-gray-400 pt-2 border-t border-gray-100">
+        <div className="p-5 flex flex-col flex-grow justify-between space-y-3">
+          <div>
+            <h3 className="text-lg font-bold text-card-foreground line-clamp-2 group-hover:text-primary transition-colors">
+              {post.title}
+            </h3>
+            {post.subtitle && (
+              <p className="mt-2 text-xs text-muted-foreground line-clamp-3 leading-relaxed">
+                {post.subtitle}
+              </p>
+            )}
+          </div>
+          <p className="pt-3 border-t border-border/60 text-[11px] text-muted-foreground">
             Publicado em {formatEventDate(post.createdAt)}
           </p>
         </div>

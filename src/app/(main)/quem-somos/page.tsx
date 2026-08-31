@@ -41,7 +41,7 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-background text-foreground">
       {/* Hero Section */}
       <section className="mb-8">
         <div className="relative h-[300px] sm:h-[400px] md:h-[500px] w-full">
@@ -66,30 +66,23 @@ export default function Page() {
       </section>
 
       {/* Timeline Section */}
-      <section className="relative py-16 bg-gray-50 overflow-hidden">
-        <div
-          className="hidden md:block absolute top-0 left-0 w-full h-full"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(229 231 235 / 0.7)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e\")",
-          }}
-        ></div>
+      <section className="relative py-16 bg-muted/20 border-b border-border overflow-hidden">
         <div className="relative container mx-auto px-4">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-neutral-900 text-center">
+          <h2 className="text-3xl sm:text-4xl font-extrabold mb-12 text-foreground text-center tracking-tight">
             Nossa História
           </h2>
 
           {/* Linha vertical da timeline */}
-          <div className="absolute left-1/2 top-0 h-full w-0.5 bg-accent -translate-x-1/2 hidden md:block"></div>
+          <div className="absolute left-1/2 top-0 h-full w-0.5 bg-primary/40 -translate-x-1/2 hidden md:block"></div>
 
           <div className="space-y-12 md:space-y-0">
             {/* Item 1 */}
             <div className="relative flex flex-col md:flex-row md:justify-between items-center w-full md:mb-8">
               <div className="md:order-1 w-full md:w-5/12 flex flex-col items-center md:items-start">
-                <Building2 className="w-16 h-16 text-blue-900/30 mb-4 md:hidden" />
-                <div className="bg-blue-900 rounded-lg shadow-lg p-6 w-full">
-                  <h3 className="mb-2 font-bold text-white text-lg">2020</h3>
-                  <p className="text-sm text-neutral-300">
+                <Building2 className="w-16 h-16 text-primary/30 mb-4 md:hidden" />
+                <div className="bg-card text-card-foreground border border-border/80 rounded-2xl shadow-lg p-6 w-full">
+                  <h3 className="mb-2 font-bold text-primary text-xl">2020</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     É criada a ADETUR – Agência de Desenvolvimento Turístico
                     Alta Mogiana, uma Instância de Governança Regional (IGR)
                     formada por municípios, empresas e entidades do terceiro
@@ -98,9 +91,9 @@ export default function Page() {
                   </p>
                 </div>
               </div>
-              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-accent rounded-full"></div>
+              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground font-bold rounded-full text-xs shadow-md">1</div>
               <div className="md:order-3 w-5/12 hidden md:flex justify-center">
-                <Building2 className="w-24 h-24 text-blue-900/30" />
+                <Building2 className="w-24 h-24 text-primary/20" />
               </div>
             </div>
 
@@ -108,14 +101,14 @@ export default function Page() {
             <div className="relative flex flex-col md:flex-row-reverse md:justify-between items-center w-full md:mb-8">
               <div className="md:order-1 w-full md:w-5/12 flex flex-col items-center md:items-start">
                 <div className="flex gap-4 mb-4 md:hidden">
-                  <Tv className="w-12 h-12 text-blue-900/30" />
-                  <MapPin className="w-12 h-12 text-blue-900/30" />
+                  <Tv className="w-12 h-12 text-primary/30" />
+                  <MapPin className="w-12 h-12 text-primary/30" />
                 </div>
-                <div className="bg-blue-900 rounded-lg shadow-lg p-6 w-full">
-                  <h3 className="mb-2 font-bold text-white text-lg">
+                <div className="bg-card text-card-foreground border border-border/80 rounded-2xl shadow-lg p-6 w-full">
+                  <h3 className="mb-2 font-bold text-primary text-xl">
                     Novembro de 2021
                   </h3>
-                  <p className="text-sm text-neutral-300">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     A ADETUR realiza uma reunião na cidade de Luiz Antônio, na
                     Estação Ecológica Jataí. Durante o encontro, são
                     apresentados o projeto &quot;TV ALTA MOGIANA&quot; em
@@ -124,11 +117,11 @@ export default function Page() {
                   </p>
                 </div>
               </div>
-              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-accent rounded-full"></div>
+              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground font-bold rounded-full text-xs shadow-md">2</div>
               <div className="md:order-3 w-5/12 hidden md:flex justify-center">
                 <div className="flex gap-4">
-                  <Tv className="w-24 h-24 text-blue-900/30" />
-                  <MapPin className="w-24 h-24 text-blue-900/30" />
+                  <Tv className="w-24 h-24 text-primary/20" />
+                  <MapPin className="w-24 h-24 text-primary/20" />
                 </div>
               </div>
             </div>
@@ -136,12 +129,12 @@ export default function Page() {
             {/* Item 3 */}
             <div className="relative flex flex-col md:flex-row md:justify-between items-center w-full md:mb-8">
               <div className="md:order-1 w-full md:w-5/12 flex flex-col items-center md:items-start">
-                <CalendarDays className="w-16 h-16 text-blue-900/30 mb-4 md:hidden" />
-                <div className="bg-blue-900 rounded-lg shadow-lg p-6 w-full">
-                  <h3 className="mb-2 font-bold text-white text-lg">
+                <CalendarDays className="w-16 h-16 text-primary/30 mb-4 md:hidden" />
+                <div className="bg-card text-card-foreground border border-border/80 rounded-2xl shadow-lg p-6 w-full">
+                  <h3 className="mb-2 font-bold text-primary text-xl">
                     Abril de 2022
                   </h3>
-                  <p className="text-sm text-neutral-300">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     Ocorre uma reunião de trabalho em Cajuru, com a pauta
                     incluindo a inserção de cidades no Mapa do Turismo
                     (SISMAPA), discussões sobre um novo site e a participação na
@@ -150,42 +143,42 @@ export default function Page() {
                   </p>
                 </div>
               </div>
-              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-accent rounded-full"></div>
+              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground font-bold rounded-full text-xs shadow-md">3</div>
               <div className="md:order-3 w-5/12 hidden md:flex justify-center">
-                <CalendarDays className="w-24 h-24 text-blue-900/30" />
+                <CalendarDays className="w-24 h-24 text-primary/20" />
               </div>
             </div>
 
             {/* Item 4 */}
             <div className="relative flex flex-col md:flex-row-reverse md:justify-between items-center w-full md:mb-8">
               <div className="md:order-1 w-full md:w-5/12 flex flex-col items-center md:items-start">
-                <Handshake className="w-16 h-16 text-blue-900/30 mb-4 md:hidden" />
-                <div className="bg-blue-900 rounded-lg shadow-lg p-6 w-full">
-                  <h3 className="mb-2 font-bold text-white text-lg">
+                <Handshake className="w-16 h-16 text-primary/30 mb-4 md:hidden" />
+                <div className="bg-card text-card-foreground border border-border/80 rounded-2xl shadow-lg p-6 w-full">
+                  <h3 className="mb-2 font-bold text-primary text-xl">
                     Julho de 2022
                   </h3>
-                  <p className="text-sm text-neutral-300">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     O município de Cássia dos Coqueiros autoriza sua integração
                     à ADETUR. Vários outros municípios da região também
                     formalizam sua associação por meio de leis municipais.
                   </p>
                 </div>
               </div>
-              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-accent rounded-full"></div>
+              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground font-bold rounded-full text-xs shadow-md">4</div>
               <div className="md:order-3 w-5/12 hidden md:flex justify-center">
-                <Handshake className="w-24 h-24 text-blue-900/30" />
+                <Handshake className="w-24 h-24 text-primary/20" />
               </div>
             </div>
 
             {/* Item 5 */}
             <div className="relative flex flex-col md:flex-row md:justify-between items-center w-full">
               <div className="md:order-1 w-full md:w-5/12 flex flex-col items-center md:items-start">
-                <Lightbulb className="w-16 h-16 text-blue-900/30 mb-4 md:hidden" />
-                <div className="bg-blue-900 rounded-lg shadow-lg p-6 w-full">
-                  <h3 className="mb-2 font-bold text-white text-lg">
+                <Lightbulb className="w-16 h-16 text-primary/30 mb-4 md:hidden" />
+                <div className="bg-card text-card-foreground border border-border/80 rounded-2xl shadow-lg p-6 w-full">
+                  <h3 className="mb-2 font-bold text-primary text-xl">
                     Maio de 2025
                   </h3>
-                  <p className="text-sm text-neutral-300">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     A agência participa do evento &quot;PRT em Ação&quot;,
                     promovido pelo Ministério do Turismo e pela Secretaria de
                     Turismo e Viagens do Estado de São Paulo, contribuindo com
@@ -194,9 +187,9 @@ export default function Page() {
                   </p>
                 </div>
               </div>
-              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-accent rounded-full"></div>
+              <div className="z-10 hidden md:flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground font-bold rounded-full text-xs shadow-md">5</div>
               <div className="md:order-3 w-5/12 hidden md:flex justify-center">
-                <Lightbulb className="w-24 h-24 text-blue-900/30" />
+                <Lightbulb className="w-24 h-24 text-primary/20" />
               </div>
             </div>
           </div>
@@ -204,26 +197,21 @@ export default function Page() {
       </section>
 
       {/* Municipalities Section */}
-      <section className="py-16 bg-gray-100 relative">
-        <div className="absolute inset-0">
-          <Image
-            src="/bg/bg-municipios2.png"
-            alt="Fundo com paisagem da região da Alta Mogiana"
-            fill
-            className="object-cover backdrop-blur-3xl opacity-80"
-          />
-        </div>
-        <div className="relative container mx-auto px-4 ">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-neutral-900 text-center">
-            Municípios Integrados
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="py-16 md:py-24 bg-background relative border-b border-border">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+            <span className="text-xs uppercase tracking-wider font-bold text-primary">União Regional</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
+              Municípios Integrados
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {isLoading &&
               Array.from({ length: 6 }).map((_, idx) => (
-                <MunicipalitiesCardSkeleton key={idx} /> // Usando o novo esqueleto
+                <MunicipalitiesCardSkeleton key={idx} />
               ))}
             {error && (
-              <div className="text-red-500 bg-white p-4 rounded-lg text-center">
+              <div className="text-red-500 bg-card border border-red-500/30 p-4 rounded-xl text-center col-span-3">
                 {error}
               </div>
             )}
@@ -233,10 +221,6 @@ export default function Page() {
                 <MunicipalitiesCard
                   key={municipality.id}
                   municipality={municipality}
-                  background="bg-white"
-                  title="text-neutral-900"
-                  description="text-neutral-400"
-                  bgHighlight="bg-blue-900 text-white"
                 />
               ))}
           </div>
@@ -244,11 +228,14 @@ export default function Page() {
       </section>
 
       {/* Governance Section */}
-      <section className="py-16 bg-gray-100">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-neutral-900 text-center">
-          Estrutura de Governança
-        </h2>
-        <div className="max-w-4xl mx-auto">
+      <section className="py-16 md:py-24 bg-muted/20 border-b border-border">
+        <div className="text-center max-w-2xl mx-auto mb-12 space-y-2 px-4">
+          <span className="text-xs uppercase tracking-wider font-bold text-primary">Organização & Liderança</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
+            Estrutura de Governança
+          </h2>
+        </div>
+        <div className="max-w-4xl mx-auto px-4">
           <Carousel
             plugins={[
               Autoplay({
@@ -268,15 +255,15 @@ export default function Page() {
                 return (
                   <CarouselItem key={index} className="pl-4 md:basis-1/2">
                     <div className="p-1 h-full">
-                      <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center text-center h-full transition-transform duration-300 hover:scale-105">
-                        <div className="mb-4">
-                          <Icon className="w-12 h-12 text-accent" />
+                      <div className="bg-card text-card-foreground border border-border/80 p-8 rounded-2xl shadow-sm hover:shadow-lg flex flex-col items-center text-center h-full transition-all duration-300 hover:-translate-y-1">
+                        <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                          <Icon className="w-8 h-8" />
                         </div>
-                        <div className="flex-grow">
-                          <h3 className="text-xl font-semibold mb-2 text-blue-900">
+                        <div className="flex-grow space-y-2">
+                          <h3 className="text-lg font-bold text-foreground">
                             {item.title}
                           </h3>
-                          <p className="text-neutral-600 text-sm">
+                          <p className="text-muted-foreground text-xs leading-relaxed">
                             {item.description}
                           </p>
                         </div>
@@ -291,17 +278,20 @@ export default function Page() {
       </section>
 
       {/* ODS Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-neutral-900">
-            Objetivos de Desenvolvimento Sustentável (ODS)
-          </h2>
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+            <span className="text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400">Compromisso com o Futuro</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-foreground tracking-tight">
+              Objetivos de Desenvolvimento Sustentável (ODS)
+            </h2>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
             <TooltipProvider>
               {odsGoals.map((goal, index) => (
                 <Tooltip key={index}>
                   <TooltipTrigger asChild>
-                    <div className="rounded-lg overflow-hidden p-4 hover:scale-105 transition-transform duration-300 cursor-pointer">
+                    <div className="rounded-2xl overflow-hidden p-4 hover:scale-105 transition-all duration-300 cursor-pointer bg-card border border-border/80 shadow-sm hover:shadow-md flex items-center justify-center">
                       <Image
                         src={goal.image}
                         alt={`ODS ${goal.number}`}
@@ -311,9 +301,9 @@ export default function Page() {
                       />
                     </div>
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs bg-neutral-800 text-white p-4">
-                    <h3 className="font-bold mb-2 text-lg">{goal.title}</h3>
-                    <p className="text-sm text-gray-300">{goal.description}</p>
+                  <TooltipContent className="max-w-xs bg-popover text-popover-foreground border border-border p-4 rounded-xl shadow-xl">
+                    <h3 className="font-bold mb-1 text-sm text-foreground">{goal.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{goal.description}</p>
                   </TooltipContent>
                 </Tooltip>
               ))}

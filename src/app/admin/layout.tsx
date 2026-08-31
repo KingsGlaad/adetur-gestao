@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: PropsWithChildren) {
   return (
     <Providers>
-      <div className="flex min-h-screen w-full bg-background text-foreground dark">
+      <div className="flex min-h-screen w-full bg-background text-foreground">
         <AppSidebar />
         <SidebarInset className="bg-background">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b border-muted bg-muted/50 px-4">

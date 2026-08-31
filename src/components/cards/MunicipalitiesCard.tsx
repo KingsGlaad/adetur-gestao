@@ -25,10 +25,15 @@ export function MunicipalitiesCard({
   bgHighlight,
 }: MunicipalitiesCardProps) {
   return (
-    <div className={cn("rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105", background || "bg-blue-900")}>
-      <div className="relative h-48">
+    <div
+      className={cn(
+        "rounded-2xl border border-border/80 shadow-md overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl",
+        background || "bg-card text-card-foreground"
+      )}
+    >
+      <div className="relative h-48 bg-muted">
         <Image
-          src={municipality.coatOfArms || ""}
+          src={municipality.coatOfArms || "/logo.png"}
           alt={municipality.name}
           fill
           className="object-cover"
@@ -36,16 +41,18 @@ export function MunicipalitiesCard({
       </div>
       <div className="p-6">
         <Link href={`/municipios/${municipality.slug}`}>
-          <h3 className={cn("text-xl font-semibold mb-2", title ||"text-white")}>
+          <h3 className={cn("text-xl font-bold mb-2 transition-colors hover:text-primary", title || "text-card-foreground")}>
             {municipality.name}
           </h3>
         </Link>
-        <p className={cn("mb-4", description || "text-gray-400")}>{municipality.description}</p>
+        <p className={cn("mb-4 text-sm line-clamp-2 leading-relaxed", description || "text-muted-foreground")}>
+          {municipality.description}
+        </p>
         <div className="text-sm font-medium flex flex-wrap gap-2">
           {municipality.highlights?.slice(0, 2).map((item) => (
             <span
               key={item.id}
-              className={cn("px-2 py-1 rounded-full text-xs", bgHighlight || "bg-accent text-white")}
+              className={cn("px-2.5 py-1 rounded-full text-xs font-semibold", bgHighlight || "bg-primary/10 text-primary border border-primary/20")}
             >
               {item.title}
             </span>
@@ -54,12 +61,12 @@ export function MunicipalitiesCard({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <span className={cn("px-2 py-1 rounded-full text-xs cursor-pointer", bgHighlight || "bg-accent text-white")}>
+                  <span className={cn("px-2.5 py-1 rounded-full text-xs font-semibold cursor-pointer", bgHighlight || "bg-muted text-muted-foreground border border-border")}>
                     +{(municipality.highlights?.length ?? 0) - 2} mais
                   </span>
                 </TooltipTrigger>
-                <TooltipContent className={cn("bg-accent text-amber-50 ", bgHighlight || "bg-accent text-white")}>
-                  <div className="flex flex-col gap-1">
+                <TooltipContent className="bg-popover text-popover-foreground border border-border p-2 rounded-lg shadow-lg">
+                  <div className="flex flex-col gap-1 text-xs">
                     {municipality.highlights?.slice(2).map((h) => (
                       <span key={h.id}>{h.title}</span>
                     ))}

@@ -49,49 +49,49 @@ export default async function TransparenciaPage() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col pt-20">
+    <div className="min-h-screen bg-background text-foreground flex flex-col pt-10">
       {/* Hero Section */}
-      <section className="relative py-16 px-4 bg-[#80a3ff] overflow-hidden">
-        <div className="absolute inset-0 bg-grid-white/[0.1] -z-10" />
-        <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl" />
+      <section className="relative py-16 px-4 bg-gradient-to-b from-blue-900 via-blue-950 to-background overflow-hidden text-white border-b border-border/40">
+        <div className="absolute inset-0 bg-grid-white/[0.05] -z-10" />
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl" />
 
         <div className="container mx-auto max-w-6xl text-center">
-          <Badge className="mb-4 bg-white/20 hover:bg-white/30 text-white border-none py-1 px-4 text-sm font-medium backdrop-blur-sm">
-            Portal Oficial
+          <Badge className="mb-4 bg-white/15 hover:bg-white/20 text-white border-none py-1 px-4 text-xs font-semibold backdrop-blur-md">
+            Portal Oficial de Informações
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
-            Transparência Adetur
+          <h1 className="text-3xl sm:text-5xl font-black text-white mb-4 tracking-tight">
+            Transparência ADETUR
           </h1>
-          <p className="text-xl text-blue-50 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-base sm:text-lg text-blue-100/80 max-w-2xl mx-auto leading-relaxed font-normal">
             Acesso facilitado a relatórios, prestações de contas, resoluções e
-            documentos oficiais da Adetur Cataratas e Caminhos.
+            documentos oficiais da ADETUR Alta Mogiana.
           </p>
         </div>
       </section>
 
       {/* Main Content */}
-      <main className="container mx-auto max-w-6xl px-4 py-12 -mt-8 flex-1">
+      <main className="container mx-auto max-w-6xl px-4 py-12 flex-1">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar / Filters */}
           <aside className="lg:col-span-1 space-y-6">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-              <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                <Tag className="w-4 h-4 text-blue-500" />
+            <div className="bg-card text-card-foreground p-6 rounded-2xl shadow-sm border border-border">
+              <h3 className="font-bold text-foreground mb-4 flex items-center gap-2 text-sm">
+                <Tag className="w-4 h-4 text-primary" />
                 Categorias
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-blue-600 font-medium bg-blue-50"
+                  className="w-full justify-start text-primary font-bold bg-primary/10 hover:bg-primary/20 rounded-xl text-xs h-9"
                 >
-                  Todas
+                  Todas as Categorias
                 </Button>
                 {categories.map((cat) => (
                   <Button
                     key={cat}
                     variant="ghost"
-                    className="w-full justify-start text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 transition-all"
+                    className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl text-xs h-9 transition-all"
                   >
                     {cat}
                   </Button>
@@ -99,17 +99,17 @@ export default async function TransparenciaPage() {
               </div>
             </div>
 
-            <div className="bg-blue-600 p-6 rounded-2xl shadow-lg border-none text-white relative overflow-hidden group">
+            <div className="bg-gradient-to-br from-primary/90 to-emerald-950 p-6 rounded-2xl shadow-lg border border-primary/30 text-white relative overflow-hidden group">
               <div className="absolute top-0 right-0 -mt-4 -mr-4 w-20 h-20 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-500" />
-              <h3 className="font-bold text-lg mb-2 relative z-10">Dúvidas?</h3>
-              <p className="text-blue-100 text-sm mb-4 relative z-10">
+              <h3 className="font-bold text-base mb-1 relative z-10">Dúvidas?</h3>
+              <p className="text-emerald-100 text-xs mb-4 relative z-10 leading-relaxed">
                 Se não encontrar o que procura, entre em contato com nossa
                 equipe administrativa.
               </p>
               <Link href="/contato">
                 <Button
                   variant="secondary"
-                  className="w-full bg-white text-blue-600 hover:bg-blue-50 border-none relative z-10 font-semibold shadow-sm"
+                  className="w-full bg-white text-zinc-950 hover:bg-zinc-100 border-none relative z-10 font-bold text-xs shadow-sm h-9 rounded-xl"
                 >
                   Fale Conosco
                 </Button>
@@ -118,28 +118,17 @@ export default async function TransparenciaPage() {
           </aside>
 
           {/* Documents Grid */}
-          <div className="lg:col-span-3 space-y-8">
-            {/* Search Bar */}
-            <div className="relative group max-w-2xl">
-              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none group-focus-within:text-blue-500 text-slate-400 transition-colors">
-                <Search className="h-5 w-5" />
-              </div>
-              <Input
-                placeholder="Pesquisar por título ou descrição..."
-                className="pl-12 py-6 bg-white border-slate-200 focus-visible:ring-blue-500 focus-visible:border-blue-500 rounded-2xl shadow-sm group-hover:shadow-md transition-all text-lg"
-              />
-            </div>
-
+          <div className="lg:col-span-3 space-y-6">
             {/* List */}
             {data.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-24 bg-white rounded-3xl border-2 border-dashed border-slate-200">
-                <div className="p-4 bg-slate-50 rounded-full mb-4">
-                  <FolderOpen className="w-12 h-12 text-slate-300" />
+              <div className="flex flex-col items-center justify-center py-20 bg-card rounded-3xl border-2 border-dashed border-border p-8 text-center">
+                <div className="p-4 bg-muted rounded-2xl mb-4 text-muted-foreground">
+                  <FolderOpen className="w-10 h-10" />
                 </div>
-                <h3 className="text-xl font-semibold text-slate-800">
+                <h3 className="text-lg font-bold text-foreground">
                   Nenhum documento encontrado
                 </h3>
-                <p className="text-slate-500">
+                <p className="text-xs text-muted-foreground mt-1">
                   Estamos preparando novos arquivos para esta seção.
                 </p>
               </div>
@@ -148,47 +137,47 @@ export default async function TransparenciaPage() {
                 {data.map((item) => (
                   <Card
                     key={item.id}
-                    className="group hover:shadow-xl transition-all duration-300 border-slate-200 overflow-hidden flex flex-col rounded-2xl"
+                    className="group hover:shadow-xl transition-all duration-300 border-border bg-card text-card-foreground overflow-hidden flex flex-col rounded-2xl"
                   >
                     <CardHeader className="pb-4">
                       <div className="flex justify-between items-start mb-3">
-                        <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                          <FileText className="w-6 h-6" />
+                        <div className="p-2.5 bg-primary/10 text-primary rounded-xl group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                          <FileText className="w-5 h-5" />
                         </div>
                         {item.category && (
                           <Badge
                             variant="secondary"
-                            className="bg-slate-100 text-slate-600 border-none font-medium"
+                            className="bg-muted text-muted-foreground border border-border font-medium text-[11px]"
                           >
                             {item.category}
                           </Badge>
                         )}
                       </div>
-                      <CardTitle className="text-xl text-slate-800 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
+                      <CardTitle className="text-lg font-bold text-card-foreground line-clamp-2 leading-tight group-hover:text-primary transition-colors">
                         {item.title}
                       </CardTitle>
                       {item.description && (
-                        <CardDescription className="text-slate-500 line-clamp-2 mt-2 leading-relaxed">
+                        <CardDescription className="text-muted-foreground line-clamp-2 mt-2 leading-relaxed text-xs">
                           {item.description}
                         </CardDescription>
                       )}
                     </CardHeader>
                     <CardContent className="mt-auto pb-4">
-                      <div className="flex items-center gap-4 text-sm text-slate-400 font-medium">
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground font-medium">
                         <span className="flex items-center gap-1.5">
-                          <Calendar className="w-4 h-4" />
+                          <Calendar className="w-3.5 h-3.5 text-primary" />
                           {format(new Date(item.createdAt), "dd MMM yyyy", {
                             locale: ptBR,
                           })}
                         </span>
-                        <span className="w-1 h-1 bg-slate-300 rounded-full" />
-                        <span className="text-slate-500">PDF</span>
+                        <span className="w-1 h-1 bg-border rounded-full" />
+                        <span className="text-muted-foreground">PDF</span>
                       </div>
                     </CardContent>
                     <CardFooter className="pt-0 pb-6 px-6">
                       <Button
                         asChild
-                        className="w-full bg-slate-900 hover:bg-blue-600 text-white gap-2 py-6 rounded-xl shadow-lg transition-all duration-300 cursor-pointer group/btn"
+                        className="w-full bg-primary hover:opacity-90 text-primary-foreground font-semibold gap-2 py-5 rounded-xl shadow transition-all cursor-pointer group/btn text-xs"
                       >
                         <a
                           href={item.fileUrl}
@@ -209,30 +198,24 @@ export default async function TransparenciaPage() {
       </main>
 
       {/* Footer Info */}
-      <footer className="container mx-auto max-w-6xl px-4 py-12 border-t border-slate-200 mt-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-slate-500 text-sm">
+      <div className="container mx-auto max-w-6xl px-4 py-8 border-t border-border mt-12">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-muted-foreground text-xs">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4" />
+            <AlertCircle className="w-4 h-4 text-primary" />
             <span>
-              Todos os dados são coletados de fontes oficiais da Adetur.
+              Todos os dados são coletados de fontes oficiais da ADETUR.
             </span>
           </div>
-          <div className="flex items-center gap-6">
-            <a
-              href="#"
-              className="hover:text-blue-600 transition-colors font-medium"
+          <div className="flex items-center gap-6 font-medium">
+            <Link
+              href="/contato"
+              className="hover:text-primary transition-colors"
             >
-              Manual da Transparência
-            </a>
-            <a
-              href="#"
-              className="hover:text-blue-600 transition-colors font-medium"
-            >
-              Dados Abertos
-            </a>
+              Dúvidas e Solicitações
+            </Link>
           </div>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }

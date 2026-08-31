@@ -21,17 +21,20 @@ export default function MunicipiosPage() {
 
     
   return (
-    <div className="flex flex-col lg:flex-row min-h-[calc(100vh-4rem)] bg-white text-neutral-900">
+    <div className="flex flex-col lg:flex-row min-h-[calc(100vh-4rem)] bg-background text-foreground">
       {/* Lista */}
-      <div className="w-full lg:w-2/5 ">
-        <div className="container mx-auto px-8 py-8 max-w-xl">
-          <h1 className="text-3xl font-bold mb-8">Municípios</h1>
+      <div className="w-full lg:w-2/5 border-r border-border">
+        <div className="container mx-auto px-6 sm:px-8 py-8 max-w-xl">
+          <div className="mb-6 space-y-1">
+            <span className="text-xs uppercase tracking-wider font-bold text-primary">Região Turística</span>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">Municípios</h1>
+          </div>
           <div className="grid gap-4">
             {isLoading &&
               Array.from({ length: 6 }).map((_, idx) => (
                 <MunicipalityListItemSkeleton key={idx} />
               ))}
-            {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-red-500 bg-red-500/10 p-4 rounded-xl border border-red-500/20">{error}</p>}
             {!isLoading &&
               !error &&
               municipalities.map((municipality) => (
@@ -46,7 +49,7 @@ export default function MunicipiosPage() {
       </div>
 
       {/* Mapa */}
-      <div className="hidden lg:block w-full lg:w-3/5 h-[calc(100vh-4rem)] sticky top-16">
+      <div className="hidden lg:block w-full lg:w-3/5 h-[calc(100vh-4rem)] sticky top-16 bg-muted/20">
         <div className="h-full px-8 py-4">
           <DynamicMap
             municipalities={municipalities}

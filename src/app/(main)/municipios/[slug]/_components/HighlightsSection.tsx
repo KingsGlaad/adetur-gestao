@@ -26,8 +26,8 @@ export function HighlightsSection({ highlights }: HighlightsSectionProps) {
 
   return (
     <div className="flex flex-col h-full">
-      <h3 className="flex items-center gap-2 text-2xl font-bold text-slate-800 mb-6">
-        <Landmark className="w-7 h-7 text-blue-600" />
+      <h3 className="flex items-center gap-2 text-2xl font-bold text-foreground mb-6">
+        <Landmark className="w-7 h-7 text-primary" />
         Destaques Turísticos
       </h3>
       <div className="flex-1 space-y-6 overflow-y-auto pr-2 -mr-2">

@@ -105,37 +105,37 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-blue-900 border-t mt-auto text-white">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-slate-950 dark:bg-card border-t border-border mt-auto text-slate-100 dark:text-card-foreground">
+      <div className="container mx-auto px-4 py-14 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-12">
           {/* Logo e Descrição */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Image
                 src="/logo.png"
                 alt="ADETUR Logo"
                 width={40}
                 height={40}
-                className="rounded-lg"
+                className="rounded-xl"
                 priority
               />
-              <span className="text-xl font-bold">ADETUR</span>
+              <span className="text-xl font-black tracking-tight text-white dark:text-foreground">ADETUR</span>
             </div>
-            <p className="text-neutral-300">
+            <p className="text-slate-400 dark:text-muted-foreground text-xs sm:text-sm leading-relaxed">
               Agência de Desenvolvimento Turístico - Alta Mogiana
             </p>
-            <p className="text-neutral-300">CNPJ: 42.216.784/0001-30</p>
-            <div className="flex gap-4">
+            <p className="text-slate-500 dark:text-muted-foreground/80 text-xs">CNPJ: 42.216.784/0001-30</p>
+            <div className="flex gap-3 pt-2">
               {socialLinks.map(({ href, label, Icon }) => (
                 <a
                   key={href}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-neutral-300 hover:text-white transition-colors"
+                  className="w-9 h-9 rounded-xl bg-slate-900 dark:bg-muted text-slate-300 dark:text-foreground hover:text-white hover:bg-primary transition-all flex items-center justify-center"
                   aria-label={label}
                 >
-                  <Icon className="w-6 h-6" />
+                  <Icon className="w-4 h-4" />
                 </a>
               ))}
             </div>
@@ -143,13 +143,15 @@ export function Footer() {
 
           {/* Links Rápidos */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Links Rápidos</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-200 dark:text-foreground mb-4">
+              Links Rápidos
+            </h3>
+            <ul className="space-y-2 text-xs sm:text-sm">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-neutral-300 hover:text-white transition-colors"
+                    className="text-slate-400 dark:text-muted-foreground hover:text-primary transition-colors block py-0.5"
                   >
                     {link.label}
                   </Link>
@@ -160,21 +162,23 @@ export function Footer() {
 
           {/* Contato */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contato</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-200 dark:text-foreground mb-4">
+              Contato
+            </h3>
             <address className="not-italic">
-              <ul className="space-y-3 text-neutral-300">
+              <ul className="space-y-3 text-slate-400 dark:text-muted-foreground text-xs sm:text-sm">
                 {contactInfo.map(({ Icon, text, href }) => (
-                  <li key={text} className="flex items-start gap-3">
-                    <Icon className="w-5 h-5 flex-shrink-0 mt-1" />
+                  <li key={text} className="flex items-start gap-2.5">
+                    <Icon className="w-4 h-4 flex-shrink-0 mt-0.5 text-primary" />
                     {href ? (
                       <a
                         href={href}
-                        className="hover:text-white transition-colors"
+                        className="hover:text-primary transition-colors leading-relaxed"
                       >
                         {text}
                       </a>
                     ) : (
-                      <span>{text}</span>
+                      <span className="leading-relaxed">{text}</span>
                     )}
                   </li>
                 ))}
@@ -184,39 +188,33 @@ export function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
-            <p className="text-neutral-300 mb-4">
-              Inscreva-se para receber novidades e atualizações
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-200 dark:text-foreground mb-4">
+              Informativos
+            </h3>
+            <p className="text-slate-400 dark:text-muted-foreground text-xs sm:text-sm mb-4 leading-relaxed">
+              Inscreva-se para receber novidades, eventos e notícias da região.
             </p>
-            <form className="space-y-2">
+            <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder="Seu e-mail"
-                className="w-full px-4 py-2 rounded-md border border-input bg-background text-neutral-900"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-800 dark:border-border bg-slate-900/80 dark:bg-muted text-white dark:text-foreground placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <button
                 type="submit"
-                className="w-full px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-400 transition-colors"
+                className="w-full px-4 py-2.5 bg-primary hover:opacity-90 text-primary-foreground font-semibold text-xs rounded-xl transition-opacity shadow-sm"
               >
-                Inscrever
+                Inscrever-se
               </button>
             </form>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="mt-12 pt-8 border-t text-center text-white/50">
+        <div className="mt-12 pt-8 border-t border-slate-900 dark:border-border text-center text-slate-500 dark:text-muted-foreground text-xs">
           <p>
-            &copy; {new Date().getFullYear()} ADETUR. Todos os direitos
-            reservados. Desenvolvido por{" "}
-            <a
-              href="https://github.com/KingsGlaad"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
-            >
-              Frame & Code Soluctions &copy;
-            </a>
+            &copy; {new Date().getFullYear()} ADETUR Alta Mogiana. Todos os direitos
+            reservados.
           </p>
         </div>
       </div>

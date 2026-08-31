@@ -16,9 +16,9 @@ export function AttractionCard({ attraction }: AttractionCardProps) {
   const imageUrl = attraction.image || "/images/no-image.jpeg";
 
   return (
-    <Link href={`/atracoes/${attraction.id}`} className="group block">
-      <div className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow duration-300 hover:shadow-xl h-full flex flex-col">
-        <div className="relative h-48 w-full">
+    <Link href={`/atracoes/${attraction.id}`} className="group block h-full">
+      <div className="overflow-hidden rounded-2xl bg-card border border-border/70 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-emerald-500/40 h-full flex flex-col">
+        <div className="relative h-48 w-full bg-muted overflow-hidden">
           <Image
             src={imageUrl}
             alt={attraction.name || "Imagem da atração"}
@@ -26,18 +26,20 @@ export function AttractionCard({ attraction }: AttractionCardProps) {
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </div>
-        <div className="p-4 flex flex-col flex-grow bg-white">
-          <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 group-hover:text-primary">
-            {attraction.name}
-          </h3>
-          {attraction.description && (
-            <p className="mt-2 text-sm text-gray-500 line-clamp-2">
-              {attraction.description}
-            </p>
-          )}
-          <div className="mt-auto pt-4 space-y-1 text-sm text-gray-600">
-            <p className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-primary" />{" "}
+        <div className="p-5 flex flex-col flex-grow justify-between space-y-3">
+          <div>
+            <h3 className="text-lg font-bold text-card-foreground line-clamp-2 group-hover:text-primary transition-colors">
+              {attraction.name}
+            </h3>
+            {attraction.description && (
+              <p className="mt-2 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                {attraction.description}
+              </p>
+            )}
+          </div>
+          <div className="pt-3 border-t border-border/60 text-xs text-muted-foreground">
+            <p className="flex items-center gap-1.5 font-medium">
+              <MapPin className="w-3.5 h-3.5 text-primary" />{" "}
               {attraction.Municipality.name}
             </p>
           </div>

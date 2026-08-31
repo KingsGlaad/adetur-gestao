@@ -16,7 +16,7 @@ export default function ArquiteturaSection() {
           />
         </div>
         <div>
-          <p className="text-gray-800 leading-relaxed text-justify text-lg">
+          <p className="text-muted-foreground leading-relaxed text-justify text-base sm:text-lg">
             Nas edificações, a Mogiana aplicava estilo industrial europeu, quase
             sempre em alvenaria aparente com tijolos de 2 ou 3 cores arranjados
             em aparelho do tipo inglês ou flamengo. Usou madeira ou ferro nas

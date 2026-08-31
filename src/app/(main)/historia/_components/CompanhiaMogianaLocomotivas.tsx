@@ -54,30 +54,31 @@ const locomotivas: LocomotivaProps[] = [
 
 export default function LocomotivasSection() {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <TooltipProvider>
           {locomotivas.map((locomotiva, index) => (
             <Tooltip key={index}>
               <TooltipTrigger asChild>
-                <div className="w-full rounded-lg overflow-hidden bg-white transform hover:scale-105">
-                  <Image
-                    src={locomotiva.url}
-                    alt={locomotiva.title}
-                    width={800}
-                    height={600}
-                    className="w-full h-auto object-cover rounded-lg"
-                  />
+                <div className="w-full rounded-2xl overflow-hidden bg-card border border-border/80 shadow-sm transform hover:scale-105 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                  <div className="relative h-48 w-full bg-muted">
+                    <Image
+                      src={locomotiva.url}
+                      alt={locomotiva.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                   <div className="p-4 text-center">
-                    <h3 className="text-sm font-semibold text-gray-700">
+                    <h3 className="text-sm font-bold text-card-foreground line-clamp-1">
                       {locomotiva.title}
                     </h3>
                   </div>
                 </div>
               </TooltipTrigger>
-              <TooltipContent className="max-w-2xl text-white p-4 rounded-lg shadow-lg">
-                <h3 className="font-bold mb-2 text-lg">{locomotiva.title}</h3>
-                <p className="text-sm text-">{locomotiva.description}</p>
+              <TooltipContent className="max-w-md bg-popover text-popover-foreground border border-border p-4 rounded-xl shadow-xl">
+                <h3 className="font-bold mb-1 text-sm text-foreground">{locomotiva.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{locomotiva.description}</p>
               </TooltipContent>
             </Tooltip>
           ))}

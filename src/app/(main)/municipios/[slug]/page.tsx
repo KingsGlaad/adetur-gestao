@@ -126,47 +126,48 @@ export default async function MunicipioPage({ params }: PageProps) {
   ].filter((url): url is string => !!url);
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-background text-foreground">
       {/* Seção 1: Cabeçalho e Descrição */}
-      <section className="relative overflow-hidden bg-slate-50/70">
+      <section className="relative overflow-hidden bg-muted/40 border-b border-border">
         <MunicipioHeader
           name={municipality.name}
           description={municipality.description}
           coverImage={municipality.coatOfArms}
         />
       </section>
+
       {/* Seção 4: Galeria e Sobre */}
       <section
         aria-labelledby="gallery-and-about-heading"
-        className="py-16 sm:py-24 bg-slate-50"
+        className="py-16 sm:py-24 bg-background border-b border-border"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
             {/* Coluna "Conheça Mais" */}
             {municipality.about && (
               <div id="about-section" className="flex flex-col">
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-8">
+                <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl mb-8">
                   Conheça Mais
                 </h2>
                 <div
-                  className="prose prose-lg max-w-none"
+                  className="prose prose-lg dark:prose-invert max-w-none text-muted-foreground leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: municipality.about }}
                 />
                 {/* Lista de Informações Adicionais */}
-                <div className="mt-10 border-t border-slate-200 pt-6">
-                  <ul className="space-y-4 text-slate-600 grid grid-cols-2 gap-4">
+                <div className="mt-10 border-t border-border pt-6">
+                  <ul className="space-y-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {municipality.prefeito && (
-                      <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
-                        <User className="h-5 w-5 flex-shrink-0 mt-0.5 text-purple-600" />
-                        <span>
+                      <li className="flex items-start gap-3 bg-card border border-border/80 p-3 rounded-2xl shadow-sm transform hover:scale-[1.02] transition-all">
+                        <User className="h-5 w-5 flex-shrink-0 mt-0.5 text-purple-500" />
+                        <span className="text-xs sm:text-sm text-card-foreground">
                           <strong>Prefeito(a):</strong> {municipality.prefeito}
                         </span>
                       </li>
                     )}
                     {details.population && (
-                      <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
-                        <Users className="h-5 w-5 flex-shrink-0 mt-0.5 text-blue-600" />
-                        <span>
+                      <li className="flex items-start gap-3 bg-card border border-border/80 p-3 rounded-2xl shadow-sm transform hover:scale-[1.02] transition-all">
+                        <Users className="h-5 w-5 flex-shrink-0 mt-0.5 text-sky-500" />
+                        <span className="text-xs sm:text-sm text-card-foreground">
                           <strong>População:</strong>{" "}
                           {Number(details.population).toLocaleString("pt-BR")}{" "}
                           (Est. 2021)
@@ -174,18 +175,18 @@ export default async function MunicipioPage({ params }: PageProps) {
                       </li>
                     )}
                     {details.area && (
-                      <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4">
-                        <Maximize className="h-5 w-5 flex-shrink-0 mt-0.5 text-green-600" />
-                        <span>
+                      <li className="flex items-start gap-3 bg-card border border-border/80 p-3 rounded-2xl shadow-sm transform hover:scale-[1.02] transition-all">
+                        <Maximize className="h-5 w-5 flex-shrink-0 mt-0.5 text-emerald-500" />
+                        <span className="text-xs sm:text-sm text-card-foreground">
                           <strong>Área Territorial:</strong>{" "}
                           {Number(details.area).toLocaleString("pt-BR")} km²
                         </span>
                       </li>
                     )}
                     {municipality.gentilic && (
-                      <li className="flex items-start gap-3 bg-white p-2 rounded-md shadow-sm transform hover:scale-105 transition-transform duration-300 py-4 h-[56px]">
-                        <Fingerprint className="h-5 w-5 flex-shrink-0 mt-0.5 text-yellow-600" />
-                        <span>
+                      <li className="flex items-start gap-3 bg-card border border-border/80 p-3 rounded-2xl shadow-sm transform hover:scale-[1.02] transition-all">
+                        <Fingerprint className="h-5 w-5 flex-shrink-0 mt-0.5 text-amber-500" />
+                        <span className="text-xs sm:text-sm text-card-foreground">
                           <strong>Gentílico:</strong> {municipality.gentilic}
                         </span>
                       </li>
@@ -196,7 +197,7 @@ export default async function MunicipioPage({ params }: PageProps) {
             )}
             {/* Coluna da Galeria */}
             <div id="gallery-section" className="flex flex-col">
-              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-8">
+              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl mb-8">
                 Galeria de Imagens
               </h2>
               <PublicImageGallery
@@ -211,18 +212,18 @@ export default async function MunicipioPage({ params }: PageProps) {
       {/* Seção 2: Mapa e Destaques */}
       <section
         aria-labelledby="map-and-highlights-heading"
-        className="py-16 sm:py-24 bg-slate-50"
+        className="py-16 sm:py-24 bg-muted/20 border-b border-border"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
             id="map-and-highlights-heading"
-            className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl text-center mb-12"
+            className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl text-center mb-12"
           >
             Explore {municipality.name}
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12">
             {/* Coluna do Mapa */}
-            <div className="lg:col-span-2 relative h-[70vh] min-h-[600px] w-full bg-slate-200 rounded-lg overflow-hidden shadow-lg">
+            <div className="lg:col-span-2 relative h-[70vh] min-h-[500px] w-full bg-card rounded-2xl overflow-hidden shadow-lg border border-border">
               <MapSection
                 municipality={municipality}
                 highlights={municipality.highlights}
@@ -230,7 +231,7 @@ export default async function MunicipioPage({ params }: PageProps) {
               />
             </div>
             {/* Coluna de Destaques */}
-            <div className="lg:col-span-1 h-full lg:max-h-[70vh] lg:min-h-[600px]">
+            <div className="lg:col-span-1 h-full lg:max-h-[70vh] lg:min-h-[500px]">
               <HighlightsSection highlights={municipality.highlights} />
             </div>
           </div>
@@ -240,12 +241,12 @@ export default async function MunicipioPage({ params }: PageProps) {
       {/* Seção 3: Eventos */}
       <section
         aria-labelledby="events-heading"
-        className="py-16 sm:py-24 bg-white"
+        className="py-16 sm:py-24 bg-background"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2
             id="events-heading"
-            className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl text-center mb-12"
+            className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl text-center mb-12"
           >
             Próximos Eventos
           </h2>

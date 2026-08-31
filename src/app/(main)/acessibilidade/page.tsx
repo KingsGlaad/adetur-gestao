@@ -30,10 +30,10 @@ const leis = [
 
 export default function AcessibilidadePage() {
   return (
-    <main className="bg-slate-50 py-16 sm:py-24">
+    <main className="bg-background text-foreground py-16 sm:py-24 min-h-screen">
       <div className="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div className="prose prose-lg max-w-none text-justify">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl text-left mb-8">
+        <div className="prose prose-lg dark:prose-invert max-w-none text-justify text-muted-foreground">
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground text-left mb-8">
             Acessibilidade
           </h1>
 
@@ -66,17 +66,19 @@ export default function AcessibilidadePage() {
             barra de acessibilidade do Portal.
           </p>
 
-          <h2 className="text-2xl font-bold mt-12 text-left mb-8">
+          <h2 className="text-2xl font-bold mt-12 text-left mb-8 text-foreground">
             Leis e decretos sobre acessibilidade:
           </h2>
           <ul className="list-disc pl-5 space-y-2">
             {leis.map((lei) => (
               <li key={lei.href}>
-                <Link href={lei.href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{lei.title}</Link>
+                <Link href={lei.href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{lei.title}</Link>
               </li>
             ))}
           </ul>
-          <p className="mt-4"><strong>Art. 63 da LEI Nº 13.146:</strong> É obrigatória a acessibilidade nos sítios da internet mantidos por empresas com sede ou representação comercial no País ou por órgãos de governo, para uso da pessoa com deficiência, garantindo-lhe acesso às informações disponíveis, conforme as melhores práticas e diretrizes de acessibilidade adotadas internacionalmente. § 1o Os sítios devem conter símbolo de acessibilidade em destaque.</p>
+          <p className="mt-6 p-4 rounded-xl bg-card border border-border text-card-foreground text-sm">
+            <strong className="text-foreground">Art. 63 da LEI Nº 13.146:</strong> É obrigatória a acessibilidade nos sítios da internet mantidos por empresas com sede ou representação comercial no País ou por órgãos de governo, para uso da pessoa com deficiência, garantindo-lhe acesso às informações disponíveis, conforme as melhores práticas e diretrizes de acessibilidade adotadas internacionalmente. § 1o Os sítios devem conter símbolo de acessibilidade em destaque.
+          </p>
         </div>
       </div>
     </main>
