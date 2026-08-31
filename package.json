@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate && npm run build"
   },
   "dependencies": {
     "@editorjs/code": "^2.9.4",
